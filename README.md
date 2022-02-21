@@ -1,0 +1,1 @@
+# mattermost-outlook-presence-provider
