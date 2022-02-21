@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSExeCOMServerTest", "CSExeCOMServer\CSExeCOMServerTest.csproj", "{7B4FB722-905A-4851-8399-1E0F3361CCD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutOfProcessCOMBase", "OutOfProcessCOMBase\OutOfProcessCOMBase.csproj", "{8F75485B-9963-4E83-B29C-207EF62832BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutLookPresenceProvider", "PresenceProvider\OutLookPresenceProvider.csproj", "{034E0472-A9D5-4E8C-890F-A8E7C26911BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B4FB722-905A-4851-8399-1E0F3361CCD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B4FB722-905A-4851-8399-1E0F3361CCD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B4FB722-905A-4851-8399-1E0F3361CCD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B4FB722-905A-4851-8399-1E0F3361CCD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F75485B-9963-4E83-B29C-207EF62832BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F75485B-9963-4E83-B29C-207EF62832BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F75485B-9963-4E83-B29C-207EF62832BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F75485B-9963-4E83-B29C-207EF62832BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
