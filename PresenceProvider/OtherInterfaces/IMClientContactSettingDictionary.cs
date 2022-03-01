@@ -7,7 +7,7 @@ using UCCollaborationLib;
 
 namespace OutlookPresenceProvider
 {
-    public class IMClientContactSettingDictionary : IContactSettingDictionary
+    public class IMClientContactSettingDictionary : ContactSettingDictionary
     {
         private Dictionary<ContactSetting, object> ContactSettingDictionary;
 

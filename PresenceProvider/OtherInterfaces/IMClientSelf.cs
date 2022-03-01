@@ -4,24 +4,25 @@ using UCCollaborationLib;
 
 namespace OutlookPresenceProvider
 {
-    public class IMClientSelf : ISelf
+    public class IMClientSelf : Self
     {
 
         // Declare a private field to store contact data for local user.
         private IMClientContact _contactData;
+
         // In the constructor for the ISelf object, the calling code 
         // must supply contact data.
         public IMClientSelf(IMClientContact _selfContactData)
         {
-            this._contactData = _selfContactData;
+            _contactData = _selfContactData;
         }
         // When accessed, the Contact property returns a reference
         // to the IContact object that represents the local user.
-        public IMClientContact Contact
+        public Contact Contact
         {
             get
             {
-                return this._contactData as IMClientContact;
+                return _contactData;
             }
         }
 
@@ -79,5 +80,8 @@ namespace OutlookPresenceProvider
         public ContactEndpoint TestCallEndpoint => throw new NotImplementedException();
 
         public bool IsInResiliencyMode => throw new NotImplementedException();
+
+        public event _ISelfEvents_OnPhonesChangedEventHandler OnPhonesChanged;
+        public event _ISelfEvents_OnResiliencyModeChangedEventHandler OnResiliencyModeChanged;
     }
 }

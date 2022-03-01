@@ -2,7 +2,7 @@
 
 namespace OutlookPresenceProvider
 {
-    public class IMClientStateChangedEventData : IClientStateChangedEventData
+    public class IMClientStateChangedEventData : ClientStateChangedEventData
     {
         public IMClientStateChangedEventData(ClientState oldState, ClientState newState)
         {

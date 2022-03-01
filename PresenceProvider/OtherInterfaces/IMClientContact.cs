@@ -1,16 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using UCCollaborationLib;
 
 namespace OutlookPresenceProvider
 {
-    public class IMClientContact: IContact
+    public class IMClientContact: Contact
     {
-        public IMClientContactSettingDictionary Settings
+        public IMClientContact()
+        {
+        }
+
+        public IMClientContact(string uri)
+        {
+            Uri = uri;
+        }
+        public ContactSettingDictionary Settings
         {
             get
             {
@@ -20,7 +24,7 @@ namespace OutlookPresenceProvider
             }
         }
 
-        public IMClientGroupCollection CustomGroups
+        public GroupCollection CustomGroups
         {
             get
             {
@@ -30,8 +34,17 @@ namespace OutlookPresenceProvider
             }
         }
 
-        public string Uri;
-        public string _DisplayName;
+        public string Uri
+        {
+            get { return this.Uri; }
+            set { this.Uri = value; }
+        }
+
+        public string _DisplayName => throw new NotImplementedException();
+
+        public ContactManager ContactManager => throw new NotImplementedException();
+
+        public UnifiedCommunicationType UnifiedCommunicationType => throw new NotImplementedException();
 
         public bool CanStart(ModalityTypes _modalityTypes)
         {
@@ -69,7 +82,7 @@ namespace OutlookPresenceProvider
             }
         }
 
-        public IMClientContactInformationDictionary BatchGetContactInformation(ContactInformationType[] _contactInformationTypes)
+        public ContactInformationDictionary BatchGetContactInformation(ContactInformationType[] _contactInformationTypes)
         {
             // The IMClientContactInformationDictionary class implements the
             // IContactInformationDictionary interface.
@@ -121,15 +134,8 @@ namespace OutlookPresenceProvider
             throw new NotImplementedException();
         }
 
-        string IContact.Uri => throw new NotImplementedException();
-
-        ContactSettingDictionary IContact.Settings => throw new NotImplementedException();
-
-        public ContactManager ContactManager => throw new NotImplementedException();
-
-        GroupCollection IContact.CustomGroups => throw new NotImplementedException();
-
-        public UnifiedCommunicationType UnifiedCommunicationType => throw new NotImplementedException();
+        public event _IContactEvents_OnContactInformationChangedEventHandler OnContactInformationChanged;
+        public event _IContactEvents_OnSettingChangedEventHandler OnSettingChanged;
+        public event _IContactEvents_OnUriChangedEventHandler OnUriChanged;
     }
-
 }

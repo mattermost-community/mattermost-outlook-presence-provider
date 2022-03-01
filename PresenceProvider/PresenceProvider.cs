@@ -67,7 +67,6 @@ namespace OutlookPresenceProvider
 
         public static void Started()
         {
-            // RegasmRegisterLocalServer(typeof(UCOfficeIntegrationClass));
             using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
             {
                 IMProviders.SetValue("DefaultIMApp", COMAppExeName);
@@ -149,8 +148,7 @@ namespace OutlookPresenceProvider
         }
 
         #region _IUCOfficeIntegrationEvents support
-
-            // This event implements void _IUCOfficeIntegrationEvents.OnShuttingDown();
+        // This event implements void _IUCOfficeIntegrationEvents.OnShuttingDown();
         public event _IUCOfficeIntegrationEvents_OnShuttingDownEventHandler OnShuttingDown;
 
         // This method is called by the IM application when it is beginning to shut down.

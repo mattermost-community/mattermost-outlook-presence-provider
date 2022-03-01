@@ -7,27 +7,23 @@ using UCCollaborationLib;
 
 namespace OutlookPresenceProvider
 {
-    public class IMClientContactSubscription : IContactSubscription
+    public class IMClientContactSubscription : ContactSubscription
     {
         // Store references to all of the IContact objects to subscribe to.
-        //private List<IMClientContact> _subscribedContacts;
-        //// Add a new IContact object to the collection of contacts.
-        //public void AddContact(IMClientContact _contact)
-        //{
-        //    this._subscribedContacts.Add(_contact);
-        //}
+        private List<IMClientContact> _subscribedContacts;
+        // Add a new IContact object to the collection of contacts.
+        public void AddContact(Contact _contact)
+        {
+            _subscribedContacts.Add(_contact as IMClientContact);
+        }
 
         public void Subscribe(ContactSubscriptionRefreshRate _subscriptionFreshness, ContactInformationType[] _contactInformationTypes)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(_subscriptionFreshness.ToString());
+            Console.WriteLine(_contactInformationTypes.ToString());
         }
 
         public void Unsubscribe()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddContact(Contact _contact)
         {
             throw new NotImplementedException();
         }
