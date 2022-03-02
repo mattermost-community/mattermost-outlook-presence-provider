@@ -4,9 +4,9 @@ MsgBox "A OutlookPresenceProvider.PresenceProvider object is created"
 
 Dim retValue
 
+' call the GetAuthenticationInfo method that returns a string
 retValue = obj.GetAuthenticationInfo("15.0.0.0")
 
-' call the HelloWorld method that returns a string
-MsgBox "The HelloWorld method returns " & retValue
+MsgBox "The GetAuthenticationInfo method returns " & retValue
 
 SET obj = Nothing
