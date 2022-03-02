@@ -228,16 +228,6 @@ namespace OutlookPresenceProvider
         {
             throw new NotImplementedException();
         }
-
-        //public ConversationWindow StartConversation(AutomationModalities _conversationModes, Array _participantUris, Array _contextTypes, Array _contextDatas)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public AsynchronousOperation StartConversationEx(AutomationModalities _conversationModes, Array _participantUris,Array _contextTypes, Array _contextDatas, [IUnknownConstant] object _callback, object _state)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 
 }

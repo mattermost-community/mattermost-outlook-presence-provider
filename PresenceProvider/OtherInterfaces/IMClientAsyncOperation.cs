@@ -5,10 +5,7 @@ namespace OutlookPresenceProvider
 {
     public class IMClientAsyncOperation : AsynchronousOperation
     {
-        public void CancelOperation()
-        {
-            throw new NotImplementedException();
-        }
+        public void CancelOperation() => throw new NotImplementedException();
 
         public dynamic AsyncState => throw new NotImplementedException();
 
