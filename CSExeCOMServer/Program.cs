@@ -17,14 +17,11 @@
 
 #region Using directives
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 using ComTypes = System.Runtime.InteropServices.ComTypes;
 using System.IO;
-using System.Threading;
 #endregion
 
 namespace CSExeCOMServerTest
@@ -38,7 +35,8 @@ namespace CSExeCOMServerTest
         {
             DirectoryInfo parentDir = Directory.GetParent(Directory.GetCurrentDirectory());
             string typeLibPath = $"{parentDir}\\DLL\\lync4.tlb";
-            //TypeLib.Register(typeLibPath);
+            // Uncomment below line if Skype for Business is not installed in the system.
+            // TypeLib.Register(typeLibPath);
             CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
             // Run the out-of-process COM server
             CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
