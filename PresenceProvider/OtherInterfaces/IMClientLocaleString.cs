@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UCCollaborationLib;
+using System.Runtime.InteropServices;
 
 namespace OutlookPresenceProvider
 {
+    [ComVisible(true)]
     public class IMClientLocaleString : ILocaleString
     {
         private int _localeId;

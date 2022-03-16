@@ -17,7 +17,12 @@ namespace OutlookPresenceProvider
         public ClientBase()
         {
             Console.WriteLine("Client is initialized");
-            _clientState = ClientState.ucClientStateInitializing;
+            _clientState = ClientState.ucClientStateSignedIn;
+            _uri = "shivam.chauhan@brightscoutdev.onmicrosoft.com";
+            IMClientContact selfContactData = new IMClientContact(_uri);
+            _self = new IMClientSelf(selfContactData);
+            _contactManager = new IMClientContactManager();
+            _conversationManager = new IMClientConversationManager();
         }
         #endregion
 
@@ -49,7 +54,7 @@ namespace OutlookPresenceProvider
             }
         }
 
-        private ClientState _clientState;
+        private ClientState _clientState = ClientState.ucClientStateUninitialized;
         public ClientState State
         {
             get
@@ -58,7 +63,7 @@ namespace OutlookPresenceProvider
             }
         }
 
-        private string _uri;
+        private string _uri = "";
         public string Uri
         {
             get

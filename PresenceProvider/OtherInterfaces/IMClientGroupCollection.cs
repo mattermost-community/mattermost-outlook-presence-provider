@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UCCollaborationLib;
+using System.Runtime.InteropServices;
 
 namespace OutlookPresenceProvider
 {
+    [ComVisible(true)]
     public class IMClientGroupCollection : GroupCollection
     {
         // private CollectionBase<>
@@ -56,6 +58,11 @@ namespace OutlookPresenceProvider
         public int Count => _groups.Count;
 
         public Group this[int _index] => _groups[_index];
+
+        public void AddGroup(Group _group)
+        {
+            _groups.Add(_group);
+        }
     }
 
 }

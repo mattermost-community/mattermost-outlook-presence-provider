@@ -1,22 +1,61 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UCCollaborationLib;
 
 namespace OutlookPresenceProvider
 {
+    [ComVisible(true)]
     public class IMClientAsyncOperation : AsynchronousOperation
     {
-        public void CancelOperation() => throw new NotImplementedException();
+        public IMClientAsyncOperation()
+        {
+        }
 
-        public dynamic AsyncState => throw new NotImplementedException();
+        public void CancelOperation()
+        {
+            Console.WriteLine("Operation cancelled");
+        }
 
-        public int StatusCode => throw new NotImplementedException();
+        private dynamic _asyncState;
+        public dynamic AsyncState
+        {
+            get => _asyncState;
+            set => _asyncState = value;
+        }
 
-        public bool IsCompleted => throw new NotImplementedException();
+        private int _statusCode;
+        public int StatusCode
+        {
+            get => _statusCode;
+            set => _statusCode = value;
+        }
 
-        public bool IsSucceeded => throw new NotImplementedException();
+        private bool _isCompleted;
+        public bool IsCompleted
+        {
+            get => _isCompleted;
+            set => _isCompleted = value;
+        }
 
-        public bool IsCancelable => throw new NotImplementedException();
+        private bool _isSucceeded;
+        public bool IsSucceeded
+        {
+            get => _isSucceeded;
+            set => _isSucceeded = value;
+        }
 
-        public int DiagnosticCode => throw new NotImplementedException();
+        private bool _isCancelable;
+        public bool IsCancelable
+        {
+            get => _isCancelable;
+            set => _isCancelable = value;
+        }
+
+        private int _diagnosticCode;
+        public int DiagnosticCode
+        {
+            get => _diagnosticCode;
+            set => _diagnosticCode = value;
+        }
     }
 }

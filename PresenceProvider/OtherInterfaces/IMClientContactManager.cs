@@ -1,10 +1,26 @@
 ﻿using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using UCCollaborationLib;
+using System.Net.Http;
+using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace OutlookPresenceProvider
 {
+    [ClassInterface(ClassInterfaceType.None)]
+    [ComSourceInterfaces(typeof(_IContactManagerEvents))]
+    [ComVisible(true)]
     public class IMClientContactManager : ContactManager
     {
+        public IMClientContactManager()
+        {
+            _groupCollections = new IMClientGroupCollection();
+            _contactSubscription = new IMClientContactSubscription();
+        }
+
         public GroupCollection Groups => _groupCollections;
 
         private IMClientGroupCollection _groupCollections;
@@ -38,7 +54,23 @@ namespace OutlookPresenceProvider
             Console.WriteLine(_lookupString);
             Console.WriteLine(_contactsAndGroupsCallback);
             Console.WriteLine(_state);
-            return null;
+            IMClientAsyncOperation asyncOperation = new IMClientAsyncOperation();
+            try
+            {
+                asyncOperation.AsyncState = _state;
+                asyncOperation.IsCompleted = true;
+                asyncOperation.IsSucceeded = true;
+                asyncOperation.StatusCode = (int)HttpStatusCode.OK;
+
+                Console.WriteLine(_contactsAndGroupsCallback is _IContactsAndGroupsCallback);
+                _IContactsAndGroupsCallback itf = (_IContactsAndGroupsCallback)_contactsAndGroupsCallback;
+                itf.OnLookup(this, null, asyncOperation);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return asyncOperation;
         }
 
         // Declare a private field to contain an IContactSubscription object.

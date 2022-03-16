@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UCCollaborationLib;
+using System.Runtime.InteropServices;
 
 namespace OutlookPresenceProvider
 {
+    [ComVisible(true)]
     public class IMClientContactInformationDictionary : ContactInformationDictionary
     {
         private Dictionary<ContactInformationType, object> ContactInformationDictionary;

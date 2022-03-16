@@ -4,11 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UCCollaborationLib;
+using System.Runtime.InteropServices;
 
 namespace OutlookPresenceProvider
 {
+    [ComVisible(true)]
     public class IMClientContactEndpoint : ContactEndpoint
     {
+        public IMClientContactEndpoint()
+        {
+            _type = ContactEndpointType.ucContactEndpointTypeLync;
+        }
         public bool CanStart(ModalityTypes _modalityTypes)
         {
             throw new NotImplementedException();

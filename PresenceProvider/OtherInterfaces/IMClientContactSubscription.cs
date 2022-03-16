@@ -4,23 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UCCollaborationLib;
+using System.Runtime.InteropServices;
 
 namespace OutlookPresenceProvider
 {
+    [ComVisible(true)]
     public class IMClientContactSubscription : ContactSubscription
     {
+        public IMClientContactSubscription()
+        {
+            _subscribedContacts = new List<IMClientContact>();
+        }
         // Store references to all of the IContact objects to subscribe to.
         private List<IMClientContact> _subscribedContacts;
         // Add a new IContact object to the collection of contacts.
         public void AddContact(Contact _contact)
         {
+            Console.WriteLine(_contact.Uri);
             _subscribedContacts.Add(_contact as IMClientContact);
         }
 
         public void Subscribe(ContactSubscriptionRefreshRate _subscriptionFreshness, ContactInformationType[] _contactInformationTypes)
         {
             Console.WriteLine(_subscriptionFreshness.ToString());
-            Console.WriteLine(_contactInformationTypes.ToString());
+            foreach(ContactInformationType type in _contactInformationTypes)
+            {
+                Console.WriteLine(type.ToString());
+            }
+            Console.WriteLine("all types printed.");
         }
 
         public void Unsubscribe()
