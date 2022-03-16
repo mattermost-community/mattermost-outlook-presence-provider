@@ -10,4 +10,3 @@ retValue = obj.GetAuthenticationInfo("15.0.0.0")
 MsgBox "The GetAuthenticationInfo method returns " & retValue
 
 SET obj = Nothing
-
