@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using System.Net.Http;
 using UCCollaborationLib;
 using Microsoft.Win32;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace OutlookPresenceProvider

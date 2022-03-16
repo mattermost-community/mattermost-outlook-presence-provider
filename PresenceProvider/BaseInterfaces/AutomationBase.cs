@@ -38,7 +38,7 @@ namespace OutlookPresenceProvider
             Console.WriteLine(_participantUris);
             Console.WriteLine(_contextTypes);
             Console.WriteLine(_contextDatas);
-            return new ConversationWindow();
+            return null;
         }
 
         public AsynchronousOperation StartConversationEx(AutomationModalities _conversationModes, string[] _participantUris, AutomationModalitySettings[] _contextTypes, object[] _contextDatas, [IUnknownConstant] object s_callback, object _state)

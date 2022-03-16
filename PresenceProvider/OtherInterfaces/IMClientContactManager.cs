@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using UCCollaborationLib;
-using System.Net.Http;
 using System.Net;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace OutlookPresenceProvider
 {
