@@ -8,7 +8,6 @@ namespace OutlookPresenceProvider
     [ComVisible(true)]
     public class IMClientGroupCollection : GroupCollection
     {
-        // private CollectionBase<>
         private List<Group> _groups;
         public IMClientGroupCollection()
         {
@@ -40,9 +39,9 @@ namespace OutlookPresenceProvider
 
         public GroupCollection GetGroupsByType(GroupType _groupType)
         {
-            foreach(Group _group in _groups)
+            foreach (Group _group in _groups)
             {
-                if(_group.Type == _groupType)
+                if (_group.Type == _groupType)
                 {
                     return (GroupCollection)this;
                 }

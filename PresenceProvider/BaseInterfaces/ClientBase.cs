@@ -18,6 +18,7 @@ namespace OutlookPresenceProvider
         {
             Console.WriteLine("Client is initialized");
             _clientState = ClientState.ucClientStateSignedIn;
+            // TODO: Make this dynamic.
             _uri = "shivam.chauhan@brightscoutdev.onmicrosoft.com";
             IMClientContact selfContactData = new IMClientContact(_uri);
             _self = new IMClientSelf(selfContactData);

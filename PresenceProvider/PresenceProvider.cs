@@ -1,8 +1,6 @@
 ﻿
 #region Using directives
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 using Microsoft.Win32;
@@ -70,8 +68,7 @@ namespace OutlookPresenceProvider
         public static void Started()
         {
             httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
             {
                 IMProviders.SetValue("DefaultIMApp", COMAppExeName);

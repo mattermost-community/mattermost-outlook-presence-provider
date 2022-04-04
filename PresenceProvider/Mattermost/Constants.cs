@@ -1,24 +1,34 @@
-﻿using System.Collections.Generic;
-using UCCollaborationLib;
+﻿using UCCollaborationLib;
 
 namespace OutlookPresenceProvider
 {
     public class Constants
     {
-        public static readonly Dictionary<string, ContactAvailability> statusAvailabilityMap = new Dictionary<string, ContactAvailability>()
-        {
-            {"online", ContactAvailability.ucAvailabilityFree },
-            {"away", ContactAvailability.ucAvailabilityAway },
-            {"dnd", ContactAvailability.ucAvailabilityDoNotDisturb },
-            {"offline", ContactAvailability.ucAvailabilityOffline },
-        };
+        public const string MattermostServerURL = "MattermostServerURL";
 
-        public static readonly Dictionary<ContactAvailability, string> availabilityActivityIdMap = new Dictionary<ContactAvailability, string>()
+        // https://stackoverflow.com/questions/268084/creating-a-constant-dictionary-in-c-sharp
+        public static ContactAvailability StatusAvailabilityMap(string status)
         {
-            {ContactAvailability.ucAvailabilityFree, "Free" },
-            {ContactAvailability.ucAvailabilityAway, "Away" },
-            {ContactAvailability.ucAvailabilityDoNotDisturb, "DoNotDisturb" },
-            {ContactAvailability.ucAvailabilityOffline, "Offline" },
-        };
+            switch (status)
+            {
+                case "online": return ContactAvailability.ucAvailabilityFree;
+                case "away": return ContactAvailability.ucAvailabilityAway;
+                case "dnd": return ContactAvailability.ucAvailabilityDoNotDisturb;
+                case "offline": return ContactAvailability.ucAvailabilityOffline;
+            }
+            return ContactAvailability.ucAvailabilityNone;
+        }
+
+        public static string AvailabilityActivityIdMap(ContactAvailability availability)
+        {
+            switch (availability)
+            {
+                case ContactAvailability.ucAvailabilityFree: return "Free";
+                case ContactAvailability.ucAvailabilityAway: return "Away";
+                case ContactAvailability.ucAvailabilityDoNotDisturb: return "DoNotDisturb";
+                case ContactAvailability.ucAvailabilityOffline: return "Offline";
+            }
+            return "";
+        }
     }
 }
