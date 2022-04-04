@@ -11,6 +11,7 @@ namespace OutlookPresenceProvider
         {
             _summarizerStates = ConversationSummarizerStates.ucConversationSummarizerNoSummarizedState;
         }
+
         public Conversation AddConversation()
         {
             throw new NotImplementedException();
@@ -24,8 +25,8 @@ namespace OutlookPresenceProvider
         private ConversationSummarizerStates _summarizerStates;
         public ConversationSummarizerStates SummarizerStates
         {
-            get { return _summarizerStates; }
-            set { _summarizerStates = value;}
+            get => _summarizerStates;
+            set => _summarizerStates = value;
         }
 
         public ConversationCollection Conversations => throw new NotImplementedException();

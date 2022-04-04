@@ -15,6 +15,7 @@ namespace OutlookPresenceProvider
             _type = type;
             _contacts = new List<IMClientContact>();
         }
+
         public IEnumerator GetEnumerator()
         {
             foreach (var contact in _contacts)
@@ -27,7 +28,7 @@ namespace OutlookPresenceProvider
         {
             foreach (IMClientContact contact in _contacts)
             {
-                if(contact.Uri == _uri)
+                if (contact.Uri == _uri)
                 {
                     _value = contact;
                     return true;
@@ -59,15 +60,15 @@ namespace OutlookPresenceProvider
         private GroupType _type;
         public GroupType Type
         {
-            get { return _type; }
-            set { _type = value; }
+            get => _type;
+            set => _type = value;
         }
 
         private string _name;
         public string Name
         {
-            get { return _name;}
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
 
         private string _id;

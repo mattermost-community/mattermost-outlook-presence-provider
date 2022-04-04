@@ -18,10 +18,8 @@ namespace OutlookPresenceProvider
             _groupCollection = new IMClientGroupCollection();
         }
 
-        public IMClientContact(string uri)
+        public IMClientContact(string uri) : this()
         {
-            _settingDictionary = new IMClientContactSettingDictionary();
-            _groupCollection = new IMClientGroupCollection();
             _uri = uri;
         }
 
@@ -90,27 +88,27 @@ namespace OutlookPresenceProvider
                 // on the value passed in for the _contactInformationType parameter.
                 switch (_contactInformationType)
                 {
+                    // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
                     case ContactInformationType.ucPresenceAvailability:
                         {
-                            // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
                             string serverUrl = "";
                             using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
                             {
                                 using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
                                 {
-                                    serverUrl = (string)IMProvider.GetValue("MattermostServerURL");
+                                    serverUrl = (string)IMProvider.GetValue(Constants.MattermostServerURL);
                                 }
+                            }
+                            if (serverUrl == "")
+                            {
+                                // We will not be using this value from the registry so just log the error for now
+                                Console.WriteLine("Invalid server url");
+                                return ContactAvailability.ucAvailabilityNone;
                             }
                             string reqUri = $"{serverUrl}/plugins/com.mattermost.presence-provider/api/v1/status/{_uri}";
                             Console.WriteLine(reqUri);
-                            var jsonStringTask = httpClient.GetStringAsync(reqUri);
-                            string jsonString = jsonStringTask.GetAwaiter().GetResult();
-                            Console.WriteLine(jsonString);
-                            JsonNode statusNode = JsonNode.Parse(jsonString);
-                            string status = statusNode["status"].GetValue<string>();
-                            Console.WriteLine(statusNode.ToString());
-                            Console.WriteLine(status);
-                            return Constants.statusMap[status];
+                            JsonNode statusNode = JsonNode.Parse(httpClient.GetStringAsync(reqUri).GetAwaiter().GetResult());
+                            return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
                         }
                     case ContactInformationType.ucPresenceEmailAddresses:
                         {
@@ -124,8 +122,7 @@ namespace OutlookPresenceProvider
                         }
                     case ContactInformationType.ucPresenceInstantMessageAddresses:
                         {
-                            string[] arr = new string[] { _uri };
-                            return arr;
+                            return new string[] { _uri };
                         }
                     default:
                         {

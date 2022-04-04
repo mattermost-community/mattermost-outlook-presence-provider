@@ -1,16 +1,22 @@
-﻿using System.Collections.Generic;
-using UCCollaborationLib;
+﻿using UCCollaborationLib;
 
 namespace OutlookPresenceProvider
 {
     public class Constants
     {
-        public static readonly Dictionary<string, ContactAvailability> statusMap = new Dictionary<string, ContactAvailability>()
+        public const string MattermostServerURL = "MattermostServerURL";
+
+        // https://stackoverflow.com/questions/268084/creating-a-constant-dictionary-in-c-sharp
+        public static ContactAvailability StatusAvailabilityMap(string status)
         {
-            {"online", ContactAvailability.ucAvailabilityFree },
-            {"away", ContactAvailability.ucAvailabilityAway },
-            {"dnd", ContactAvailability.ucAvailabilityDoNotDisturb },
-            {"offline", ContactAvailability.ucAvailabilityOffline },
-        };
+            switch (status)
+            {
+                case "online": return ContactAvailability.ucAvailabilityFree;
+                case "away": return ContactAvailability.ucAvailabilityAway;
+                case "dnd": return ContactAvailability.ucAvailabilityDoNotDisturb;
+                case "offline": return ContactAvailability.ucAvailabilityOffline;
+            }
+            return ContactAvailability.ucAvailabilityNone;
+        }
     }
 }

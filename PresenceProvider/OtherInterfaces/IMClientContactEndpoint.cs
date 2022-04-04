@@ -19,8 +19,8 @@ namespace OutlookPresenceProvider
         private ContactEndpointType _type;
         public ContactEndpointType Type
         {
-            get { return _type; }
-            set { _type = value; }
+            get => _type;
+            set => _type = value;
         }
 
         private string _displayName;

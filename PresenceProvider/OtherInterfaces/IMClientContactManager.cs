@@ -22,7 +22,7 @@ namespace OutlookPresenceProvider
         public Contact GetContactByUri(string _contactUri)
         {
             Console.WriteLine(_contactUri);
-            // Declare a Contact variable to contain information about the contact.
+            // Declare a Contact variable to store information about the contact.
             Contact tempContact = null;
             // The _groupCollections field is an IGroupCollection object. Iterate 
             // over each group in collection to see if the 

@@ -47,7 +47,7 @@ namespace CSExeCOMServerTest
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            // Log the exception, display it, etc
+            // Log the exception and display it
             Debug.WriteLine((e.ExceptionObject as Exception).StackTrace);
         }
 
