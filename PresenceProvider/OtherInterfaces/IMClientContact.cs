@@ -8,6 +8,7 @@ using System.Text.Json.Nodes;
 
 namespace OutlookPresenceProvider
 {
+    [ClassInterface(ClassInterfaceType.None)]
     [ComSourceInterfaces(typeof(_IContactEvents))]
     [ComVisible(true)]
     public class IMClientContact: Contact
@@ -65,7 +66,7 @@ namespace OutlookPresenceProvider
 
         public UnifiedCommunicationType UnifiedCommunicationType
         {
-            get => UnifiedCommunicationType.ucUnifiedCommunicationEnabled;
+            get => UnifiedCommunicationType.ucUnifiedCommunicationNotEnabled;
             set => UnifiedCommunicationType = value;
         }
 
@@ -73,13 +74,33 @@ namespace OutlookPresenceProvider
 
         public bool CanStart(ModalityTypes _modalityTypes)
         {
-            // Define the capabilities of the current IM client application
-            // user by using flags from the ModalityTypes enumeration.
             Console.WriteLine(_modalityTypes);
-            ModalityTypes userCapabilities =
-                ModalityTypes.ucModalityInstantMessage;
-            // Perform a simple test for equivalency.
-            return _modalityTypes == userCapabilities;
+            return false;
+        }
+
+        private ContactAvailability _availability = ContactAvailability.ucAvailabilityNone;
+
+        private ContactAvailability GetAvailabilityFromMattermost()
+        {
+            // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
+            string serverUrl = "";
+            using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
+            {
+                using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
+                {
+                    serverUrl = (string)IMProvider.GetValue("MattermostServerURL");
+                }
+            }
+            string reqUri = $"{serverUrl}/plugins/com.mattermost.outlook-presence/api/v1/status/{_uri}";
+            Console.WriteLine(reqUri);
+            var jsonStringTask = httpClient.GetStringAsync(reqUri);
+            string jsonString = jsonStringTask.GetAwaiter().GetResult();
+            Console.WriteLine(jsonString);
+            JsonNode statusNode = JsonNode.Parse(jsonString);
+            string status = statusNode["status"].GetValue<string>();
+            Console.WriteLine(statusNode.ToString());
+            Console.WriteLine(status);
+            return _availability = Constants.statusAvailabilityMap[status];
         }
 
         public object GetContactInformation(ContactInformationType _contactInformationType)
@@ -92,25 +113,11 @@ namespace OutlookPresenceProvider
                 {
                     case ContactInformationType.ucPresenceAvailability:
                         {
-                            // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
-                            string serverUrl = "";
-                            using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
-                            {
-                                using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
-                                {
-                                    serverUrl = (string)IMProvider.GetValue("MattermostServerURL");
-                                }
-                            }
-                            string reqUri = $"{serverUrl}/plugins/com.mattermost.presence-provider/api/v1/status/{_uri}";
-                            Console.WriteLine(reqUri);
-                            var jsonStringTask = httpClient.GetStringAsync(reqUri);
-                            string jsonString = jsonStringTask.GetAwaiter().GetResult();
-                            Console.WriteLine(jsonString);
-                            JsonNode statusNode = JsonNode.Parse(jsonString);
-                            string status = statusNode["status"].GetValue<string>();
-                            Console.WriteLine(statusNode.ToString());
-                            Console.WriteLine(status);
-                            return Constants.statusMap[status];
+                            return GetAvailabilityFromMattermost();
+                        }
+                    case ContactInformationType.ucPresenceActivityId:
+                        {
+                            return Constants.availabilityActivityIdMap[_availability];
                         }
                     case ContactInformationType.ucPresenceEmailAddresses:
                         {
@@ -124,15 +131,13 @@ namespace OutlookPresenceProvider
                         }
                     case ContactInformationType.ucPresenceInstantMessageAddresses:
                         {
-                            string[] arr = new string[] { _uri };
-                            return arr;
+                            return new string[] {_uri};
                         }
                     default:
                         {
                             Console.WriteLine(_contactInformationType.ToString());
                             return null;
                         }
-                        // Additional implementation details omitted.
                 }
             }catch (Exception ex)
             {
@@ -195,11 +200,18 @@ namespace OutlookPresenceProvider
         }
 
         public event _IContactEvents_OnContactInformationChangedEventHandler OnContactInformationChanged;
-        internal void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData)
+        public void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData)
         {
-            if(OnContactInformationChanged != null)
+            _IContactEvents_OnContactInformationChangedEventHandler handler = OnContactInformationChanged;
+            if (handler != null)
             {
-                OnContactInformationChanged(this, _eventData);
+                try
+                {
+                    handler(this, _eventData);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.StackTrace);
+                }
             }
         }
 

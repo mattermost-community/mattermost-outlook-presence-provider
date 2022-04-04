@@ -39,6 +39,18 @@ namespace OutlookPresenceProvider
             if (tempContact == null)
             {
                 tempContact = new IMClientContact(_contactUri);
+                // Add the contact in a custom group. Explore more on groups later
+                Group tempGroup;
+                if (!_groupCollections.TryGetGroup("selfGroup", out tempGroup))
+                {
+                    tempGroup = new IMClientGroup(GroupType.ucCustomGroup);
+                    _groupCollections.AddGroup(tempGroup);
+                }
+                tempGroup.AddContact(tempContact);
+
+                // CustomGroups property defines the groups that the contact is a part of, so add the group in the CustomGroups property of that contact.
+                IMClientGroupCollection gc = (IMClientGroupCollection)tempContact.CustomGroups;
+                gc.AddGroup(tempGroup);
             }
             // Return the contact to the calling code.
             return tempContact;
@@ -46,9 +58,6 @@ namespace OutlookPresenceProvider
 
         public AsynchronousOperation Lookup(string _lookupString, object _contactsAndGroupsCallback, object _state)
         {
-            Console.WriteLine(_lookupString);
-            Console.WriteLine(_contactsAndGroupsCallback);
-            Console.WriteLine(_state);
             IMClientAsyncOperation asyncOperation = new IMClientAsyncOperation();
             try
             {
@@ -57,9 +66,10 @@ namespace OutlookPresenceProvider
                 asyncOperation.IsSucceeded = true;
                 asyncOperation.StatusCode = (int)HttpStatusCode.OK;
 
-                Console.WriteLine(_contactsAndGroupsCallback is _IContactsAndGroupsCallback);
-                _IContactsAndGroupsCallback itf = (_IContactsAndGroupsCallback)_contactsAndGroupsCallback;
-                itf.OnLookup(this, null, asyncOperation);
+                _IContactsAndGroupsCallback callback = (_IContactsAndGroupsCallback)_contactsAndGroupsCallback;
+
+                // https://stackoverflow.com/questions/33830124/icontactsandgroupscallback-onlookup
+                callback.OnLookup(this, new IMClientContact(_lookupString), asyncOperation);
             }
             catch (Exception ex)
             {

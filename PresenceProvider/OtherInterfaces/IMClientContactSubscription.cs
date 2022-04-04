@@ -2,18 +2,31 @@
 using System.Collections.Generic;
 using UCCollaborationLib;
 using System.Runtime.InteropServices;
+using System.Timers;
+using System.Net.Http;
 
 namespace OutlookPresenceProvider
 {
+    [ClassInterface(ClassInterfaceType.None)]
     [ComVisible(true)]
     public class IMClientContactSubscription : ContactSubscription
     {
+        public static System.Timers.Timer myTimer;
         public IMClientContactSubscription()
         {
             _subscribedContacts = new List<IMClientContact>();
         }
+
+        ~IMClientContactSubscription()
+        {
+            // Stop and dispose the timer when the object of IMClientContactSubscription destructs
+            myTimer?.Stop();
+            myTimer?.Dispose();
+        }
+
         // Store references to all of the IContact objects to subscribe to.
         private List<IMClientContact> _subscribedContacts;
+
         // Add a new IContact object to the collection of contacts.
         public void AddContact(Contact _contact)
         {
@@ -23,12 +36,11 @@ namespace OutlookPresenceProvider
 
         public void Subscribe(ContactSubscriptionRefreshRate _subscriptionFreshness, ContactInformationType[] _contactInformationTypes)
         {
-            Console.WriteLine(_subscriptionFreshness.ToString());
-            foreach(ContactInformationType type in _contactInformationTypes)
+            // TODO: Remove polling strategy and add websocket client
+            if (myTimer == null)
             {
-                Console.WriteLine(type.ToString());
+                SetTimer();
             }
-            Console.WriteLine("all types printed.");
         }
 
         public void Unsubscribe()
@@ -38,7 +50,27 @@ namespace OutlookPresenceProvider
 
         public void RemoveContact(Contact _contact)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(_contact.Uri);
+            _subscribedContacts.Remove(_contact as IMClientContact);
+        }
+
+        private void SetTimer()
+        {
+            // Create a timer with a ten second interval.
+            myTimer = new System.Timers.Timer(10000);
+            // Hook up the Elapsed event for the timer. 
+            myTimer.Elapsed += fetchStatuses;
+            myTimer.AutoReset = true;
+            myTimer.Enabled = true;
+        }
+
+        private void fetchStatuses(object source, ElapsedEventArgs args)
+        {
+            ContactInformationChangedEventData eventData = new IMClientContactInformationChangedEventData();
+            foreach (IMClientContact contact in _subscribedContacts)
+            {
+                contact.RaiseOnContactInformationChangedEvent(eventData);
+            }
         }
 
         public void AddContactByUri(string _contactUri)
