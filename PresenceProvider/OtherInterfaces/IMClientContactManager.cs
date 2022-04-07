@@ -70,8 +70,7 @@ namespace OutlookPresenceProvider
 
                 // https://stackoverflow.com/questions/33830124/icontactsandgroupscallback-onlookup
                 callback.OnLookup(this, new IMClientContact(_lookupString), asyncOperation);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine(ex.StackTrace);
             }

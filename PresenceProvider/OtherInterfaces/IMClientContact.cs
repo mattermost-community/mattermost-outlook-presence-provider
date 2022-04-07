@@ -138,7 +138,7 @@ namespace OutlookPresenceProvider
                             return null;
                         }
                 }
-            }catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine(ex.StackTrace);
                 return null;
