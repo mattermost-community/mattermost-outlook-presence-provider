@@ -60,8 +60,7 @@ namespace OutlookPresenceProvider
                 Console.WriteLine(_contactsAndGroupsCallback is _IContactsAndGroupsCallback);
                 _IContactsAndGroupsCallback itf = (_IContactsAndGroupsCallback)_contactsAndGroupsCallback;
                 itf.OnLookup(this, null, asyncOperation);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine(ex.StackTrace);
             }
