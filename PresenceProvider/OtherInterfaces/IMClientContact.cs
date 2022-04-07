@@ -17,8 +17,10 @@ namespace OutlookPresenceProvider
         {
             _settingDictionary = new IMClientContactSettingDictionary();
             _groupCollection = new IMClientGroupCollection();
+            _client = PresenceProvider.client;
         }
 
+        private Mattermost.Client _client;
         public IMClientContact(string uri) : this()
         {
             _uri = uri;
@@ -68,8 +70,6 @@ namespace OutlookPresenceProvider
             set => UnifiedCommunicationType = value;
         }
 
-        private HttpClient httpClient = PresenceProvider.httpClient;
-
         public bool CanStart(ModalityTypes _modalityTypes)
         {
             Console.WriteLine(_modalityTypes);
@@ -77,29 +77,6 @@ namespace OutlookPresenceProvider
         }
 
         private ContactAvailability _availability = ContactAvailability.ucAvailabilityNone;
-
-        private ContactAvailability GetAvailabilityFromMattermost()
-        {
-            // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
-            string serverUrl = "";
-            using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
-            {
-                using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
-                {
-                    serverUrl = (string)IMProvider.GetValue("MattermostServerURL");
-                }
-            }
-            if (serverUrl == "")
-            {
-                // We will not be using this value from the registry so just log the error for now
-                Console.WriteLine("Invalid server url");
-                return ContactAvailability.ucAvailabilityNone;
-            }
-            string reqUri = $"{serverUrl}/plugins/com.mattermost.presence-provider/api/v1/status/{_uri}";
-            Console.WriteLine(reqUri);
-            JsonNode statusNode = JsonNode.Parse(httpClient.GetStringAsync(reqUri).GetAwaiter().GetResult());
-            return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
-        }
 
         public object GetContactInformation(ContactInformationType _contactInformationType)
         {
@@ -112,11 +89,14 @@ namespace OutlookPresenceProvider
                     // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
                     case ContactInformationType.ucPresenceAvailability:
                         {
-                            return GetAvailabilityFromMattermost();
+                            return _availability != ContactAvailability.ucAvailabilityNone ? _availability : 
+                                _availability = _client.GetAvailabilityFromMattermost(_uri);
                         }
                     case ContactInformationType.ucPresenceActivityId:
                         {
-                            return Constants.AvailabilityActivityIdMap(_availability);
+                            string activityId = Mattermost.Constants.AvailabilityActivityIdMap(_availability);
+                            _availability = ContactAvailability.ucAvailabilityNone;
+                            return activityId;
                         }
                     case ContactInformationType.ucPresenceEmailAddresses:
                         {
@@ -199,15 +179,19 @@ namespace OutlookPresenceProvider
         }
 
         public event _IContactEvents_OnContactInformationChangedEventHandler OnContactInformationChanged;
-        public void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData)
+        public void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData, ContactAvailability availability = ContactAvailability.ucAvailabilityNone)
         {
+            if (availability != ContactAvailability.ucAvailabilityNone)
+            {
+                _availability = availability;
+            }
             _IContactEvents_OnContactInformationChangedEventHandler handler = OnContactInformationChanged;
             if (handler != null)
             {
                 try
                 {
                     handler(this, _eventData);
-                }catch(Exception ex)
+                } catch (Exception ex)
                 {
                     Console.WriteLine(ex.StackTrace);
                 }
@@ -217,7 +201,7 @@ namespace OutlookPresenceProvider
         public event _IContactEvents_OnSettingChangedEventHandler OnSettingChanged;
         internal void RaiseOnSettingChangedEvent(ContactSettingChangedEventData _eventData)
         {
-            if(OnSettingChanged != null)
+            if (OnSettingChanged != null)
             {
                 OnSettingChanged(this, _eventData);
             }

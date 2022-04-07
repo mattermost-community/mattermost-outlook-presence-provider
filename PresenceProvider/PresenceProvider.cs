@@ -6,8 +6,6 @@ using System.ComponentModel;
 using Microsoft.Win32;
 using UCCollaborationLib;
 using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 #endregion
 
 
@@ -20,7 +18,7 @@ namespace OutlookPresenceProvider
     public class PresenceProvider : CSExeCOMServer.CSExeCOMServerBase, IUCOfficeIntegration
     {
         public static string COMAppExeName = "CSExeCOMServerTest";
-        public static readonly HttpClient httpClient = new HttpClient();
+        public static Mattermost.Client client = new Mattermost.Client();
 
         #region COM Component Registration
 
@@ -67,8 +65,6 @@ namespace OutlookPresenceProvider
 
         public static void Started()
         {
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
             {
                 IMProviders.SetValue("DefaultIMApp", COMAppExeName);
@@ -157,9 +153,9 @@ namespace OutlookPresenceProvider
         // This notifies Office applications that the IM application is going away.
         internal void RaiseOnShuttingDownEvent()
         {
-            if (this.OnShuttingDown != null)
+            if (OnShuttingDown != null)
             {
-                this.OnShuttingDown();
+                OnShuttingDown();
             }
         }
         #endregion

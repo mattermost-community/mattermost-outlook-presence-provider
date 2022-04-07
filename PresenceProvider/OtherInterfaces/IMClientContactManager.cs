@@ -64,12 +64,17 @@ namespace OutlookPresenceProvider
                 asyncOperation.AsyncState = _state;
                 asyncOperation.IsCompleted = true;
                 asyncOperation.IsSucceeded = true;
-                asyncOperation.StatusCode = (int)HttpStatusCode.OK;
+                
+                // We are marking the async operation status code as 404 because the purpose of this function is
+                // to find the SIP address of a user using email, but we are not working with SIP address anywhere
+                // in the app so when this function is not able to find the SIP address, Outlook calls the GetContactByUri
+                // method with the email address and that's what we want
+                asyncOperation.StatusCode = (int)HttpStatusCode.NotFound;
 
                 _IContactsAndGroupsCallback callback = (_IContactsAndGroupsCallback)_contactsAndGroupsCallback;
 
                 // https://stackoverflow.com/questions/33830124/icontactsandgroupscallback-onlookup
-                callback.OnLookup(this, new IMClientContact(_lookupString), asyncOperation);
+                callback.OnLookup(this, null, asyncOperation);
             }
             catch (Exception ex)
             {
