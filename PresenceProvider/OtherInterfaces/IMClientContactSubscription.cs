@@ -19,7 +19,7 @@ namespace OutlookPresenceProvider
 
         ~IMClientContactSubscription()
         {
-            // Stop and dispose the timer when the object of IMClientContactSubscription destructs
+            // Stop and dispose the timer when the object of IMClientContactSubscription is destroyed
             myTimer?.Stop();
             myTimer?.Dispose();
         }

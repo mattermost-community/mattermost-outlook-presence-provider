@@ -80,7 +80,6 @@ namespace OutlookPresenceProvider
 
         private ContactAvailability GetAvailabilityFromMattermost()
         {
-            // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
             string serverUrl = "";
             using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
             {
@@ -92,11 +91,10 @@ namespace OutlookPresenceProvider
             if (serverUrl == "")
             {
                 // We will not be using this value from the registry so just log the error for now
-                Console.WriteLine("Invalid server url");
+                Console.WriteLine("invalid server url");
                 return ContactAvailability.ucAvailabilityNone;
             }
             string reqUri = $"{serverUrl}/plugins/com.mattermost.presence-provider/api/v1/status/{_uri}";
-            Console.WriteLine(reqUri);
             JsonNode statusNode = JsonNode.Parse(httpClient.GetStringAsync(reqUri).GetAwaiter().GetResult());
             return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
         }
@@ -109,6 +107,7 @@ namespace OutlookPresenceProvider
                 // on the value passed in for the _contactInformationType parameter.
                 switch (_contactInformationType)
                 {
+                    // See the docs for details about the ContactAvailability enum:
                     // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
                     case ContactInformationType.ucPresenceAvailability:
                         {
@@ -207,7 +206,7 @@ namespace OutlookPresenceProvider
                 try
                 {
                     handler(this, _eventData);
-                }catch(Exception ex)
+                } catch(Exception ex)
                 {
                     Console.WriteLine(ex.StackTrace);
                 }
