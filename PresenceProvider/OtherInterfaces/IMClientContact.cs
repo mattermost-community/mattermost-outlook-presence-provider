@@ -77,6 +77,11 @@ namespace OutlookPresenceProvider
         }
 
         private ContactAvailability _availability = ContactAvailability.ucAvailabilityNone;
+        public ContactAvailability Availability
+        {
+            get => _availability;
+            set => _availability = value;
+        }
 
         public object GetContactInformation(ContactInformationType _contactInformationType)
         {
@@ -93,6 +98,8 @@ namespace OutlookPresenceProvider
                             return _availability != ContactAvailability.ucAvailabilityNone ? _availability : 
                                 _availability = _client.GetAvailabilityFromMattermost(_uri);
                         }
+                    // The ActivityId is used to determine the presence text.
+                    // https://docs.microsoft.com/en-us/answers/questions/771004/which-member-in-the-contactinformationtype-is-used.html
                     case ContactInformationType.ucPresenceActivityId:
                         {
                             string activityId = Mattermost.Constants.AvailabilityActivityIdMap(_availability);
@@ -104,18 +111,12 @@ namespace OutlookPresenceProvider
                             // Return the URI associated with the contact.
                             return _uri;
                         }
-                    case ContactInformationType.ucPresenceDisplayName:
-                        {
-                            // Return the display name associated with the contact.
-                            return _displayName;
-                        }
                     case ContactInformationType.ucPresenceInstantMessageAddresses:
                         {
                             return new string[] { _uri };
                         }
                     default:
                         {
-                            Console.WriteLine(_contactInformationType.ToString());
                             return null;
                         }
                 }
@@ -180,12 +181,8 @@ namespace OutlookPresenceProvider
         }
 
         public event _IContactEvents_OnContactInformationChangedEventHandler OnContactInformationChanged;
-        public void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData, ContactAvailability availability = ContactAvailability.ucAvailabilityNone)
+        public void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData)
         {
-            if (availability != ContactAvailability.ucAvailabilityNone)
-            {
-                _availability = availability;
-            }
             _IContactEvents_OnContactInformationChangedEventHandler handler = OnContactInformationChanged;
             if (handler != null)
             {

@@ -52,13 +52,13 @@ namespace OutlookPresenceProvider
         {
             // TODO: Change this parsing to more conventional method
             string email = JsonNode.Parse(msg.ToString())["email"].GetValue<string>();
-            string status = JsonNode.Parse(msg.ToString())["status"].GetValue<string>();
-            Console.WriteLine(email);
-            ContactInformationChangedEventData eventData = new IMClientContactInformationChangedEventData();
             IMClientContact contact;
             if (_subscribedContacts.TryGetValue(email, out contact))
             {
-                contact.RaiseOnContactInformationChangedEvent(eventData, Mattermost.Constants.StatusAvailabilityMap(status));
+                ContactInformationChangedEventData eventData = new IMClientContactInformationChangedEventData();
+                string status = JsonNode.Parse(msg.ToString())["status"].GetValue<string>();
+                contact.Availability = Mattermost.Constants.StatusAvailabilityMap(status);
+                contact.RaiseOnContactInformationChangedEvent(eventData);
             }
         }
 

@@ -101,11 +101,6 @@ namespace OutlookPresenceProvider
         public AsynchronousOperation SignIn(string _userUri, string _domainAndUser,
             string _password, object _IMClientCallback, object _state)
         {
-            Console.WriteLine($"SignIn method is called with uri {_userUri}");
-            Console.WriteLine(_domainAndUser);
-            Console.WriteLine(_password);
-            Console.WriteLine(_IMClientCallback);
-            Console.WriteLine(_state);
             ClientState _previousClientState = _clientState;
             _clientState = ClientState.ucClientStateSignedIn;
             // The IMClientStateChangedEventData class implements the 

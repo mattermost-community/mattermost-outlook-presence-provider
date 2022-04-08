@@ -36,7 +36,8 @@ namespace OutlookPresenceProvider.Mattermost
         private string _serverUrl;
         private Uri _pluginUrl;
         private UriBuilder _wsServerUrl;
-        // mre is used to block and release threads manually.It is
+
+        // mre is used to block and release threads manually. It is
         // created in the unsignaled state.
         private ManualResetEvent mre = new ManualResetEvent(false);
         private WebsocketClient _wsClient;
@@ -65,7 +66,6 @@ namespace OutlookPresenceProvider.Mattermost
                     return ContactAvailability.ucAvailabilityNone;
                 }
                 string reqUri = $"{_pluginUrl}/status/{email}";
-                Console.WriteLine(reqUri);
                 JsonNode statusNode = JsonNode.Parse(_client.GetStringAsync(reqUri).GetAwaiter().GetResult());
                 return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
             } catch (Exception ex)
@@ -79,11 +79,13 @@ namespace OutlookPresenceProvider.Mattermost
         {
             try
             {
+                // Start the websocket client in a new thread
                 Thread t = new Thread(InitializeWebsocketClient);
                 t.Start();
+
+                // Wait for the websocket client "_wsClient" to get initialized by the other thread running parallely
                 while (_wsClient == null) ;
-                Console.WriteLine("client connected.");
-                Console.WriteLine(_wsClient.ToString());
+                Console.WriteLine("Websocket client connected.");
             }
             catch (Exception ex)
             {
@@ -97,6 +99,8 @@ namespace OutlookPresenceProvider.Mattermost
 
             var client = new WebsocketClient(url);
 
+            // The client will disconnect and reconnect if there is no message from
+            // the server in 60 seconds.
             client.ReconnectTimeout = TimeSpan.FromSeconds(60);
             client.ReconnectionHappened.Subscribe(info =>
             {
@@ -113,7 +117,7 @@ namespace OutlookPresenceProvider.Mattermost
             _wsClient = client;
             mre.WaitOne();
             
-            Console.WriteLine("client closed.");
+            Console.WriteLine("Websocket client closed.");
         }
     }
 }
