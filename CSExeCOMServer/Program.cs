@@ -33,10 +33,11 @@ namespace CSExeCOMServerTest
         /// </summary>
         static void Main(string[] args)
         {
-            DirectoryInfo parentDir = Directory.GetParent(Directory.GetCurrentDirectory());
-            string typeLibPath = $"{parentDir}\\DLL\\lync4.tlb";
-            // Uncomment below line if Skype for Business is not installed in the system.
+            // Uncomment below lines if Skype for Business is not installed in the system.
+            // DirectoryInfo parentDir = Directory.GetParent(Directory.GetCurrentDirectory());
+            // string typeLibPath = $"{parentDir}\\DLL\\lync4.tlb";
             // TypeLib.Register(typeLibPath);
+            
             CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
             // Run the out-of-process COM server
             CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);

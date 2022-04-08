@@ -6,7 +6,6 @@ namespace OutlookPresenceProvider.Mattermost
     {
         public const string MattermostServerURL = "MattermostServerURL";
 
-        // https://stackoverflow.com/questions/268084/creating-a-constant-dictionary-in-c-sharp
         public static ContactAvailability StatusAvailabilityMap(string status)
         {
             switch (status)

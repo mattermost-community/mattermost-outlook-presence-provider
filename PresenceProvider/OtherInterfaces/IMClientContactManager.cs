@@ -39,7 +39,8 @@ namespace OutlookPresenceProvider
             if (tempContact == null)
             {
                 tempContact = new IMClientContact(_contactUri);
-                // Add the contact in a custom group. Explore more on groups later
+                // Add the contact in a custom group.
+                // TODO: Explore more on groups later
                 Group tempGroup;
                 if (!_groupCollections.TryGetGroup("selfGroup", out tempGroup))
                 {
@@ -73,10 +74,10 @@ namespace OutlookPresenceProvider
 
                 _IContactsAndGroupsCallback callback = (_IContactsAndGroupsCallback)_contactsAndGroupsCallback;
 
+                // See the link for details about the types of parameters of this function.
                 // https://stackoverflow.com/questions/33830124/icontactsandgroupscallback-onlookup
                 callback.OnLookup(this, null, asyncOperation);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine(ex.StackTrace);
             }

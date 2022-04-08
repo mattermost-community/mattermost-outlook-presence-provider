@@ -20,8 +20,7 @@ namespace OutlookPresenceProvider
             _clientState = ClientState.ucClientStateSignedIn;
             // TODO: Make this dynamic.
             _uri = "shivam.chauhan@brightscoutdev.onmicrosoft.com";
-            IMClientContact selfContactData = new IMClientContact(_uri);
-            _self = new IMClientSelf(selfContactData);
+            _self = new IMClientSelf(new IMClientContact(_uri));
             _contactManager = new IMClientContactManager();
             _conversationManager = new IMClientConversationManager();
         }

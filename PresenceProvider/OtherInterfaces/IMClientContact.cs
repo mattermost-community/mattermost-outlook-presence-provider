@@ -86,6 +86,7 @@ namespace OutlookPresenceProvider
                 // on the value passed in for the _contactInformationType parameter.
                 switch (_contactInformationType)
                 {
+                    // See the docs for details about the ContactAvailability enum:
                     // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
                     case ContactInformationType.ucPresenceAvailability:
                         {
@@ -118,7 +119,7 @@ namespace OutlookPresenceProvider
                             return null;
                         }
                 }
-            }catch (Exception ex)
+            } catch (Exception ex)
             {
                 Console.WriteLine(ex.StackTrace);
                 return null;
