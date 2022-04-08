@@ -17,5 +17,17 @@ namespace OutlookPresenceProvider
             }
             return ContactAvailability.ucAvailabilityNone;
         }
+
+        public static string AvailabilityActivityIdMap(ContactAvailability availability)
+        {
+            switch (availability)
+            {
+                case ContactAvailability.ucAvailabilityFree: return "Free";
+                case ContactAvailability.ucAvailabilityAway: return "Away";
+                case ContactAvailability.ucAvailabilityDoNotDisturb: return "DoNotDisturb";
+                case ContactAvailability.ucAvailabilityOffline: return "Offline";
+            }
+            return "";
+        }
     }
 }

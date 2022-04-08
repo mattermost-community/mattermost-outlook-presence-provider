@@ -8,6 +8,7 @@ using System.Text.Json.Nodes;
 
 namespace OutlookPresenceProvider
 {
+    [ClassInterface(ClassInterfaceType.None)]
     [ComSourceInterfaces(typeof(_IContactEvents))]
     [ComVisible(true)]
     public class IMClientContact: Contact
@@ -63,7 +64,7 @@ namespace OutlookPresenceProvider
 
         public UnifiedCommunicationType UnifiedCommunicationType
         {
-            get => UnifiedCommunicationType.ucUnifiedCommunicationEnabled;
+            get => UnifiedCommunicationType.ucUnifiedCommunicationNotEnabled;
             set => UnifiedCommunicationType = value;
         }
 
@@ -71,13 +72,31 @@ namespace OutlookPresenceProvider
 
         public bool CanStart(ModalityTypes _modalityTypes)
         {
-            // Define the capabilities of the current IM client application
-            // user by using flags from the ModalityTypes enumeration.
             Console.WriteLine(_modalityTypes);
-            ModalityTypes userCapabilities =
-                ModalityTypes.ucModalityInstantMessage;
-            // Perform a simple test for equivalency.
-            return _modalityTypes == userCapabilities;
+            return false;
+        }
+
+        private ContactAvailability _availability = ContactAvailability.ucAvailabilityNone;
+
+        private ContactAvailability GetAvailabilityFromMattermost()
+        {
+            string serverUrl = "";
+            using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
+            {
+                using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
+                {
+                    serverUrl = (string)IMProvider.GetValue("MattermostServerURL");
+                }
+            }
+            if (serverUrl == "")
+            {
+                // We will not be using this value from the registry so just log the error for now
+                Console.WriteLine("invalid server url");
+                return ContactAvailability.ucAvailabilityNone;
+            }
+            string reqUri = $"{serverUrl}/plugins/com.mattermost.presence-provider/api/v1/status/{_uri}";
+            JsonNode statusNode = JsonNode.Parse(httpClient.GetStringAsync(reqUri).GetAwaiter().GetResult());
+            return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
         }
 
         public object GetContactInformation(ContactInformationType _contactInformationType)
@@ -88,27 +107,15 @@ namespace OutlookPresenceProvider
                 // on the value passed in for the _contactInformationType parameter.
                 switch (_contactInformationType)
                 {
+                    // See the docs for details about the ContactAvailability enum:
                     // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
                     case ContactInformationType.ucPresenceAvailability:
                         {
-                            string serverUrl = "";
-                            using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
-                            {
-                                using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
-                                {
-                                    serverUrl = (string)IMProvider.GetValue(Constants.MattermostServerURL);
-                                }
-                            }
-                            if (serverUrl == "")
-                            {
-                                // We will not be using this value from the registry so just log the error for now
-                                Console.WriteLine("Invalid server url");
-                                return ContactAvailability.ucAvailabilityNone;
-                            }
-                            string reqUri = $"{serverUrl}/plugins/com.mattermost.presence-provider/api/v1/status/{_uri}";
-                            Console.WriteLine(reqUri);
-                            JsonNode statusNode = JsonNode.Parse(httpClient.GetStringAsync(reqUri).GetAwaiter().GetResult());
-                            return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
+                            return GetAvailabilityFromMattermost();
+                        }
+                    case ContactInformationType.ucPresenceActivityId:
+                        {
+                            return Constants.AvailabilityActivityIdMap(_availability);
                         }
                     case ContactInformationType.ucPresenceEmailAddresses:
                         {
@@ -129,7 +136,6 @@ namespace OutlookPresenceProvider
                             Console.WriteLine(_contactInformationType.ToString());
                             return null;
                         }
-                        // Additional implementation details omitted.
                 }
             } catch (Exception ex)
             {
@@ -192,11 +198,18 @@ namespace OutlookPresenceProvider
         }
 
         public event _IContactEvents_OnContactInformationChangedEventHandler OnContactInformationChanged;
-        internal void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData)
+        public void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData)
         {
-            if(OnContactInformationChanged != null)
+            _IContactEvents_OnContactInformationChangedEventHandler handler = OnContactInformationChanged;
+            if (handler != null)
             {
-                OnContactInformationChanged(this, _eventData);
+                try
+                {
+                    handler(this, _eventData);
+                } catch(Exception ex)
+                {
+                    Console.WriteLine(ex.StackTrace);
+                }
             }
         }
 
