@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 using Microsoft.Win32;
 using UCCollaborationLib;
-using System.IO;
 #endregion
 
 
