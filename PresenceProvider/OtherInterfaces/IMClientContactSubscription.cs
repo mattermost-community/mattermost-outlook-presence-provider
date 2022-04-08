@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UCCollaborationLib;
 using System.Runtime.InteropServices;
 using System.Timers;
-using System.Net.Http;
 
 namespace OutlookPresenceProvider
 {
