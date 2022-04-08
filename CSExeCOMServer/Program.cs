@@ -17,12 +17,11 @@
 
 #region Using directives
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 using ComTypes = System.Runtime.InteropServices.ComTypes;
+using System.IO;
 #endregion
 
 namespace CSExeCOMServerTest
@@ -34,13 +33,23 @@ namespace CSExeCOMServerTest
         /// </summary>
         static void Main(string[] args)
         {
-            TypeLib.Register("C:\\Users\\Administrator\\Downloads\\OLPresenceProvider\\OLPresenceProvider\\DLL\\lync4.tlb");
-            // TypeLib.Register("C:\\Users\\Administrator\\Downloads\\OLPresenceProvider\\OLPresenceProvider\\DLL\\lyncEndorser.tlb");
-            // TypeLib.Register("C:\\Users\\Administrator\\Downloads\\OLPresenceProvider\\OLPresenceProvider\\DLL\\interopExtension.tlb");
+            // Uncomment below lines if Skype for Business is not installed in the system.
+            // DirectoryInfo parentDir = Directory.GetParent(Directory.GetCurrentDirectory());
+            // string typeLibPath = $"{parentDir}\\DLL\\lync4.tlb";
+            // TypeLib.Register(typeLibPath);
+            
             CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
             // Run the out-of-process COM server
             CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
             OutlookPresenceProvider.PresenceProvider.Stopped();
+
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            // Log the exception and display it
+            Debug.WriteLine((e.ExceptionObject as Exception).StackTrace);
         }
 
         static void OnCOMReady()
@@ -68,7 +77,9 @@ namespace CSExeCOMServerTest
             if (hr < 0)
             {
                 Trace.WriteLine($"Registering type library failed: 0x{hr:x}");
+                return;
             }
+            Trace.WriteLine($"Registering type library succeeded.");
         }
 
         public static void Unregister(string tlbPath)

@@ -1,14 +1,13 @@
 ﻿
 #region Using directives
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 using Microsoft.Win32;
-using System.Reflection;
 using UCCollaborationLib;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 #endregion
 
 
@@ -20,7 +19,8 @@ namespace OutlookPresenceProvider
     [Guid("A8570DCA-CD23-413C-A8E1-53039C66302A"), ComVisible(true)]
     public class PresenceProvider : CSExeCOMServer.CSExeCOMServerBase, IUCOfficeIntegration
     {
-        private static string COMAppExeName = "CSExeCOMServerTest";
+        public static string COMAppExeName = "CSExeCOMServerTest";
+        public static readonly HttpClient httpClient = new HttpClient();
 
         #region COM Component Registration
 
@@ -67,7 +67,8 @@ namespace OutlookPresenceProvider
 
         public static void Started()
         {
-            // RegasmRegisterLocalServer(typeof(UCOfficeIntegrationClass));
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
             {
                 IMProviders.SetValue("DefaultIMApp", COMAppExeName);
@@ -94,10 +95,8 @@ namespace OutlookPresenceProvider
         {
             Writer.Print("GetSupportedFeatures was called.");
             OIFeature supportedFeature1 = OIFeature.oiFeatureNonBuddyPresence;
-            OIFeature supportedFeature2 = OIFeature.oiFeatureResolveContact;
-            OIFeature supportedFeature3 = OIFeature.oiFeatureAddOneNoteToConversation;
 
-            return (supportedFeature1 | supportedFeature2 | supportedFeature3);
+            return supportedFeature1;
         }
 
         public string GetAuthenticationInfo(string _version)
@@ -149,8 +148,7 @@ namespace OutlookPresenceProvider
         }
 
         #region _IUCOfficeIntegrationEvents support
-
-            // This event implements void _IUCOfficeIntegrationEvents.OnShuttingDown();
+        // This event implements void _IUCOfficeIntegrationEvents.OnShuttingDown();
         public event _IUCOfficeIntegrationEvents_OnShuttingDownEventHandler OnShuttingDown;
 
         // This method is called by the IM application when it is beginning to shut down.

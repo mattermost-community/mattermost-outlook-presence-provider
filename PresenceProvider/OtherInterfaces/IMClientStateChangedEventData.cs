@@ -1,8 +1,10 @@
 ﻿using UCCollaborationLib;
+using System.Runtime.InteropServices;
 
 namespace OutlookPresenceProvider
 {
-    public class IMClientStateChangedEventData : IClientStateChangedEventData
+    [ComVisible(true)]
+    public class IMClientStateChangedEventData : ClientStateChangedEventData
     {
         public IMClientStateChangedEventData(ClientState oldState, ClientState newState)
         {

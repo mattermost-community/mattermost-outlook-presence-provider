@@ -1,18 +1,33 @@
 ﻿using System;
 using UCCollaborationLib;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace OutlookPresenceProvider
 {
     // Note: LyncClient inherits from both ILyncClient and _ILyncClientEvents_Event
     // You must implement LyncClient because the event handlers in _ILyncClientEvents expect you to pass a LyncClient interface.
+    [ComVisible(true)]
+    [ComSourceInterfaces(typeof(_ILyncClientEvents))]
     public class ClientBase :
         Client,
-        Client2,
         LyncClient
     {
+        #region Constructors
+        public ClientBase()
+        {
+            Console.WriteLine("Client is initialized");
+            _clientState = ClientState.ucClientStateSignedIn;
+            // TODO: Make this dynamic.
+            _uri = "shivam.chauhan@brightscoutdev.onmicrosoft.com";
+            _self = new IMClientSelf(new IMClientContact(_uri));
+            _contactManager = new IMClientContactManager();
+            _conversationManager = new IMClientConversationManager();
+        }
+        #endregion
+
         #region Interfaces
-        private ContactManager _contactManager;
+        private IMClientContactManager _contactManager;
         public ContactManager ContactManager
         {
             get
@@ -30,16 +45,16 @@ namespace OutlookPresenceProvider
             }
         }
 
-        private Self _iself;
+        private IMClientSelf _self;
         public Self Self
         {
             get
             {
-                return _iself;
+                return _self;
             }
         }
 
-        private ClientState _clientState;
+        private ClientState _clientState = ClientState.ucClientStateUninitialized;
         public ClientState State
         {
             get
@@ -48,7 +63,7 @@ namespace OutlookPresenceProvider
             }
         }
 
-        private string _uri;
+        private string _uri = "";
         public string Uri
         {
             get
@@ -83,30 +98,30 @@ namespace OutlookPresenceProvider
         // This field is of a type that implements the 
         // IAsynchronousOperation interface.
         private IMClientAsyncOperation _asyncOperation = new IMClientAsyncOperation();
-        // This field is of a type that implements the ISelf interface.
-        private IMClientSelf _self;
         public AsynchronousOperation SignIn(string _userUri, string _domainAndUser,
             string _password, object _IMClientCallback, object _state)
         {
-            ClientState _previousClientState = this._clientState;
-            this._clientState = ClientState.ucClientStateSignedIn;
+            Console.WriteLine($"SignIn method is called with uri {_userUri}");
+            Console.WriteLine(_domainAndUser);
+            Console.WriteLine(_password);
+            Console.WriteLine(_IMClientCallback);
+            Console.WriteLine(_state);
+            ClientState _previousClientState = _clientState;
+            _clientState = ClientState.ucClientStateSignedIn;
             // The IMClientStateChangedEventData class implements the 
             // IClientStateChangedEventData interface.
             IMClientStateChangedEventData eventData =
                 new IMClientStateChangedEventData(_previousClientState,
-                this._clientState);
+                _clientState);
             if (_userUri != null)
             {
                 // During the sign-in process, create a new contact with
                 // the contact information of the currently signed-in user.
-
-                // TODO: Uncomment and correct this
-                //this._self = new IMClientSelf(IMContact.BuildContact(_userUri));
+                _self = new IMClientSelf(new IMClientContact(_userUri));
             }
             // Raise the _ILyncClientEvents.OnStateChanged event.
-            OnStateChanged(this, eventData as ClientStateChangedEventData);
-
-            return this._asyncOperation;
+            RaiseOnStateChangedEvent(eventData);
+            return _asyncOperation;
         }
 
 
@@ -195,39 +210,4 @@ namespace OutlookPresenceProvider
         }
         #endregion
     }
-
-
-    public class AutomationBase : IAutomation
-    {
-        public ConversationWindow GetConversationWindow(Conversation _conversation)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ConversationWindow JoinConference(string _conferenceUrl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AsynchronousOperation JoinConferenceEx(string _conferenceUrl, long _parentHWND = 0, [IUnknownConstant] object _callback = null, object _state = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LaunchAddContactWizard(string _contactEmail = "0")
-        {
-            throw new NotImplementedException();
-        }
-
-        public ConversationWindow StartConversation(AutomationModalities _conversationModes, string[] _participantUris, AutomationModalitySettings[] _contextTypes, object[] _contextDatas)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AsynchronousOperation StartConversationEx(AutomationModalities _conversationModes, string[] _participantUris, AutomationModalitySettings[] _contextTypes, object[] _contextDatas, [IUnknownConstant] object s_callback, object _state)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
 }

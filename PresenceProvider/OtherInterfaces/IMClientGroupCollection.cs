@@ -1,37 +1,67 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UCCollaborationLib;
+using System.Runtime.InteropServices;
 
 namespace OutlookPresenceProvider
 {
-    public class IMClientGroupCollection : IGroupCollection
+    [ComVisible(true)]
+    public class IMClientGroupCollection : GroupCollection
     {
+        private List<Group> _groups;
+        public IMClientGroupCollection()
+        {
+            _groups = new List<Group>();
+        }
+
         public IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            foreach (var group in _groups)
+            {
+                yield return group;
+            }
         }
 
         public bool TryGetGroup(string _groupName, out Group _value)
         {
-            throw new NotImplementedException();
+            foreach (Group _group in _groups)
+            {
+                if (_group.Name == _groupName)
+                {
+                    _value = _group;
+                    return true;
+                }
+            }
+
+            _value = null;
+            return false;
         }
 
         public GroupCollection GetGroupsByType(GroupType _groupType)
         {
-            throw new NotImplementedException();
+            foreach (Group _group in _groups)
+            {
+                if (_group.Type == _groupType)
+                {
+                    return (GroupCollection)this;
+                }
+            }
+            return null;
         }
 
         public int IndexOf(Group _group)
         {
-            throw new NotImplementedException();
+            return _groups.IndexOf(_group as IMClientGroup);
         }
 
-        public int Count => throw new NotImplementedException();
+        public int Count => _groups.Count;
 
-        public Group this[int _index] => throw new NotImplementedException();
+        public Group this[int _index] => _groups[_index];
+
+        public void AddGroup(Group _group)
+        {
+            _groups.Add(_group);
+        }
     }
 
 }

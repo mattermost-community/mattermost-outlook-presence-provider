@@ -1,42 +1,79 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Net.Http;
 using UCCollaborationLib;
+using Microsoft.Win32;
+using System.Text.Json.Nodes;
 
 namespace OutlookPresenceProvider
 {
-    public class IMClientContact: IContact
+    [ComSourceInterfaces(typeof(_IContactEvents))]
+    [ComVisible(true)]
+    public class IMClientContact: Contact
     {
-        public IMClientContactSettingDictionary Settings
+        public IMClientContact()
+        {
+            _settingDictionary = new IMClientContactSettingDictionary();
+            _groupCollection = new IMClientGroupCollection();
+        }
+
+        public IMClientContact(string uri) : this()
+        {
+            _uri = uri;
+        }
+
+        private IMClientContactSettingDictionary _settingDictionary;
+        public ContactSettingDictionary Settings
         {
             get
             {
                 // The IMClientContactSettingDictionary class implements
                 // the IContactSettingDictionary interface.
-                return new IMClientContactSettingDictionary();
+                return _settingDictionary;
             }
         }
 
-        public IMClientGroupCollection CustomGroups
+        private IMClientGroupCollection _groupCollection;
+        public GroupCollection CustomGroups
         {
             get
             {
                 // The IMClientGroupCollection class implements
                 // the IGroupCollection interface.
-                return new IMClientGroupCollection();
+                return _groupCollection;
             }
         }
 
-        public string Uri;
-        public string _DisplayName;
+        private string _uri;
+        public string Uri
+        {
+            get => _uri;
+            set => _uri = value;
+        }
+
+        private string _displayName;
+        public string DisplayName
+        {
+            get => _displayName;
+            set => _displayName = value;
+        }
+
+        public ContactManager ContactManager => throw new NotImplementedException();
+
+        public UnifiedCommunicationType UnifiedCommunicationType
+        {
+            get => UnifiedCommunicationType.ucUnifiedCommunicationEnabled;
+            set => UnifiedCommunicationType = value;
+        }
+
+        private HttpClient httpClient = PresenceProvider.httpClient;
 
         public bool CanStart(ModalityTypes _modalityTypes)
         {
             // Define the capabilities of the current IM client application
             // user by using flags from the ModalityTypes enumeration.
+            Console.WriteLine(_modalityTypes);
             ModalityTypes userCapabilities =
                 ModalityTypes.ucModalityInstantMessage;
             // Perform a simple test for equivalency.
@@ -45,31 +82,63 @@ namespace OutlookPresenceProvider
 
         public object GetContactInformation(ContactInformationType _contactInformationType)
         {
-            // Determine the information to return from the contact's data based
-            // on the value passed in for the _contactInformationType parameter.
-            switch (_contactInformationType)
+            try
             {
-                case ContactInformationType.ucPresenceEmailAddresses:
-                    {
-                        // Return the URI associated with the contact.
-                        string returnValue = this.Uri.ToLower().Replace("sip:", String.Empty);
-                        return returnValue;
-                    }
-                case ContactInformationType.ucPresenceDisplayName:
-                    {
-                        // Return the display name associated with the contact.
-                        string returnValue = this._DisplayName;
-                        return returnValue;
-                    }
-                default:
-                    {
-                        throw new NotImplementedException();
-                    }
-                    // Additional implementation details omitted.
+                // Determine the information to return from the contact's data based
+                // on the value passed in for the _contactInformationType parameter.
+                switch (_contactInformationType)
+                {
+                    // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
+                    case ContactInformationType.ucPresenceAvailability:
+                        {
+                            string serverUrl = "";
+                            using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
+                            {
+                                using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
+                                {
+                                    serverUrl = (string)IMProvider.GetValue(Constants.MattermostServerURL);
+                                }
+                            }
+                            if (serverUrl == "")
+                            {
+                                // We will not be using this value from the registry so just log the error for now
+                                Console.WriteLine("Invalid server url");
+                                return ContactAvailability.ucAvailabilityNone;
+                            }
+                            string reqUri = $"{serverUrl}/plugins/com.mattermost.presence-provider/api/v1/status/{_uri}";
+                            Console.WriteLine(reqUri);
+                            JsonNode statusNode = JsonNode.Parse(httpClient.GetStringAsync(reqUri).GetAwaiter().GetResult());
+                            return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
+                        }
+                    case ContactInformationType.ucPresenceEmailAddresses:
+                        {
+                            // Return the URI associated with the contact.
+                            return _uri;
+                        }
+                    case ContactInformationType.ucPresenceDisplayName:
+                        {
+                            // Return the display name associated with the contact.
+                            return _displayName;
+                        }
+                    case ContactInformationType.ucPresenceInstantMessageAddresses:
+                        {
+                            return new string[] { _uri };
+                        }
+                    default:
+                        {
+                            Console.WriteLine(_contactInformationType.ToString());
+                            return null;
+                        }
+                        // Additional implementation details omitted.
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                return null;
             }
         }
 
-        public IMClientContactInformationDictionary BatchGetContactInformation(ContactInformationType[] _contactInformationTypes)
+        public ContactInformationDictionary BatchGetContactInformation(ContactInformationType[] _contactInformationTypes)
         {
             // The IMClientContactInformationDictionary class implements the
             // IContactInformationDictionary interface.
@@ -81,7 +150,8 @@ namespace OutlookPresenceProvider
                 // information to retrieve. This code adds a new entry to
                 // a Dictionary object exposed by the
                 // ContactInformationDictionary property.
-                contactDictionary.Add(type, this.GetContactInformation(type));
+                Console.WriteLine(type.ToString());
+                contactDictionary.Add(type, GetContactInformation(type));
             }
             return contactDictionary;
         }
@@ -121,15 +191,31 @@ namespace OutlookPresenceProvider
             throw new NotImplementedException();
         }
 
-        string IContact.Uri => throw new NotImplementedException();
+        public event _IContactEvents_OnContactInformationChangedEventHandler OnContactInformationChanged;
+        internal void RaiseOnContactInformationChangedEvent(ContactInformationChangedEventData _eventData)
+        {
+            if(OnContactInformationChanged != null)
+            {
+                OnContactInformationChanged(this, _eventData);
+            }
+        }
 
-        ContactSettingDictionary IContact.Settings => throw new NotImplementedException();
+        public event _IContactEvents_OnSettingChangedEventHandler OnSettingChanged;
+        internal void RaiseOnSettingChangedEvent(ContactSettingChangedEventData _eventData)
+        {
+            if(OnSettingChanged != null)
+            {
+                OnSettingChanged(this, _eventData);
+            }
+        }
 
-        public ContactManager ContactManager => throw new NotImplementedException();
-
-        GroupCollection IContact.CustomGroups => throw new NotImplementedException();
-
-        public UnifiedCommunicationType UnifiedCommunicationType => throw new NotImplementedException();
+        public event _IContactEvents_OnUriChangedEventHandler OnUriChanged;
+        internal void RaiseOnUriChangedEvent(UriChangedEventData _eventData)
+        {
+            if (OnUriChanged != null)
+            {
+                OnUriChanged(this, _eventData);
+            }
+        }
     }
-
 }
