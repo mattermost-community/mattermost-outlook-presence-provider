@@ -34,10 +34,6 @@ namespace OutlookPresenceProvider
 
         public ConversationWindow StartConversation(AutomationModalities _conversationModes, string[] _participantUris, AutomationModalitySettings[] _contextTypes, object[] _contextDatas)
         {
-            Console.WriteLine(_conversationModes);
-            Console.WriteLine(_participantUris);
-            Console.WriteLine(_contextTypes);
-            Console.WriteLine(_contextDatas);
             return null;
         }
 

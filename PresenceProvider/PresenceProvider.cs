@@ -5,9 +5,6 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 using Microsoft.Win32;
 using UCCollaborationLib;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 #endregion
 
 
@@ -20,7 +17,7 @@ namespace OutlookPresenceProvider
     public class PresenceProvider : CSExeCOMServer.CSExeCOMServerBase, IUCOfficeIntegration
     {
         public static string COMAppExeName = "CSExeCOMServerTest";
-        public static readonly HttpClient httpClient = new HttpClient();
+        public static Mattermost.Client client = new Mattermost.Client();
 
         #region COM Component Registration
 
@@ -67,8 +64,6 @@ namespace OutlookPresenceProvider
 
         public static void Started()
         {
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
             {
                 IMProviders.SetValue("DefaultIMApp", COMAppExeName);
@@ -93,7 +88,6 @@ namespace OutlookPresenceProvider
 
         public OIFeature GetSupportedFeatures(string _version)
         {
-            Writer.Print("GetSupportedFeatures was called.");
             OIFeature supportedFeature1 = OIFeature.oiFeatureNonBuddyPresence;
 
             return supportedFeature1;
@@ -103,19 +97,16 @@ namespace OutlookPresenceProvider
         {
             // Define the version of Office that the IM client application supports.
             string supportedOfficeVersion = "15.0.0.0";
-            Writer.Print($"I was called with version {_version}");
 
             // Do a simple check for equivalency.
             if (supportedOfficeVersion == _version)
             {
                 // If the version of Office is supported, this method must 
                 // return the string literal "<authenticationinfo>" exactly.
-                Writer.Print("I was returned.");
                 return "<authenticationinfo>";
             }
             else
             {
-                Writer.Print("null was returned.");
                 return null;
             }
         }
@@ -130,14 +121,12 @@ namespace OutlookPresenceProvider
                 // from ILyncClient, so it returns such an object.
                 case OIInterface.oiInterfaceILyncClient:
                     {
-                        Writer.Print($"oiInterfaceILyncClient interface was called. {_interface}");
                         return new ClientBase();
                     }
                 // The calling code is asking for an object that inherits
                 // from IAutomation, so it returns such an object.
                 case OIInterface.oiInterfaceIAutomation:
                     {
-                        Writer.Print($"oiInterfaceIAutomation interface was called. {_interface}");
                         return new AutomationBase();
                     }
                 default:
@@ -157,38 +146,11 @@ namespace OutlookPresenceProvider
         // This notifies Office applications that the IM application is going away.
         internal void RaiseOnShuttingDownEvent()
         {
-            if (this.OnShuttingDown != null)
+            if (OnShuttingDown != null)
             {
-                this.OnShuttingDown();
+                OnShuttingDown();
             }
         }
         #endregion
-    }
-
-    public class Writer
-    {
-        public static void Print(string text)
-        {
-            // Creating a file
-            string myfile = @"WriteLines.txt";
-
-            // Checking the above file
-            if (!File.Exists(myfile))
-            {
-                // Creating the same file if it doesn't exist
-                using (StreamWriter sw = File.CreateText(myfile))
-                {
-                    sw.WriteLine("First line");
-                    sw.WriteLine("Second line");
-                    sw.WriteLine("Third line");
-                }
-            }
-
-            // Appending the given texts
-            using (StreamWriter sw = File.AppendText(myfile))
-            {
-                sw.WriteLine(text);
-            }
-        }
     }
 }

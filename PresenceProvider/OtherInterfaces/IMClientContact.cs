@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Net.Http;
 using UCCollaborationLib;
-using Microsoft.Win32;
-using System.Text.Json.Nodes;
 
 namespace OutlookPresenceProvider
 {
@@ -17,8 +14,10 @@ namespace OutlookPresenceProvider
         {
             _settingDictionary = new IMClientContactSettingDictionary();
             _groupCollection = new IMClientGroupCollection();
+            _client = PresenceProvider.client;
         }
 
+        private Mattermost.Client _client;
         public IMClientContact(string uri) : this()
         {
             _uri = uri;
@@ -68,8 +67,6 @@ namespace OutlookPresenceProvider
             set => UnifiedCommunicationType = value;
         }
 
-        private HttpClient httpClient = PresenceProvider.httpClient;
-
         public bool CanStart(ModalityTypes _modalityTypes)
         {
             Console.WriteLine(_modalityTypes);
@@ -77,26 +74,10 @@ namespace OutlookPresenceProvider
         }
 
         private ContactAvailability _availability = ContactAvailability.ucAvailabilityNone;
-
-        private ContactAvailability GetAvailabilityFromMattermost()
+        public ContactAvailability Availability
         {
-            string serverUrl = "";
-            using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
-            {
-                using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
-                {
-                    serverUrl = (string)IMProvider.GetValue("MattermostServerURL");
-                }
-            }
-            if (serverUrl == "")
-            {
-                // We will not be using this value from the registry so just log the error for now
-                Console.WriteLine("invalid server url");
-                return ContactAvailability.ucAvailabilityNone;
-            }
-            string reqUri = $"{serverUrl}/plugins/com.mattermost.presence-provider/api/v1/status/{_uri}";
-            JsonNode statusNode = JsonNode.Parse(httpClient.GetStringAsync(reqUri).GetAwaiter().GetResult());
-            return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
+            get => _availability;
+            set => _availability = value;
         }
 
         public object GetContactInformation(ContactInformationType _contactInformationType)
@@ -111,21 +92,21 @@ namespace OutlookPresenceProvider
                     // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
                     case ContactInformationType.ucPresenceAvailability:
                         {
-                            return GetAvailabilityFromMattermost();
+                            return _availability != ContactAvailability.ucAvailabilityNone ? _availability : 
+                                _availability = _client.GetAvailabilityFromMattermost(_uri);
                         }
+                    // The ActivityId is used to determine the presence text.
+                    // https://docs.microsoft.com/en-us/answers/questions/771004/which-member-in-the-contactinformationtype-is-used.html
                     case ContactInformationType.ucPresenceActivityId:
                         {
-                            return Constants.AvailabilityActivityIdMap(_availability);
+                            string activityId = Mattermost.Constants.AvailabilityActivityIdMap(_availability);
+                            _availability = ContactAvailability.ucAvailabilityNone;
+                            return activityId;
                         }
                     case ContactInformationType.ucPresenceEmailAddresses:
                         {
                             // Return the URI associated with the contact.
                             return _uri;
-                        }
-                    case ContactInformationType.ucPresenceDisplayName:
-                        {
-                            // Return the display name associated with the contact.
-                            return _displayName;
                         }
                     case ContactInformationType.ucPresenceInstantMessageAddresses:
                         {
@@ -133,7 +114,6 @@ namespace OutlookPresenceProvider
                         }
                     default:
                         {
-                            Console.WriteLine(_contactInformationType.ToString());
                             return null;
                         }
                 }
@@ -206,7 +186,7 @@ namespace OutlookPresenceProvider
                 try
                 {
                     handler(this, _eventData);
-                } catch(Exception ex)
+                } catch (Exception ex)
                 {
                     Console.WriteLine(ex.StackTrace);
                 }
@@ -216,7 +196,7 @@ namespace OutlookPresenceProvider
         public event _IContactEvents_OnSettingChangedEventHandler OnSettingChanged;
         internal void RaiseOnSettingChangedEvent(ContactSettingChangedEventData _eventData)
         {
-            if(OnSettingChanged != null)
+            if (OnSettingChanged != null)
             {
                 OnSettingChanged(this, _eventData);
             }

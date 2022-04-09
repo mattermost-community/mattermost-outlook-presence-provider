@@ -101,11 +101,6 @@ namespace OutlookPresenceProvider
         public AsynchronousOperation SignIn(string _userUri, string _domainAndUser,
             string _password, object _IMClientCallback, object _state)
         {
-            Console.WriteLine($"SignIn method is called with uri {_userUri}");
-            Console.WriteLine(_domainAndUser);
-            Console.WriteLine(_password);
-            Console.WriteLine(_IMClientCallback);
-            Console.WriteLine(_state);
             ClientState _previousClientState = _clientState;
             _clientState = ClientState.ucClientStateSignedIn;
             // The IMClientStateChangedEventData class implements the 
@@ -155,57 +150,57 @@ namespace OutlookPresenceProvider
         // Notifies Office apps that the IM client state (signed out, signing in, singed in, signing out, etc) has changed.
         internal void RaiseOnStateChangedEvent(ClientStateChangedEventData eventData)
         {
-            if (this.OnStateChanged != null)
+            if (OnStateChanged != null)
             {
-                this.OnStateChanged(this, eventData);
+                OnStateChanged(this, eventData);
             }
         }
         // Notifies Office apps that the IM client has received a notification event from MAPI (e.g. autodiscover has finished)
         internal void RaiseOnNotificationReceivedEvent(LyncClientNotificationReceivedEventData eventData)
         {
-            if (this.OnNotificationReceived != null)
+            if (OnNotificationReceived != null)
             {
-                this.OnNotificationReceived(this, eventData);
+                OnNotificationReceived(this, eventData);
             }
         }
         // Notifies Office apps that the IM client has received a request for credentials for some operation (e.g. sign in, web search)
         internal void RaiseOnCredentialRequestedEvent(CredentialRequestedEventData eventData)
         {
-            if (this.OnCredentialRequested != null)
+            if (OnCredentialRequested != null)
             {
-                this.OnCredentialRequested(this, eventData);
+                OnCredentialRequested(this, eventData);
             }
         }
         // Notifies Office apps that the IM client has been delayed from signing in and gives an estimated delay time.
         internal void RaiseOnSignInDelayedEvent(SignInDelayedEventData eventData)
         {
-            if (this.OnSignInDelayed != null)
+            if (OnSignInDelayed != null)
             {
-                this.OnSignInDelayed(this, eventData);
+                OnSignInDelayed(this, eventData);
             }
         }
         // Notifies Office apps that the capabilities of this IM client have changed.
         internal void RaiseOnCapabilitiesChangedEvent(PreferredCapabilitiesChangedEventData eventData)
         {
-            if (this.OnCapabilitiesChanged != null)
+            if (OnCapabilitiesChanged != null)
             {
-                this.OnCapabilitiesChanged(this, eventData);
+                OnCapabilitiesChanged(this, eventData);
             }
         }
         // Notifies Office apps that a DelegatorClient object has been added to the IM client object.
         internal void RaiseOnDelegatorClientAdded(DelegatorClientCollectionEventData eventData)
         {
-            if (this.OnDelegatorClientAdded != null)
+            if (OnDelegatorClientAdded != null)
             {
-                this.OnDelegatorClientAdded(this, eventData);
+                OnDelegatorClientAdded(this, eventData);
             }
         }
         // Notifies Office apps that a DelegatorClient object has been removed from the IM client object.
         internal void RaiseOnDelegatorClientRemoved(DelegatorClientCollectionEventData eventData)
         {
-            if (this.OnDelegatorClientRemoved != null)
+            if (OnDelegatorClientRemoved != null)
             {
-                this.OnDelegatorClientRemoved(this, eventData);
+                OnDelegatorClientRemoved(this, eventData);
             }
         }
         #endregion
