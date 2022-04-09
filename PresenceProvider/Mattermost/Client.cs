@@ -18,7 +18,7 @@ namespace OutlookPresenceProvider.Mattermost
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _serverUrl = GetServerUrlFromRegistry();
-            _pluginUrl = new Uri($"{_serverUrl}/plugins/com.mattermost.outlook-presence/api/v1/");
+            _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.PluginId}/api/v1/");
             _wsServerUrl = new UriBuilder(_pluginUrl);
             _wsServerUrl.Scheme = _pluginUrl.Scheme == "https" ? "wss" : "ws";
             InitializeWebsocketClientInNewThread();
@@ -37,8 +37,8 @@ namespace OutlookPresenceProvider.Mattermost
         private Uri _pluginUrl;
         private UriBuilder _wsServerUrl;
 
-        // mre is used to block and release threads manually. It is
-        // created in the unsignaled state.
+        // mre is used to block and release threads manually.
+        // It is created in the unsignaled state.
         private ManualResetEvent mre = new ManualResetEvent(false);
         private WebsocketClient _wsClient;
         public WebsocketClient WsClient => _wsClient;
@@ -55,6 +55,7 @@ namespace OutlookPresenceProvider.Mattermost
             }
             return serverUrl;
         }
+
         public ContactAvailability GetAvailabilityFromMattermost(string email)
         {
             try
@@ -101,7 +102,7 @@ namespace OutlookPresenceProvider.Mattermost
 
             // The client will disconnect and reconnect if there is no message from
             // the server in 60 seconds.
-            client.ReconnectTimeout = TimeSpan.FromSeconds(60);
+            client.ReconnectTimeout = TimeSpan.FromSeconds(Constants.WebsocketReconnectionTimeoutInSeconds);
             client.ReconnectionHappened.Subscribe(info =>
             {
                 Console.WriteLine("Reconnection happened, type: " + info.Type);
