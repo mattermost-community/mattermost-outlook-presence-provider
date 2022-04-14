@@ -16,7 +16,6 @@ namespace OutlookPresenceProvider
         #region Constructors
         public ClientBase()
         {
-            Console.WriteLine("Client is initialized");
             _clientState = ClientState.ucClientStateSignedIn;
             // TODO: Make this dynamic.
             _uri = "shivam.chauhan@brightscoutdev.onmicrosoft.com";
