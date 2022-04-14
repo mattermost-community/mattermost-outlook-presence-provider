@@ -2,11 +2,12 @@
 using System.Threading;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Microsoft.Win32;
 using System.Text.Json.Nodes;
 using UCCollaborationLib;
 using Websocket.Client;
 using System.Net.WebSockets;
+using System.Web;
+using System.IO;
 
 namespace OutlookPresenceProvider.Mattermost
 {
@@ -17,10 +18,7 @@ namespace OutlookPresenceProvider.Mattermost
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _serverUrl = GetServerUrlFromRegistry();
-            _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.PluginId}/api/v1/");
-            _wsServerUrl = new UriBuilder(_pluginUrl);
-            _wsServerUrl.Scheme = _pluginUrl.Scheme == "https" ? "wss" : "ws";
+            UpdateURLs();
             InitializeWebsocketClientInNewThread();
         }
 
@@ -34,26 +32,28 @@ namespace OutlookPresenceProvider.Mattermost
 
         private HttpClient _client;
         private string _serverUrl;
+        private string _secret;
         private Uri _pluginUrl;
         private UriBuilder _wsServerUrl;
-
+        
         // mre is used to block and release threads manually.
         // It is created in the unsignaled state.
         private ManualResetEvent mre = new ManualResetEvent(false);
         private WebsocketClient _wsClient;
         public WebsocketClient WsClient => _wsClient;
         
-        private string GetServerUrlFromRegistry()
+        private void UpdateURLs()
         {
-            string serverUrl = "";
-            using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
+            _secret = GetValueFromConfig(Constants.MattermostSecret);
+            _serverUrl = GetValueFromConfig(Constants.MattermostServerURL);
+            if (_secret == "" || _serverUrl == "")
             {
-                using (RegistryKey IMProvider = IMProviders.CreateSubKey(PresenceProvider.COMAppExeName))
-                {
-                    serverUrl = (string)IMProvider.GetValue(Constants.MattermostServerURL);
-                }
+                Console.WriteLine("Invalid server url or secret.");
+                throw new Exception("Invalid server url or secret.");
             }
-            return serverUrl;
+            _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.PluginId}/api/v1/");
+            _wsServerUrl = new UriBuilder(_pluginUrl);
+            _wsServerUrl.Scheme = _pluginUrl.Scheme == "https" ? "wss" : "ws";
         }
         
         public ContactAvailability GetAvailabilityFromMattermost(string email)
@@ -66,8 +66,11 @@ namespace OutlookPresenceProvider.Mattermost
                     Console.WriteLine("Invalid server url");
                     return ContactAvailability.ucAvailabilityNone;
                 }
-                string reqUri = $"{_pluginUrl}/status/{email}";
-                JsonNode statusNode = JsonNode.Parse(_client.GetStringAsync(reqUri).GetAwaiter().GetResult());
+
+                UriBuilder reqUrl = new UriBuilder(_pluginUrl);
+                reqUrl.Path += $"status/{email}";
+                AddQueryParamsToUrl(reqUrl, "secret", _secret);
+                JsonNode statusNode = JsonNode.Parse(_client.GetStringAsync(reqUrl.Uri).GetAwaiter().GetResult());
                 return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
             } catch (Exception ex)
             {
@@ -96,9 +99,9 @@ namespace OutlookPresenceProvider.Mattermost
 
         private void InitializeWebsocketClient()
         {
-            var url = new Uri(_wsServerUrl.Uri, "ws");
-
-            var client = new WebsocketClient(url);
+            _wsServerUrl.Path += "ws";
+            AddQueryParamsToUrl(_wsServerUrl, "secret", _secret);
+            var client = new WebsocketClient(_wsServerUrl.Uri);
 
             // The client will disconnect and reconnect if there is no message from
             // the server in 60 seconds.
@@ -111,6 +114,10 @@ namespace OutlookPresenceProvider.Mattermost
             client.DisconnectionHappened.Subscribe(info =>
             {
                 Console.WriteLine("Disconnection happened, type: " + info.Type);
+                if (info.Type == DisconnectionType.Error || info.Type == DisconnectionType.ByServer)
+                {
+                    throw new Exception("Error in connecting to websocket server.");
+                }
             });
 
             
@@ -119,6 +126,38 @@ namespace OutlookPresenceProvider.Mattermost
             mre.WaitOne();
             
             Console.WriteLine("Websocket client closed.");
+        }
+
+        private string GetValueFromConfig(string key)
+        {
+            try
+            {
+                string myfile = $"{Directory.GetCurrentDirectory()}\\config.json";
+                // Checking the above file
+                if (!File.Exists(myfile))
+                {
+                    using (StreamWriter sw = File.CreateText(myfile))
+                    {
+                        sw.WriteLine("{\"MattermostServerURL\": \"\", \"MattermostSecret\": \"\"}");
+                    }
+                    return "";
+                }
+
+                JsonNode configNode = JsonNode.Parse(File.ReadAllText(myfile));
+                string val = configNode[key].GetValue<string>();
+                return val;
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return "";
+            }
+        }
+
+        private void AddQueryParamsToUrl(UriBuilder url, string paramName, string paramValue)
+        {
+            var query = HttpUtility.ParseQueryString(url.Query);
+            query[paramName] = paramValue;
+            url.Query = query.ToString();
         }
     }
 }
