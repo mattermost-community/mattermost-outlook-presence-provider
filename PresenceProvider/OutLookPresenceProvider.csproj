@@ -96,6 +96,7 @@
     <Compile Include="BaseInterfaces\ClientBase.cs" />
     <Compile Include="Mattermost\Client.cs" />
     <Compile Include="Mattermost\Constants.cs" />
+    <Compile Include="Mattermost\Store.cs" />
     <Compile Include="OtherInterfaces\IMClientAsyncOperation.cs" />
     <Compile Include="OtherInterfaces\IMClientContact.cs" />
     <Compile Include="OtherInterfaces\IMClientContactEndpoint.cs" />

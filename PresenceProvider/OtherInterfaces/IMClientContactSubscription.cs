@@ -14,10 +14,12 @@ namespace OutlookPresenceProvider
         public IMClientContactSubscription()
         {
             _subscribedContacts = new Dictionary<string, IMClientContact>();
+            _store = PresenceProvider.client.Store;
         }
 
         // Store references to all of the IContact objects to subscribe to.
         private Dictionary<string, IMClientContact> _subscribedContacts;
+        private Mattermost.Store _store;
 
         // Add a new IContact object to the collection of contacts.
         public void AddContact(Contact _contact)
@@ -52,12 +54,12 @@ namespace OutlookPresenceProvider
         {
             // TODO: Change this parsing to more conventional method
             string email = JsonNode.Parse(msg.ToString())["email"].GetValue<string>();
+            string status = JsonNode.Parse(msg.ToString())["status"].GetValue<string>();
+            _store.Add(email, status);
             IMClientContact contact;
             if (_subscribedContacts.TryGetValue(email, out contact))
             {
                 ContactInformationChangedEventData eventData = new IMClientContactInformationChangedEventData();
-                string status = JsonNode.Parse(msg.ToString())["status"].GetValue<string>();
-                contact.Availability = Mattermost.Constants.StatusAvailabilityMap(status);
                 contact.RaiseOnContactInformationChangedEvent(eventData);
             }
         }
