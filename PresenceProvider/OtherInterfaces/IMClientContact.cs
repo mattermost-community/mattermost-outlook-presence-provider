@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UCCollaborationLib;
@@ -17,32 +18,27 @@ namespace OutlookPresenceProvider
             _store = PresenceProvider.client.Store;
         }
 
-        private Mattermost.Store _store;
         public IMClientContact(string uri) : this()
         {
             _uri = uri;
         }
 
+        private Mattermost.Store _store;
+
         private IMClientContactSettingDictionary _settingDictionary;
         public ContactSettingDictionary Settings
         {
-            get
-            {
-                // The IMClientContactSettingDictionary class implements
-                // the IContactSettingDictionary interface.
-                return _settingDictionary;
-            }
+            // The IMClientContactSettingDictionary class implements
+            // the IContactSettingDictionary interface.
+            get => _settingDictionary;
         }
 
         private IMClientGroupCollection _groupCollection;
         public GroupCollection CustomGroups
         {
-            get
-            {
-                // The IMClientGroupCollection class implements
-                // the IGroupCollection interface.
-                return _groupCollection;
-            }
+            // The IMClientGroupCollection class implements
+            // the IGroupCollection interface.
+            get => _groupCollection;
         }
 
         private string _uri;
@@ -64,12 +60,11 @@ namespace OutlookPresenceProvider
         public UnifiedCommunicationType UnifiedCommunicationType
         {
             get => UnifiedCommunicationType.ucUnifiedCommunicationNotEnabled;
-            set => UnifiedCommunicationType = value;
+            set => throw  new NotImplementedException();
         }
 
         public bool CanStart(ModalityTypes _modalityTypes)
         {
-            Console.WriteLine(_modalityTypes);
             return false;
         }
 
@@ -112,7 +107,7 @@ namespace OutlookPresenceProvider
                 }
             } catch (Exception ex)
             {
-                Console.WriteLine(ex.StackTrace);
+                Trace.WriteLine(ex.StackTrace);
                 return null;
             }
         }
@@ -129,7 +124,6 @@ namespace OutlookPresenceProvider
                 // information to retrieve. This code adds a new entry to
                 // a Dictionary object exposed by the
                 // ContactInformationDictionary property.
-                Console.WriteLine(type.ToString());
                 contactDictionary.Add(type, GetContactInformation(type));
             }
             return contactDictionary;
@@ -181,7 +175,7 @@ namespace OutlookPresenceProvider
                     handler(this, _eventData);
                 } catch (Exception ex)
                 {
-                    Console.WriteLine(ex.StackTrace);
+                    Trace.WriteLine(ex.StackTrace);
                 }
             }
         }

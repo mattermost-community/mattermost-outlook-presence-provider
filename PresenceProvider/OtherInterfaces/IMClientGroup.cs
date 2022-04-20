@@ -10,6 +10,7 @@ namespace OutlookPresenceProvider
     public class IMClientGroup: Group
     {
         private List<IMClientContact> _contacts;
+        
         public IMClientGroup(GroupType type)
         {
             _type = type;

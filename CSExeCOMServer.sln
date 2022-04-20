@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutOfProcessCOMBase", "OutO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutLookPresenceProvider", "PresenceProvider\OutLookPresenceProvider.csproj", "{034E0472-A9D5-4E8C-890F-A8E7C26911BE}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BuildSetup", "BuildSetup\BuildSetup.vdproj", "{E9EAADE5-D6B3-4599-9DF4-53EFDBFB0BB4}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MattermostPresenceProvider", "MattermostPresenceProvider\MattermostPresenceProvider.vdproj", "{9FF31714-17E2-42E1-8703-E67A6F92DEDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,12 +57,12 @@ Global
 		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Release|x64.Build.0 = Release|Any CPU
 		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Release|x86.ActiveCfg = Release|Any CPU
 		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Release|x86.Build.0 = Release|Any CPU
-		{E9EAADE5-D6B3-4599-9DF4-53EFDBFB0BB4}.Debug|Any CPU.ActiveCfg = Debug
-		{E9EAADE5-D6B3-4599-9DF4-53EFDBFB0BB4}.Debug|x64.ActiveCfg = Debug
-		{E9EAADE5-D6B3-4599-9DF4-53EFDBFB0BB4}.Debug|x86.ActiveCfg = Debug
-		{E9EAADE5-D6B3-4599-9DF4-53EFDBFB0BB4}.Release|Any CPU.ActiveCfg = Release
-		{E9EAADE5-D6B3-4599-9DF4-53EFDBFB0BB4}.Release|x64.ActiveCfg = Release
-		{E9EAADE5-D6B3-4599-9DF4-53EFDBFB0BB4}.Release|x86.ActiveCfg = Release
+		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Debug|Any CPU.ActiveCfg = Debug
+		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Debug|x64.ActiveCfg = Debug
+		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Debug|x86.ActiveCfg = Debug
+		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Release|Any CPU.ActiveCfg = Release
+		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Release|x64.ActiveCfg = Release
+		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

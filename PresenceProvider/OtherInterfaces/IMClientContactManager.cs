@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UCCollaborationLib;
 using System.Net;
@@ -16,12 +17,14 @@ namespace OutlookPresenceProvider
             _contactSubscription = new IMClientContactSubscription();
         }
 
-        public GroupCollection Groups => _groupCollections;
-
         private IMClientGroupCollection _groupCollections;
+        public GroupCollection Groups
+        {
+            get => _groupCollections;
+        }
+
         public Contact GetContactByUri(string _contactUri)
         {
-            Console.WriteLine(_contactUri);
             // Declare a Contact variable to store information about the contact.
             Contact tempContact = null;
             // The _groupCollections field is an IGroupCollection object. Iterate 
@@ -34,6 +37,7 @@ namespace OutlookPresenceProvider
                     break;
                 }
             }
+
             // Check to see that the URI returned a valid contact. If it
             // did not, create a new contact.
             if (tempContact == null)
@@ -53,6 +57,7 @@ namespace OutlookPresenceProvider
                 IMClientGroupCollection gc = (IMClientGroupCollection)tempContact.CustomGroups;
                 gc.AddGroup(tempGroup);
             }
+
             // Return the contact to the calling code.
             return tempContact;
         }
@@ -79,7 +84,7 @@ namespace OutlookPresenceProvider
                 callback.OnLookup(this, null, asyncOperation);
             } catch (Exception ex)
             {
-                Console.WriteLine(ex.StackTrace);
+                Trace.WriteLine(ex.StackTrace);
             }
             return asyncOperation;
         }

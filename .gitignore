@@ -12,9 +12,9 @@ x64/
 [Bb]in/
 [Oo]bj/
 # Ignore all files in the BuildSetup folder
-BuildSetup/*
+MattermostPresenceProvider/*
 # except .vdproj file as it contains the configuration for the setup
-!BuildSetup/*.vdproj
+!MattermostPresenceProvider/*.vdproj
 
 # NuGet Packages
 *.nupkg
@@ -66,7 +66,6 @@ ClientBin/
 *.publishsettings
 modulesbin/
 tempbin/
-config.json
 
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)

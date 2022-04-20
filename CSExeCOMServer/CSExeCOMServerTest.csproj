@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CSExeCOMServerTest</RootNamespace>
-    <AssemblyName>CSExeCOMServerTest</AssemblyName>
+    <AssemblyName>MattermostPresenceProvider</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeLib.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
@@ -124,7 +125,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <Content Include="config.json" />
-	  <Content Include="..\DLL\lync4.tlb" />
+    <Content Include="..\DLL\UCCollaborationLib.tlb" />
     <None Include="CSExeCOMServerTest_TemporaryKey.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

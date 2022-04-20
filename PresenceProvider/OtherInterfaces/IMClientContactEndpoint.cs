@@ -9,8 +9,8 @@ namespace OutlookPresenceProvider
     {
         public IMClientContactEndpoint()
         {
-            _type = ContactEndpointType.ucContactEndpointTypeLync;
         }
+        
         public bool CanStart(ModalityTypes _modalityTypes)
         {
             throw new NotImplementedException();
