@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - test-ci
+      
+jobs:
+  ci:
+    name: Build
+    runs-on: windows-latest
+    
+    steps:
+      - name: Setup VS Dev Environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@v4
+        
+      - uses: actions/checkout@v2
+      
+      - name: Build the solution
+        id: build
+        run: |
+          devenv.com .\CSExeCOMServer.sln /Build Release
+          # echo ::set-output name=BUNDLE_NAME::$(cd MattermostPresenceProvider; ls)
+          
+#       - name: Upload the built plugin as an artifact
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: ${{ steps.build.outputs.BUNDLE_NAME }}
+#           path: MattermostPresenceProvider/${{ steps.build.outputs.BUNDLE_NAME }}
