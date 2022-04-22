@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Restore packages
-        run: msbuild.exe -t:restore
+        run: MSBuild.exe -t:restore -p:RestorePackagesConfig=true
 
       - name: Build the solution
         id: build
