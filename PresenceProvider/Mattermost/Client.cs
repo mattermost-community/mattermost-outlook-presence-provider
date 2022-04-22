@@ -41,7 +41,7 @@ namespace OutlookPresenceProvider.Mattermost
         {
             get => _store;
         }
-        
+
         // mre is used to block and release threads manually.
         // It is created in the unsignaled state.
         private ManualResetEvent mre = new ManualResetEvent(false);
@@ -82,9 +82,7 @@ namespace OutlookPresenceProvider.Mattermost
 
                     foreach (JsonNode user in response)
                     {
-                        string email = user[Constants.MattermostEmail].GetValue<string>();
-                        string status = user[Constants.MattermostStatus].GetValue<string>();
-                        _store.Add(email, status);
+                        _store.Add(user[Constants.MattermostEmail].GetValue<string>(), user[Constants.MattermostStatus].GetValue<string>());
                     }
                     page++;
                 }
@@ -147,18 +145,18 @@ namespace OutlookPresenceProvider.Mattermost
         {
             try
             {
-                string myfile = $"{Directory.GetCurrentDirectory()}\\config.json";
-                // Checking the above file
-                if (!File.Exists(myfile))
+                string myFile = $"{Directory.GetCurrentDirectory()}\\config.json";
+                // Checking the config.json file
+                if (!File.Exists(myFile))
                 {
-                    using (StreamWriter sw = File.CreateText(myfile))
+                    using (StreamWriter sw = File.CreateText(myFile))
                     {
                         sw.WriteLine($"{{\"{Constants.MattermostServerURL}\": \"\", \"{Constants.MattermostSecret}\": \"\"}}");
                     }
                     return "";
                 }
 
-                JsonNode configNode = JsonNode.Parse(File.ReadAllText(myfile));
+                JsonNode configNode = JsonNode.Parse(File.ReadAllText(myFile));
                 return configNode[key].GetValue<string>();
             } catch (Exception ex)
             {
