@@ -23,17 +23,15 @@ jobs:
 
       - name: Disable Out of process builds
         run: |
-          set
-          Get-ChildItem env:
+          $env:DisableOutOfProcessBuildPath = "$env:DevEnvDir" + "CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild"
+          Test-Path $env:DisableOutOfProcessBuildPath
+          if ($env:DisableOutOfProcessBuildPath | Test-Path) {
+            cd $env:DisableOutOfProcessBuildPath
+            .\DisableOutOfProcBuild.exe
+          }
         
       - name: Build the solution
         id: build
         run: |
+          pwd
           devenv.com .\CSExeCOMServer.sln /Build Release
-          # echo ::set-output name=BUNDLE_NAME::$(cd MattermostPresenceProvider; ls)
-          
-#       - name: Upload the built plugin as an artifact
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: ${{ steps.build.outputs.BUNDLE_NAME }}
-#           path: MattermostPresenceProvider/${{ steps.build.outputs.BUNDLE_NAME }}
