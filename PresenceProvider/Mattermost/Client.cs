@@ -35,7 +35,7 @@ namespace OutlookPresenceProvider.Mattermost
         private string _secret;
         private Uri _pluginUrl;
         private UriBuilder _wsServerUrl;
-        
+
         // mre is used to block and release threads manually.
         // It is created in the unsignaled state.
         private ManualResetEvent mre = new ManualResetEvent(false);
@@ -55,7 +55,7 @@ namespace OutlookPresenceProvider.Mattermost
             _wsServerUrl = new UriBuilder(_pluginUrl);
             _wsServerUrl.Scheme = _pluginUrl.Scheme == "https" ? "wss" : "ws";
         }
-        
+
         public ContactAvailability GetAvailabilityFromMattermost(string email)
         {
             try
@@ -132,20 +132,19 @@ namespace OutlookPresenceProvider.Mattermost
         {
             try
             {
-                string myfile = $"{Directory.GetCurrentDirectory()}\\config.json";
-                // Checking the above file
-                if (!File.Exists(myfile))
+                string myFile = $"{Directory.GetCurrentDirectory()}\\config.json";
+                // Checking the config.json file
+                if (!File.Exists(myFile))
                 {
-                    using (StreamWriter sw = File.CreateText(myfile))
+                    using (StreamWriter sw = File.CreateText(myFile))
                     {
                         sw.WriteLine("{\"MattermostServerURL\": \"\", \"MattermostSecret\": \"\"}");
                     }
                     return "";
                 }
 
-                JsonNode configNode = JsonNode.Parse(File.ReadAllText(myfile));
-                string val = configNode[key].GetValue<string>();
-                return val;
+                JsonNode configNode = JsonNode.Parse(File.ReadAllText(myFile));
+                return configNode[key].GetValue<string>();
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
