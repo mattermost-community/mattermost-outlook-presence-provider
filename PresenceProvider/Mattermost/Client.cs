@@ -105,9 +105,7 @@ namespace OutlookPresenceProvider.Mattermost
 
                     foreach (JsonNode user in response)
                     {
-                        string email = user["email"].GetValue<string>();
-                        string status = user["status"].GetValue<string>();
-                        _store.Add(email, status);
+                        _store.Add(user["email"].GetValue<string>(), user["status"].GetValue<string>());
                     }
                     page++;
                 }
