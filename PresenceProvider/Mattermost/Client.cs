@@ -52,7 +52,7 @@ namespace OutlookPresenceProvider.Mattermost
         {
             _secret = GetValueFromConfig(Constants.MattermostSecret);
             _serverUrl = GetValueFromConfig(Constants.MattermostServerURL);
-            if (_secret == "" || _serverUrl == "")
+            if (_secret == string.Empty || _serverUrl == string.Empty)
             {
                 Trace.WriteLine("Invalid server url or secret.");
                 throw new Exception("Invalid server url or secret.");
@@ -114,13 +114,16 @@ namespace OutlookPresenceProvider.Mattermost
 
         private void InitializeWebsocketClient()
         {
+            string wsTimeoutStr = GetValueFromConfig(Constants.MattermostWebsocketTimeout);
+            double wsTimeout = wsTimeoutStr != string.Empty ? double.Parse(wsTimeoutStr) : Constants.MattermostDefaultWebsocketTimeout;
+
             _wsServerUrl.Path += "ws";
             AddQueryParamsToUrl(_wsServerUrl, Constants.MattermostRequestParamSecret, _secret);
             var client = new WebsocketClient(_wsServerUrl.Uri);
 
             // The client will disconnect and reconnect if there is no message from
-            // the server in 60 seconds.
-            client.ReconnectTimeout = TimeSpan.FromSeconds(Constants.WebsocketReconnectionTimeoutInSeconds);
+            // the server in the specified interval.
+            client.ReconnectTimeout = TimeSpan.FromSeconds(wsTimeout);
             client.ReconnectionHappened.Subscribe(info =>
             {
                 Trace.WriteLine("Reconnection happened, type: " + info.Type);
@@ -135,7 +138,6 @@ namespace OutlookPresenceProvider.Mattermost
                 }
             });
 
-            
             client.Start();
             _wsClient = client;
             mre.WaitOne();
@@ -153,9 +155,9 @@ namespace OutlookPresenceProvider.Mattermost
                 {
                     using (StreamWriter sw = File.CreateText(myfile))
                     {
-                        sw.WriteLine($"{{\"{Constants.MattermostServerURL}\": \"\", \"{Constants.MattermostSecret}\": \"\"}}");
+                        sw.WriteLine($"{{\"{Constants.MattermostServerURL}\": \"\", \"{Constants.MattermostSecret}\": \"\", \"{Constants.MattermostWebsocketTimeout}\": \"{Constants.MattermostDefaultWebsocketTimeout}\"}}");
                     }
-                    return "";
+                    return string.Empty;
                 }
 
                 JsonNode configNode = JsonNode.Parse(File.ReadAllText(myfile));
@@ -163,7 +165,7 @@ namespace OutlookPresenceProvider.Mattermost
             } catch (Exception ex)
             {
                 Trace.WriteLine(ex.Message);
-                return "";
+                return string.Empty;
             }
         }
 

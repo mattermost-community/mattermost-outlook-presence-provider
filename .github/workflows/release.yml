@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  pull_request:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build_and_release:
+    name: Build and release
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup VS Dev Environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@v4
+
+      - uses: actions/checkout@v2
+
+      - name: Restore packages
+        run: MSBuild.exe -t:restore -p:RestorePackagesConfig=true
+
+      # Visual studio, by default, does not support building of a setup project through the command line.
+      # So, we have to enable out of process builds by modifying a key in the registry or by running an
+      # application installed with the Visual Studio installer projects extension. For more details, visit
+      # the link: https://stackoverflow.com/questions/8648428/an-error-occurred-while-validating-hresult-8000000a
+      - name: Enable Out of process builds
+        run: |
+          $DisableOutOfProcessBuildPath = "$env:DevEnvDir" + "CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild"
+          if ($DisableOutOfProcessBuildPath | Test-Path) {
+            cd $DisableOutOfProcessBuildPath
+            .\DisableOutOfProcBuild.exe
+          }
+        
+      - name: Build the solution
+        run: devenv.com .\CSExeCOMServer.sln /Build Release
+
+      - name: Remove files and create a zip of the build
+        run: |
+          if (Test-Path .\MattermostPresenceProvider\Debug\) { Remove-Item .\MattermostPresenceProvider\Debug\ -Recurse }
+          if (Test-Path .\MattermostPresenceProvider\Release\) { Remove-Item .\MattermostPresenceProvider\Release\ -Recurse }
+          if (Test-Path .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj) { Remove-Item .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj }
+          Compress-Archive -Path .\MattermostPresenceProvider\ -DestinationPath MattermostPresenceProvider.zip
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./MattermostPresenceProvider.zip
+          asset_name: MattermostPresenceProvider.zip
+          asset_content_type: application/gzip

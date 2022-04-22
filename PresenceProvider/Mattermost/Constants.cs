@@ -6,8 +6,9 @@ namespace OutlookPresenceProvider.Mattermost
     {
         public const string MattermostServerURL = "MattermostServerURL";
         public const string MattermostSecret = "MattermostSecret";
+        public const string MattermostWebsocketTimeout = "MattermostWebsocketReconnectionTimeoutInSeconds";
+        public const double MattermostDefaultWebsocketTimeout = 30;
         public const string PluginId = "com.mattermost.outlook-presence";
-        public const double WebsocketReconnectionTimeoutInSeconds = 30;
         public const string MattermostRequestParamSecret = "secret";
         public const string MattermostRequestParamPage = "page";
         public const string MattermostEmail = "email";
@@ -34,7 +35,7 @@ namespace OutlookPresenceProvider.Mattermost
                 case ContactAvailability.ucAvailabilityDoNotDisturb: return "DoNotDisturb";
                 case ContactAvailability.ucAvailabilityOffline: return "Offline";
             }
-            return "";
+            return string.Empty;
         }
     }
 }
