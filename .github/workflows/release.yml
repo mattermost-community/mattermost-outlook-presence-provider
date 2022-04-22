@@ -36,9 +36,9 @@ jobs:
 
       - name: Remove files and create a zip of the build
         run: |
-          Remove-Item .\MattermostPresenceProvider\Debug\ -Recurse
-          Remove-Item .\MattermostPresenceProvider\Release\ -Recurse
-          Remove-Item .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj
+          if (Test-Path .\MattermostPresenceProvider\Debug\) { Remove-Item .\MattermostPresenceProvider\Debug\ -Recurse }
+          if (Test-Path .\MattermostPresenceProvider\Release\) { Remove-Item .\MattermostPresenceProvider\Release\ -Recurse }
+          if (Test-Path .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj) { Remove-Item .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj }
           Compress-Archive -Path .\MattermostPresenceProvider\ -DestinationPath MattermostPresenceProvider.zip
 
       - name: Create Release
