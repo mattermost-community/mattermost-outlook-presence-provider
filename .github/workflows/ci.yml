@@ -21,6 +21,11 @@ jobs:
       - name: Restore packages
         run: MSBuild.exe -t:restore -p:RestorePackagesConfig=true
 
+      - name: Disable Out of process builds
+        run: |
+          set
+          Get-ChildItem env:
+        
       - name: Build the solution
         id: build
         run: |
