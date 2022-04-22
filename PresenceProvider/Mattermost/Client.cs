@@ -54,8 +54,8 @@ namespace OutlookPresenceProvider.Mattermost
             _serverUrl = GetValueFromConfig(Constants.MattermostServerURL);
             if (_secret == "" || _serverUrl == "")
             {
-                Trace.WriteLine("Invalid server url or secret.");
-                throw new Exception("Invalid server url or secret.");
+                Trace.WriteLine("Server URL or Secret cannot be empty.");
+                throw new Exception("Server URL or Secret cannot be empty.");
             }
             _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.PluginId}/api/v1/");
             _wsServerUrl = new UriBuilder(_pluginUrl);
