@@ -1,5 +1,4 @@
-﻿
-#region Using directives
+﻿#region Using directives
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -35,7 +34,7 @@ namespace OutlookPresenceProvider
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(ex.StackTrace); // Log the error
+                Trace.TraceError(ex.StackTrace); // Log the error
                 throw ex; // Re-throw the exception
             }
         }

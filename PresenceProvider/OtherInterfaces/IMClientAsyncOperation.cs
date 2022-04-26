@@ -13,7 +13,7 @@ namespace OutlookPresenceProvider
 
         public void CancelOperation()
         {
-            Trace.WriteLine("Operation cancelled");
+            Trace.TraceInformation("Operation cancelled");
         }
 
         private dynamic _asyncState;

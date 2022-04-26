@@ -84,7 +84,7 @@ namespace OutlookPresenceProvider
                 callback.OnLookup(this, null, asyncOperation);
             } catch (Exception ex)
             {
-                Trace.WriteLine(ex.StackTrace);
+                Trace.TraceError(ex.StackTrace);
             }
             return asyncOperation;
         }
