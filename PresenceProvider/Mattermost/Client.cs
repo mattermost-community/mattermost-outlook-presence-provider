@@ -19,6 +19,7 @@ namespace OutlookPresenceProvider.Mattermost
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             UpdateURLs();
+            InitializeStore();
             InitializeWebsocketClientInNewThread();
         }
 
@@ -35,6 +36,11 @@ namespace OutlookPresenceProvider.Mattermost
         private string _secret;
         private Uri _pluginUrl;
         private UriBuilder _wsServerUrl;
+        private Store _store;
+        public Store Store
+        {
+            get => _store;
+        }
 
         // mre is used to block and release threads manually.
         // It is created in the unsignaled state.
@@ -69,13 +75,43 @@ namespace OutlookPresenceProvider.Mattermost
 
                 UriBuilder reqUrl = new UriBuilder(_pluginUrl);
                 reqUrl.Path += $"status/{email}";
-                AddQueryParamsToUrl(reqUrl, "secret", _secret);
+                AddQueryParamsToUrl(reqUrl, Constants.MattermostRequestParamSecret, _secret);
                 JsonNode statusNode = JsonNode.Parse(_client.GetStringAsync(reqUrl.Uri).GetAwaiter().GetResult());
                 return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.StackTrace);
                 return ContactAvailability.ucAvailabilityNone;
+            }
+        }
+
+        private void InitializeStore()
+        {
+            try
+            {
+                _store = new Store();
+                UriBuilder reqUrl = new UriBuilder(_pluginUrl);
+                reqUrl.Path += "status";
+                int page = 0;
+                AddQueryParamsToUrl(reqUrl, Constants.MattermostRequestParamSecret, _secret);
+                while (true)
+                {
+                    AddQueryParamsToUrl(reqUrl, Constants.MattermostRequestParamPage, page.ToString());
+                    JsonArray response = JsonNode.Parse(_client.GetStringAsync(reqUrl.Uri).GetAwaiter().GetResult()).AsArray();
+                    if (response.Count == 0)
+                    {
+                        break;
+                    }
+
+                    foreach (JsonNode user in response)
+                    {
+                        _store.Add(user["email"].GetValue<string>(), user["status"].GetValue<string>());
+                    }
+                    page++;
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
             }
         }
 
@@ -100,7 +136,7 @@ namespace OutlookPresenceProvider.Mattermost
         private void InitializeWebsocketClient()
         {
             _wsServerUrl.Path += "ws";
-            AddQueryParamsToUrl(_wsServerUrl, "secret", _secret);
+            AddQueryParamsToUrl(_wsServerUrl, Constants.MattermostRequestParamSecret, _secret);
             var client = new WebsocketClient(_wsServerUrl.Uri);
 
             // The client will disconnect and reconnect if there is no message from

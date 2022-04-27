@@ -67,8 +67,8 @@ namespace OutlookPresenceProvider
                 asyncOperation.IsSucceeded = true;
                 
                 // We are marking the async operation status code as 404 because the purpose of this function is
-                // to find the SIP address of a user using email, but we are not working with SIP address anywhere
-                // in the app so when this function is not able to find the SIP address, Outlook calls the GetContactByUri
+                // to find the IM address of a user using email, but we are not working with the IM address anywhere
+                // in the app so when this function is not able to find the IM address, Outlook calls the GetContactByUri
                 // method with the email address and that's what we want
                 asyncOperation.StatusCode = (int)HttpStatusCode.NotFound;
 

@@ -11,6 +11,10 @@
 x64/
 [Bb]in/
 [Oo]bj/
+# Ignore all files in the BuildSetup folder
+BuildSetup/*
+# except .vdproj file as it contains the configuration for the setup
+!BuildSetup/*.vdproj
 
 # NuGet Packages
 *.nupkg

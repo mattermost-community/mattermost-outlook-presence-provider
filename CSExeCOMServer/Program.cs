@@ -37,19 +37,12 @@ namespace CSExeCOMServerTest
             string currentDir = Directory.GetCurrentDirectory();
             string typeLibPath = $"{currentDir}\\lync4.tlb";
             TypeLib.Register(typeLibPath);
-            
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+           
             CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
             // Run the out-of-process COM server
             CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
 
             OutlookPresenceProvider.PresenceProvider.Stopped();
-        }
-
-        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            // Log the exception and display it
-            Debug.WriteLine((e.ExceptionObject as Exception).StackTrace);
         }
 
         static void OnCOMReady()

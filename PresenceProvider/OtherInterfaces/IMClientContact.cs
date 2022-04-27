@@ -14,10 +14,10 @@ namespace OutlookPresenceProvider
         {
             _settingDictionary = new IMClientContactSettingDictionary();
             _groupCollection = new IMClientGroupCollection();
-            _client = PresenceProvider.client;
+            _store = PresenceProvider.client.Store;
         }
 
-        private Mattermost.Client _client;
+        private Mattermost.Store _store;
         public IMClientContact(string uri) : this()
         {
             _uri = uri;
@@ -74,11 +74,6 @@ namespace OutlookPresenceProvider
         }
 
         private ContactAvailability _availability = ContactAvailability.ucAvailabilityNone;
-        public ContactAvailability Availability
-        {
-            get => _availability;
-            set => _availability = value;
-        }
 
         public object GetContactInformation(ContactInformationType _contactInformationType)
         {
@@ -92,16 +87,14 @@ namespace OutlookPresenceProvider
                     // https://docs.microsoft.com/en-us/dotnet/api/microsoft.lync.model.contactavailability?view=lync-client
                     case ContactInformationType.ucPresenceAvailability:
                         {
-                            return _availability != ContactAvailability.ucAvailabilityNone ? _availability : 
-                                _availability = _client.GetAvailabilityFromMattermost(_uri);
+                            // Set the value of _availability so that the ActivityId can be determined based on its value
+                            return _availability = _store.GetAvailability(_uri);
                         }
                     // The ActivityId is used to determine the presence text.
                     // https://docs.microsoft.com/en-us/answers/questions/771004/which-member-in-the-contactinformationtype-is-used.html
                     case ContactInformationType.ucPresenceActivityId:
                         {
-                            string activityId = Mattermost.Constants.AvailabilityActivityIdMap(_availability);
-                            _availability = ContactAvailability.ucAvailabilityNone;
-                            return activityId;
+                            return Mattermost.Constants.AvailabilityActivityIdMap(_availability);
                         }
                     case ContactInformationType.ucPresenceEmailAddresses:
                         {
