@@ -33,17 +33,17 @@ namespace CSExeCOMServerTest
         /// </summary>
         static void Main(string[] args)
         {
-            // Uncomment below lines if Skype for Business is not installed in the system.
-            // DirectoryInfo parentDir = Directory.GetParent(Directory.GetCurrentDirectory());
-            // string typeLibPath = $"{parentDir}\\DLL\\lync4.tlb";
-            // TypeLib.Register(typeLibPath);
+            // Comment below lines if Skype for Business is installed in the system.
+            string currentDir = Directory.GetCurrentDirectory();
+            string typeLibPath = $"{currentDir}\\lync4.tlb";
+            TypeLib.Register(typeLibPath);
             
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
             // Run the out-of-process COM server
             CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
-            OutlookPresenceProvider.PresenceProvider.Stopped();
 
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            OutlookPresenceProvider.PresenceProvider.Stopped();
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -73,7 +73,7 @@ namespace CSExeCOMServerTest
                 Trace.WriteLine($"Registering type library failed: 0x{hr:x}");
                 return;
             }
-            hr = OleAut32.RegisterTypeLib(typeLib, tlbPath, string.Empty);
+            hr = OleAut32.RegisterTypeLibForUser(typeLib, tlbPath, string.Empty);
             if (hr < 0)
             {
                 Trace.WriteLine($"Registering type library failed: 0x{hr:x}");

@@ -5,8 +5,9 @@ namespace OutlookPresenceProvider.Mattermost
     public class Constants
     {
         public const string MattermostServerURL = "MattermostServerURL";
+        public const string MattermostSecret = "MattermostSecret";
         public const string PluginId = "com.mattermost.outlook-presence";
-        public const double WebsocketReconnectionTimeoutInSeconds = 60;
+        public const double WebsocketReconnectionTimeoutInSeconds = 30;
 
         public static ContactAvailability StatusAvailabilityMap(string status)
         {
