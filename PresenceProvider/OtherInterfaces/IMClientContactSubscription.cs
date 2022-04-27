@@ -24,7 +24,6 @@ namespace OutlookPresenceProvider
         // Add a new IContact object to the collection of contacts.
         public void AddContact(Contact _contact)
         {
-            Console.WriteLine(_contact.Uri);
             if (!_subscribedContacts.ContainsKey(_contact.Uri))
             {
                 _subscribedContacts.Add(_contact.Uri, _contact as IMClientContact);
@@ -43,7 +42,6 @@ namespace OutlookPresenceProvider
 
         public void RemoveContact(Contact _contact)
         {
-            Console.WriteLine(_contact.Uri);
             if( _subscribedContacts.ContainsKey(_contact.Uri))
             {
                 _subscribedContacts.Remove(_contact.Uri);
@@ -52,9 +50,8 @@ namespace OutlookPresenceProvider
 
         private void handleWebsocketEvent(ResponseMessage msg)
         {
-            // TODO: Change this parsing to more conventional method
-            string email = JsonNode.Parse(msg.ToString())["email"].GetValue<string>();
-            string status = JsonNode.Parse(msg.ToString())["status"].GetValue<string>();
+            string email = JsonNode.Parse(msg.ToString())[Mattermost.Constants.MattermostEmail].GetValue<string>();
+            string status = JsonNode.Parse(msg.ToString())[Mattermost.Constants.MattermostStatus].GetValue<string>();
             _store.Add(email, status);
             IMClientContact contact;
             if (_subscribedContacts.TryGetValue(email, out contact))

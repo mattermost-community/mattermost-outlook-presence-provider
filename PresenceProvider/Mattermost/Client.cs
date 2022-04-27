@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json.Nodes;
-using UCCollaborationLib;
 using Websocket.Client;
 using System.Net.WebSockets;
 using System.Web;
@@ -54,37 +54,14 @@ namespace OutlookPresenceProvider.Mattermost
             _serverUrl = GetValueFromConfig(Constants.MattermostServerURL);
             if (_secret == "" || _serverUrl == "")
             {
-                Console.WriteLine("Invalid server url or secret.");
-                throw new Exception("Invalid server url or secret.");
+                Trace.WriteLine("Server URL or Secret cannot be empty.");
+                throw new Exception("Server URL or Secret cannot be empty.");
             }
             _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.PluginId}/api/v1/");
             _wsServerUrl = new UriBuilder(_pluginUrl);
             _wsServerUrl.Scheme = _pluginUrl.Scheme == "https" ? "wss" : "ws";
         }
-
-        public ContactAvailability GetAvailabilityFromMattermost(string email)
-        {
-            try
-            {
-                if (_serverUrl == "")
-                {
-                    // We will not be using this value from the registry so just log the error for now
-                    Console.WriteLine("Invalid server url");
-                    return ContactAvailability.ucAvailabilityNone;
-                }
-
-                UriBuilder reqUrl = new UriBuilder(_pluginUrl);
-                reqUrl.Path += $"status/{email}";
-                AddQueryParamsToUrl(reqUrl, Constants.MattermostRequestParamSecret, _secret);
-                JsonNode statusNode = JsonNode.Parse(_client.GetStringAsync(reqUrl.Uri).GetAwaiter().GetResult());
-                return Constants.StatusAvailabilityMap(statusNode["status"].GetValue<string>());
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.StackTrace);
-                return ContactAvailability.ucAvailabilityNone;
-            }
-        }
-
+        
         private void InitializeStore()
         {
             try
@@ -105,13 +82,13 @@ namespace OutlookPresenceProvider.Mattermost
 
                     foreach (JsonNode user in response)
                     {
-                        _store.Add(user["email"].GetValue<string>(), user["status"].GetValue<string>());
+                        _store.Add(user[Constants.MattermostEmail].GetValue<string>(), user[Constants.MattermostStatus].GetValue<string>());
                     }
                     page++;
                 }
             } catch (Exception ex)
             {
-                Console.WriteLine(ex.StackTrace);
+                Trace.WriteLine(ex.StackTrace);
             }
         }
 
@@ -125,11 +102,11 @@ namespace OutlookPresenceProvider.Mattermost
 
                 // Wait for the websocket client "_wsClient" to get initialized by the other thread running parallely
                 while (_wsClient == null) ;
-                Console.WriteLine("Websocket client connected.");
+                Trace.WriteLine("Websocket client connected.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR: " + ex.ToString());
+                Trace.WriteLine("ERROR: " + ex.ToString());
             }
         }
 
@@ -144,12 +121,12 @@ namespace OutlookPresenceProvider.Mattermost
             client.ReconnectTimeout = TimeSpan.FromSeconds(Constants.WebsocketReconnectionTimeoutInSeconds);
             client.ReconnectionHappened.Subscribe(info =>
             {
-                Console.WriteLine("Reconnection happened, type: " + info.Type);
+                Trace.WriteLine("Reconnection happened, type: " + info.Type);
             });
 
             client.DisconnectionHappened.Subscribe(info =>
             {
-                Console.WriteLine("Disconnection happened, type: " + info.Type);
+                Trace.WriteLine("Disconnection happened, type: " + info.Type);
                 if (info.Type == DisconnectionType.Error || info.Type == DisconnectionType.ByServer)
                 {
                     throw new Exception("Error in connecting to websocket server.");
@@ -161,7 +138,7 @@ namespace OutlookPresenceProvider.Mattermost
             _wsClient = client;
             mre.WaitOne();
             
-            Console.WriteLine("Websocket client closed.");
+            Trace.WriteLine("Websocket client closed.");
         }
 
         private string GetValueFromConfig(string key)
@@ -174,7 +151,7 @@ namespace OutlookPresenceProvider.Mattermost
                 {
                     using (StreamWriter sw = File.CreateText(myFile))
                     {
-                        sw.WriteLine("{\"MattermostServerURL\": \"\", \"MattermostSecret\": \"\"}");
+                        sw.WriteLine($"{{\"{Constants.MattermostServerURL}\": \"\", \"{Constants.MattermostSecret}\": \"\"}}");
                     }
                     return "";
                 }
@@ -183,7 +160,7 @@ namespace OutlookPresenceProvider.Mattermost
                 return configNode[key].GetValue<string>();
             } catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Trace.WriteLine(ex.Message);
                 return "";
             }
         }

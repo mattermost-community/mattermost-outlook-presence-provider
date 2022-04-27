@@ -9,6 +9,7 @@ namespace OutlookPresenceProvider
     public class IMClientGroupCollection : GroupCollection
     {
         private List<Group> _groups;
+
         public IMClientGroupCollection()
         {
             _groups = new List<Group>();
@@ -39,14 +40,15 @@ namespace OutlookPresenceProvider
 
         public GroupCollection GetGroupsByType(GroupType _groupType)
         {
+            IMClientGroupCollection gc = new IMClientGroupCollection();
             foreach (Group _group in _groups)
             {
                 if (_group.Type == _groupType)
                 {
-                    return (GroupCollection)this;
+                    gc.AddGroup(_group);
                 }
             }
-            return null;
+            return gc;
         }
 
         public int IndexOf(Group _group)
@@ -54,14 +56,13 @@ namespace OutlookPresenceProvider
             return _groups.IndexOf(_group as IMClientGroup);
         }
 
-        public int Count => _groups.Count;
-
-        public Group this[int _index] => _groups[_index];
-
         public void AddGroup(Group _group)
         {
             _groups.Add(_group);
         }
-    }
 
+        public int Count => _groups.Count;
+
+        public Group this[int _index] => _groups[_index];
+    }
 }

@@ -1,7 +1,5 @@
 ﻿#region Using directives
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using System.Reflection;

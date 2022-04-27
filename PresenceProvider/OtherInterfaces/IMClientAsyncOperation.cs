@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UCCollaborationLib;
 
@@ -13,7 +13,7 @@ namespace OutlookPresenceProvider
 
         public void CancelOperation()
         {
-            Console.WriteLine("Operation cancelled");
+            Trace.WriteLine("Operation cancelled");
         }
 
         private dynamic _asyncState;

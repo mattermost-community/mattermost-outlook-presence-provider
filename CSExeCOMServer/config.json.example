@@ -1,4 +1,0 @@
-{
-  "MattermostServerURL": "https://<mattermost-server-url>",
-  "MattermostSecret": "<secret>"
-}

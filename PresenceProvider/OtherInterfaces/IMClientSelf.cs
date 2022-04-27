@@ -22,10 +22,7 @@ namespace OutlookPresenceProvider
         // to the IContact object that represents the local user.
         public Contact Contact
         {
-            get
-            {
-                return _contactData;
-            }
+            get => _contactData;
         }
 
         public AsynchronousOperation PublishContactInformation(PublishableContactInformationType[] _publishablePresenceItemTypes, object[] _publishablePresenceItemValues, [IUnknownConstant] object _selfCallback, object _state)

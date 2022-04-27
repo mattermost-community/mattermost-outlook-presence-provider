@@ -10,6 +10,8 @@ namespace OutlookPresenceProvider.Mattermost
         public const double WebsocketReconnectionTimeoutInSeconds = 30;
         public const string MattermostRequestParamSecret = "secret";
         public const string MattermostRequestParamPage = "page";
+        public const string MattermostEmail = "email";
+        public const string MattermostStatus = "status";
 
         public static ContactAvailability StatusAvailabilityMap(string status)
         {

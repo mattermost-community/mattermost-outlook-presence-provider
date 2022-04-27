@@ -27,46 +27,31 @@ namespace OutlookPresenceProvider
         private IMClientContactManager _contactManager;
         public ContactManager ContactManager
         {
-            get
-            {
-                return _contactManager;
-            }
+            get => _contactManager;
         }
 
         private ConversationManager _conversationManager;
         public ConversationManager ConversationManager
         {
-            get
-            {
-                return _conversationManager;
-            }
+            get => _conversationManager;
         }
 
         private IMClientSelf _self;
         public Self Self
         {
-            get
-            {
-                return _self;
-            }
+            get => _self;
         }
 
         private ClientState _clientState = ClientState.ucClientStateUninitialized;
         public ClientState State
         {
-            get
-            {
-                return _clientState;
-            }
+            get => _clientState;
         }
 
         private string _uri = "";
         public string Uri
         {
-            get
-            {
-                return _uri;
-            }
+            get => _uri;
         }
 
         public LyncClientCapabilityTypes Capabilities => throw new NotImplementedException();
