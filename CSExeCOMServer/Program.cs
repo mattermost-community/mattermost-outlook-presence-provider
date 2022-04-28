@@ -15,7 +15,9 @@
 * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 \***************************************************************************/
 
+using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace CSExeCOMServerTest
 {
@@ -24,12 +26,19 @@ namespace CSExeCOMServerTest
         // The main entry point for the application.
         static void Main(string[] args)
         {
+            //if (!EventLog.SourceExists("TraceListenerLogSource"))
+            //{
+            //    EventLog.CreateEventSource("TraceListenerLogSource", OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+            //}
+
             // Comment below lines if the Unified Collaborations type library is already registered in the system.
             string typeLibName = "UCCollaborationLib.tlb";
             string currentDir = Directory.GetCurrentDirectory();
             string typeLibPath = $"{currentDir}\\{typeLibName}";
             TypeLib.Register(typeLibPath);
-           
+
+            //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            //Console.WriteLine(userName);
             CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
             // Run the out-of-process COM server
             CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
@@ -39,7 +48,14 @@ namespace CSExeCOMServerTest
 
         static void OnCOMReady()
         {
-            OutlookPresenceProvider.PresenceProvider.Started();
+            //try
+            //{
+                OutlookPresenceProvider.PresenceProvider.Started();
+            //} catch (Exception ex)
+            //{
+            //    Trace.TraceError(ex.Message);
+            //    Trace.TraceError(ex.StackTrace);
+            //}
         }
     }
 }
