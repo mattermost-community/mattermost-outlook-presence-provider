@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Diagnostics;
+using System.Collections.Generic;
 using UCCollaborationLib;
 
 namespace OutlookPresenceProvider.Mattermost
@@ -18,7 +20,15 @@ namespace OutlookPresenceProvider.Mattermost
 
         public ContactAvailability GetAvailability(string email)
         {
-            return Constants.StatusAvailabilityMap(_store[email]);
+            try
+            {
+                Trace.TraceInformation($"Returning availability of user: {email} from the store.");
+                return Constants.StatusAvailabilityMap(_store[email]);
+            } catch (Exception ex)
+            {
+                Utils.LogException(ex);
+                return ContactAvailability.ucAvailabilityOffline;
+            }
         }
 
         public bool Remove(string email)

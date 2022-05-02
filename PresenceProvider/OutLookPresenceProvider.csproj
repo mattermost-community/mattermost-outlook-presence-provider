@@ -113,6 +113,7 @@
     <Compile Include="OtherInterfaces\IMClientStateChangedEventData.cs" />
     <Compile Include="PresenceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OutOfProcessCOMBase\OutOfProcessCOMBase.csproj">

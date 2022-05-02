@@ -34,8 +34,7 @@ namespace OutlookPresenceProvider
             }
             catch (Exception ex)
             {
-                Trace.TraceError(ex.Message); // Log the error
-                Trace.TraceError(ex.StackTrace);
+                Utils.LogException(ex);
                 throw ex; // Re-throw the exception
             }
         }

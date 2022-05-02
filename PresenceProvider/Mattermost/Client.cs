@@ -90,8 +90,7 @@ namespace OutlookPresenceProvider.Mattermost
                 }
             } catch (Exception ex)
             {
-                Trace.TraceError(ex.Message);
-                Trace.TraceError(ex.StackTrace);
+                Utils.LogException(ex);
             }
         }
 
@@ -109,7 +108,7 @@ namespace OutlookPresenceProvider.Mattermost
             }
             catch (Exception ex)
             {
-                Trace.TraceError("ERROR: " + ex.ToString());
+                Utils.LogException(ex);
             }
         }
 
@@ -135,7 +134,7 @@ namespace OutlookPresenceProvider.Mattermost
                 Trace.TraceInformation("Disconnection happened, type: " + info.Type);
                 if (info.Type == DisconnectionType.Error || info.Type == DisconnectionType.ByServer)
                 {
-                    throw new Exception("Error in connecting to websocket server.");
+                    Trace.TraceError($"Error in connecting to the websocket server: {info.Type}");
                 }
             });
 
@@ -165,7 +164,7 @@ namespace OutlookPresenceProvider.Mattermost
                 return configNode[key].GetValue<string>();
             } catch (Exception ex)
             {
-                Trace.TraceError(ex.Message);
+                Utils.LogException(ex);
                 return string.Empty;
             }
         }
