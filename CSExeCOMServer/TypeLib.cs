@@ -10,8 +10,7 @@ namespace CSExeCOMServerTest
     {
         public static void Register(string tlbPath)
         {
-            Trace.TraceInformation($"Registering type library:");
-            Trace.TraceInformation(tlbPath);
+            Trace.TraceInformation($"Registering type library: {tlbPath}");
             ComTypes.ITypeLib typeLib;
             int hr = OleAut32.LoadTypeLibEx(tlbPath, OleAut32.REGKIND.REGKIND_NONE, out typeLib);
             if (hr < 0)
@@ -25,14 +24,12 @@ namespace CSExeCOMServerTest
                 Trace.TraceError($"Registering type library failed: 0x{hr:x}");
                 return;
             }
-            Trace.TraceInformation($"Registering type library succeeded.");
+            Trace.TraceInformation($"Registering type library succeeded : {tlbPath}");
         }
 
         public static void Unregister(string tlbPath)
         {
-            Trace.TraceInformation($"Unregistering type library:");
-            Trace.TraceInformation(tlbPath);
-
+            Trace.TraceInformation($"Unregistering type library: {tlbPath}");
             ComTypes.ITypeLib typeLib;
             int hr = OleAut32.LoadTypeLibEx(tlbPath, OleAut32.REGKIND.REGKIND_NONE, out typeLib);
             if (hr < 0)

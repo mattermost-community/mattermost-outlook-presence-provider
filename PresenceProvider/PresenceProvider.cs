@@ -34,7 +34,8 @@ namespace OutlookPresenceProvider
             }
             catch (Exception ex)
             {
-                Trace.TraceError(ex.StackTrace); // Log the error
+                Trace.TraceError(ex.Message); // Log the error
+                Trace.TraceError(ex.StackTrace);
                 throw ex; // Re-throw the exception
             }
         }
@@ -50,17 +51,6 @@ namespace OutlookPresenceProvider
 
         public static void Started()
         {
-            //using (RegistryKey IMProviders = Registry.LocalMachine.CreateSubKey("SOFTWARE\\IM Providers", true))
-            //{
-            //    using (RegistryKey IMProvider = IMProviders.CreateSubKey(COMAppExeName))
-            //    {
-            //        IMProvider.SetValue("FriendlyName", "Mattermost Outlook Presence Provider");
-            //        IMProvider.SetValue("ProcessName", COMAppExeName + ".exe");
-            //        GuidAttribute attr = (GuidAttribute)Attribute.GetCustomAttribute(typeof(PresenceProvider), typeof(GuidAttribute));
-            //        IMProvider.SetValue("GUID", $"{{{attr.Value}}}");
-            //    }
-            //}
-
             using (RegistryKey IMProviders = Registry.CurrentUser.CreateSubKey("SOFTWARE\\IM Providers", true))
             {
                 IMProviders.SetValue("DefaultIMApp", COMAppExeName);
@@ -76,11 +66,6 @@ namespace OutlookPresenceProvider
             using (RegistryKey IMProviders = Registry.CurrentUser.OpenSubKey("SOFTWARE\\IM Providers", true))
             {
                 IMProviders.DeleteValue("DefaultIMApp");
-                IMProviders.DeleteSubKey(COMAppExeName);
-            }
-
-            using (RegistryKey IMProviders = Registry.LocalMachine.OpenSubKey("SOFTWARE\\IM Providers", true))
-            {
                 IMProviders.DeleteSubKey(COMAppExeName);
             }
         }

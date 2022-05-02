@@ -26,36 +26,32 @@ namespace CSExeCOMServerTest
         // The main entry point for the application.
         static void Main(string[] args)
         {
-            //if (!EventLog.SourceExists("TraceListenerLogSource"))
-            //{
-            //    EventLog.CreateEventSource("TraceListenerLogSource", OutlookPresenceProvider.PresenceProvider.COMAppExeName);
-            //}
+            try
+            {
+                EventLogTraceListener listener = new EventLogTraceListener(OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+                Trace.Listeners.Add(listener);
+                
+                // Comment below lines if the Unified Collaborations type library is already registered in the system.
+                string typeLibName = "UCCollaborationLib.tlb";
+                string currentDir = Directory.GetCurrentDirectory();
+                string typeLibPath = $"{currentDir}\\{typeLibName}";
+                TypeLib.Register(typeLibPath);
 
-            // Comment below lines if the Unified Collaborations type library is already registered in the system.
-            string typeLibName = "UCCollaborationLib.tlb";
-            string currentDir = Directory.GetCurrentDirectory();
-            string typeLibPath = $"{currentDir}\\{typeLibName}";
-            TypeLib.Register(typeLibPath);
+                CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
+                // Run the out-of-process COM server
+                CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
 
-            //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            //Console.WriteLine(userName);
-            CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
-            // Run the out-of-process COM server
-            CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
-            
-            OutlookPresenceProvider.PresenceProvider.Stopped();
+                OutlookPresenceProvider.PresenceProvider.Stopped();
+            } catch (Exception ex)
+            {
+                Trace.TraceError(ex.Message);
+                Trace.TraceError(ex.StackTrace);
+            }
         }
 
         static void OnCOMReady()
         {
-            //try
-            //{
-                OutlookPresenceProvider.PresenceProvider.Started();
-            //} catch (Exception ex)
-            //{
-            //    Trace.TraceError(ex.Message);
-            //    Trace.TraceError(ex.StackTrace);
-            //}
+            OutlookPresenceProvider.PresenceProvider.Started();
         }
     }
 }

@@ -90,6 +90,7 @@ namespace OutlookPresenceProvider.Mattermost
                 }
             } catch (Exception ex)
             {
+                Trace.TraceError(ex.Message);
                 Trace.TraceError(ex.StackTrace);
             }
         }
