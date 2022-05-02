@@ -1168,7 +1168,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MattermostPresenceProvider"
         "ProductCode" = "8:{7B7EBE84-CE05-4DE4-B13D-8E90F9385B58}"
-        "PackageCode" = "8:{D7A2B3F5-B01E-4DC1-86E3-0B6D1590E4CA}"
+        "PackageCode" = "8:{FCFBEB30-FBE7-460D-A7A1-F8FA72970642}"
         "UpgradeCode" = "8:{C0DA9196-00F7-4A03-918C-4573955ED35A}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -1336,6 +1336,22 @@
                                                         }
                                                         "Values"
                                                         {
+                                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_5FA23AD12B974C149BC22537CFCF662B"
+                                                            {
+                                                            "Name" = "8:MaxSizeUpper"
+                                                            "Condition" = "8:"
+                                                            "Transitive" = "11:FALSE"
+                                                            "ValueTypes" = "3:3"
+                                                            "Value" = "3:0"
+                                                            }
+                                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_C43F4C1721BE4A20A6A1BDBAD2A5DD8C"
+                                                            {
+                                                            "Name" = "8:MaxSize"
+                                                            "Condition" = "8:"
+                                                            "Transitive" = "11:FALSE"
+                                                            "ValueTypes" = "3:3"
+                                                            "Value" = "3:5242880"
+                                                            }
                                                         }
                                                     }
                                                 }
