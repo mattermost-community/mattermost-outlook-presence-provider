@@ -40,10 +40,12 @@ jobs:
         run: |
           $bytes = [Convert]::FromBase64String("${{ secrets.CODE_SIGNING_CERT }}")
           [IO.File]::WriteAllBytes("cert.pfx", $bytes)
-          Get-ChildItem env:
-          cd "C:\Program Files (x86)\Windows Kits\10\bin\"
-          ls
-          Test-Path "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64\signtool.exe"
+          $SignToolPath = $env:WindowsSdkVerBinPath + "x64\signtool.exe"
+          if ($SignToolPath | Test-Path) {
+            & $SignToolPath sign /f .\cert.pfx /fd SHA256 /d "Mattermost Presence Provider" .\MattermostPresenceProvider\Setup.msi
+            & $SignToolPath sign /f .\cert.pfx /fd SHA256 /d "Mattermost Presence Provider" .\MattermostPresenceProvider\setup.exe
+          }
+          
 
       - name: Remove files and create a zip of the build
         run: |
