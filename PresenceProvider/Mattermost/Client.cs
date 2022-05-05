@@ -52,12 +52,12 @@ namespace OutlookPresenceProvider.Mattermost
         {
             _secret = GetValueFromConfig(Constants.MattermostSecret);
             _serverUrl = GetValueFromConfig(Constants.MattermostServerURL);
-            if (_secret == "" || _serverUrl == "")
+            if (_secret == string.Empty || _serverUrl == string.Empty)
             {
-                Trace.WriteLine("Server URL or Secret cannot be empty.");
-                throw new Exception("Server URL or Secret cannot be empty.");
+                Trace.WriteLine("Invalid server url or secret.");
+                throw new Exception("Invalid server url or secret.");
             }
-            _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.PluginId}/api/v1/");
+            _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.MattermostPluginId}/api/v1/");
             _wsServerUrl = new UriBuilder(_pluginUrl);
             _wsServerUrl.Scheme = _pluginUrl.Scheme == "https" ? "wss" : "ws";
         }
@@ -112,13 +112,16 @@ namespace OutlookPresenceProvider.Mattermost
 
         private void InitializeWebsocketClient()
         {
+            string wsTimeoutStr = GetValueFromConfig(Constants.MattermostWebsocketTimeout);
+            double wsTimeout = wsTimeoutStr != string.Empty ? double.Parse(wsTimeoutStr) : Constants.MattermostDefaultWebsocketTimeout;
+
             _wsServerUrl.Path += "ws";
             AddQueryParamsToUrl(_wsServerUrl, Constants.MattermostRequestParamSecret, _secret);
             var client = new WebsocketClient(_wsServerUrl.Uri);
 
             // The client will disconnect and reconnect if there is no message from
-            // the server in 60 seconds.
-            client.ReconnectTimeout = TimeSpan.FromSeconds(Constants.WebsocketReconnectionTimeoutInSeconds);
+            // the server in the specified interval.
+            client.ReconnectTimeout = TimeSpan.FromSeconds(wsTimeout);
             client.ReconnectionHappened.Subscribe(info =>
             {
                 Trace.WriteLine("Reconnection happened, type: " + info.Type);
@@ -133,7 +136,6 @@ namespace OutlookPresenceProvider.Mattermost
                 }
             });
 
-            
             client.Start();
             _wsClient = client;
             mre.WaitOne();
@@ -145,23 +147,23 @@ namespace OutlookPresenceProvider.Mattermost
         {
             try
             {
-                string myFile = $"{Directory.GetCurrentDirectory()}\\config.json";
-                // Checking the config.json file
-                if (!File.Exists(myFile))
+                string myfile = $"{Directory.GetCurrentDirectory()}\\config.json";
+                // Checking the above file
+                if (!File.Exists(myfile))
                 {
-                    using (StreamWriter sw = File.CreateText(myFile))
+                    using (StreamWriter sw = File.CreateText(myfile))
                     {
-                        sw.WriteLine($"{{\"{Constants.MattermostServerURL}\": \"\", \"{Constants.MattermostSecret}\": \"\"}}");
+                        sw.WriteLine($"{{\"{Constants.MattermostServerURL}\": \"\", \"{Constants.MattermostSecret}\": \"\", \"{Constants.MattermostWebsocketTimeout}\": \"{Constants.MattermostDefaultWebsocketTimeout}\"}}");
                     }
-                    return "";
+                    return string.Empty;
                 }
 
-                JsonNode configNode = JsonNode.Parse(File.ReadAllText(myFile));
+                JsonNode configNode = JsonNode.Parse(File.ReadAllText(myfile));
                 return configNode[key].GetValue<string>();
             } catch (Exception ex)
             {
                 Trace.WriteLine(ex.Message);
-                return "";
+                return string.Empty;
             }
         }
 

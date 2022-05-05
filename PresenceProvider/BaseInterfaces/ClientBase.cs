@@ -48,7 +48,7 @@ namespace OutlookPresenceProvider
             get => _clientState;
         }
 
-        private string _uri = "";
+        private string _uri = string.Empty;
         public string Uri
         {
             get => _uri;

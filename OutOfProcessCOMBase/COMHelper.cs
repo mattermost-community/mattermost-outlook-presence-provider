@@ -39,7 +39,7 @@ namespace CSExeCOMServer
                 // Create "LocalServer32" under the CLSID key
                 using (RegistryKey subkey = keyCLSID.CreateSubKey("LocalServer32"))
                 {
-                    subkey.SetValue("", Assembly.GetExecutingAssembly().Location,
+                    subkey.SetValue(string.Empty, Assembly.GetExecutingAssembly().Location,
                         RegistryValueKind.String);
                 }
             }

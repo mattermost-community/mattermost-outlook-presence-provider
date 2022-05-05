@@ -33,7 +33,6 @@ namespace CSExeCOMServerTest
             CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
             // Run the out-of-process COM server
             CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
-
             OutlookPresenceProvider.PresenceProvider.Stopped();
         }
 
