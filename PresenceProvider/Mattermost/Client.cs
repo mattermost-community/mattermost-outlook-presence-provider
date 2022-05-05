@@ -41,7 +41,7 @@ namespace OutlookPresenceProvider.Mattermost
         {
             get => _store;
         }
-        
+
         // mre is used to block and release threads manually.
         // It is created in the unsignaled state.
         private ManualResetEvent mre = new ManualResetEvent(false);
@@ -57,7 +57,7 @@ namespace OutlookPresenceProvider.Mattermost
                 Trace.WriteLine("Invalid server url or secret.");
                 throw new Exception("Invalid server url or secret.");
             }
-            _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.PluginId}/api/v1/");
+            _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.MattermostPluginId}/api/v1/");
             _wsServerUrl = new UriBuilder(_pluginUrl);
             _wsServerUrl.Scheme = _pluginUrl.Scheme == "https" ? "wss" : "ws";
         }
@@ -82,9 +82,7 @@ namespace OutlookPresenceProvider.Mattermost
 
                     foreach (JsonNode user in response)
                     {
-                        string email = user[Constants.MattermostEmail].GetValue<string>();
-                        string status = user[Constants.MattermostStatus].GetValue<string>();
-                        _store.Add(email, status);
+                        _store.Add(user[Constants.MattermostEmail].GetValue<string>(), user[Constants.MattermostStatus].GetValue<string>());
                     }
                     page++;
                 }
