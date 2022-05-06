@@ -69,6 +69,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6A126CFA9192A6860B444FDB4530F3AA"
+        "OwnerKey" = "8:_13083496CDBF4520855C2C5A99DDA1F7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6A126CFA9192A6860B444FDB4530F3AA"
+        "OwnerKey" = "8:_A55DCD399F53EFE7F4213EAE234896AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6EE79696DC6F56CDD16BBCE1CE6BBB20"
         "OwnerKey" = "8:_D2E4A208303334FEFE606F11ECD1F24D"
         "MsmSig" = "8:_UNDEFINED"
@@ -105,6 +117,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_703C65C22BA13A0205A8461A7B5D043A"
+        "OwnerKey" = "8:_A55DCD399F53EFE7F4213EAE234896AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_731445479638D4A37C1DA7D752570029"
         "OwnerKey" = "8:_DB6720EAA3D5DA372A5924D4BD109058"
         "MsmSig" = "8:_UNDEFINED"
@@ -141,8 +159,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A55DCD399F53EFE7F4213EAE234896AF"
+        "OwnerKey" = "8:_13083496CDBF4520855C2C5A99DDA1F7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_BB298BCD6074BDA64F4E08F9C6420161"
         "OwnerKey" = "8:_13083496CDBF4520855C2C5A99DDA1F7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BB298BCD6074BDA64F4E08F9C6420161"
+        "OwnerKey" = "8:_A55DCD399F53EFE7F4213EAE234896AF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -243,6 +273,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DB6720EAA3D5DA372A5924D4BD109058"
+        "OwnerKey" = "8:_A55DCD399F53EFE7F4213EAE234896AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_ECC9F316C1DB31CE1C777158EBE5F947"
         "OwnerKey" = "8:_703C65C22BA13A0205A8461A7B5D043A"
         "MsmSig" = "8:_UNDEFINED"
@@ -280,13 +316,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_13083496CDBF4520855C2C5A99DDA1F7"
+        "OwnerKey" = "8:_A55DCD399F53EFE7F4213EAE234896AF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_13083496CDBF4520855C2C5A99DDA1F7"
+        "OwnerKey" = "8:_A55DCD399F53EFE7F4213EAE234896AF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6A126CFA9192A6860B444FDB4530F3AA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -410,6 +452,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -436,10 +486,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.8"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    "Name" = "8:Microsoft .NET Framework 4.8 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.8"
                     }
                 }
             }
@@ -596,6 +646,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6A126CFA9192A6860B444FDB4530F3AA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:OutOfProcessCOMBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_6A126CFA9192A6860B444FDB4530F3AA"
+                    {
+                    "Name" = "8:OutOfProcessCOMBase.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:OutOfProcessCOMBase.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7B0911FFC0404DA390170CCE6287BC92"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6EE79696DC6F56CDD16BBCE1CE6BBB20"
             {
             "AssemblyRegister" = "3:1"
@@ -703,6 +784,37 @@
                     }
                 }
             "SourcePath" = "8:System.Buffers.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7B0911FFC0404DA390170CCE6287BC92"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A55DCD399F53EFE7F4213EAE234896AF"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:OutlookPresenceProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_A55DCD399F53EFE7F4213EAE234896AF"
+                    {
+                    "Name" = "8:OutlookPresenceProvider.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:OutlookPresenceProvider.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7B0911FFC0404DA390170CCE6287BC92"
@@ -1056,13 +1168,13 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MattermostPresenceProvider"
         "ProductCode" = "8:{7B7EBE84-CE05-4DE4-B13D-8E90F9385B58}"
-        "PackageCode" = "8:{F76BB936-895A-4767-8849-B698C509BA36}"
+        "PackageCode" = "8:{FCFBEB30-FBE7-460D-A7A1-F8FA72970642}"
         "UpgradeCode" = "8:{C0DA9196-00F7-4A03-918C-4573955ED35A}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
+        "InstallAllUsers" = "11:TRUE"
         "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:Mattermost"
         "ARPHELPTELEPHONE" = "8:"
@@ -1099,13 +1211,159 @@
                         {
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_5DDA9C43467B49BE81189B4B56C789EA"
                             {
-                            "Name" = "8:[Manufacturer]"
+                            "Name" = "8:IM Providers"
                             "Condition" = "8:"
                             "AlwaysCreate" = "11:FALSE"
                             "DeleteAtUninstall" = "11:FALSE"
                             "Transitive" = "11:FALSE"
                                 "Keys"
                                 {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_9A03C90D0B7A44818BA854D93C041A60"
+                                    {
+                                    "Name" = "8:MattermostPresenceProvider"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:TRUE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                        }
+                                        "Values"
+                                        {
+                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_056814A205B943C78FA16DF19E1ED6C8"
+                                            {
+                                            "Name" = "8:GUID"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "ValueTypes" = "3:1"
+                                            "Value" = "8:{A8570DCA-CD23-413C-A8E1-53039C66302A}"
+                                            }
+                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_A5E69345DF4B4F8BA9586482180847FE"
+                                            {
+                                            "Name" = "8:ProcessName"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "ValueTypes" = "3:1"
+                                            "Value" = "8:MattermostPresenceProvider.exe"
+                                            }
+                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_D24DE740A52541AB90B7EBE7885A095A"
+                                            {
+                                            "Name" = "8:FriendlyName"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "ValueTypes" = "3:1"
+                                            "Value" = "8:Mattermost Outlook Presence Provider"
+                                            }
+                                        }
+                                    }
+                                }
+                                "Values"
+                                {
+                                }
+                            }
+                        }
+                        "Values"
+                        {
+                        }
+                    }
+                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_688E1322E88D448B8A1CCEC8F4E84310"
+                    {
+                    "Name" = "8:SYSTEM"
+                    "Condition" = "8:"
+                    "AlwaysCreate" = "11:FALSE"
+                    "DeleteAtUninstall" = "11:FALSE"
+                    "Transitive" = "11:FALSE"
+                        "Keys"
+                        {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_E8778B37C227427F8140BBD343C7603D"
+                            {
+                            "Name" = "8:CurrentControlSet"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_74F549B46D834039964A898F9B9543C8"
+                                    {
+                                    "Name" = "8:Services"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_0729807CD42145BF8A6EDE4C923D02B9"
+                                            {
+                                            "Name" = "8:EventLog"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_F1DEC831633D4051A848AB246844CD32"
+                                                    {
+                                                    "Name" = "8:Mattermost"
+                                                    "Condition" = "8:"
+                                                    "AlwaysCreate" = "11:FALSE"
+                                                    "DeleteAtUninstall" = "11:FALSE"
+                                                    "Transitive" = "11:FALSE"
+                                                        "Keys"
+                                                        {
+                                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_52391E8354D54A3E8B47EEEB4A1DD55E"
+                                                            {
+                                                            "Name" = "8:MattermostPresenceProvider"
+                                                            "Condition" = "8:"
+                                                            "AlwaysCreate" = "11:FALSE"
+                                                            "DeleteAtUninstall" = "11:FALSE"
+                                                            "Transitive" = "11:FALSE"
+                                                                "Keys"
+                                                                {
+                                                                }
+                                                                "Values"
+                                                                {
+                                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_C6EC5AEEE8B944BBA43DDE8CB5F52CAA"
+                                                                    {
+                                                                    "Name" = "8:EventMessageFile"
+                                                                    "Condition" = "8:"
+                                                                    "Transitive" = "11:FALSE"
+                                                                    "ValueTypes" = "3:1"
+                                                                    "Value" = "8:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\EventLogMessages.dll"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        "Values"
+                                                        {
+                                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_5FA23AD12B974C149BC22537CFCF662B"
+                                                            {
+                                                            "Name" = "8:MaxSizeUpper"
+                                                            "Condition" = "8:"
+                                                            "Transitive" = "11:FALSE"
+                                                            "ValueTypes" = "3:3"
+                                                            "Value" = "3:0"
+                                                            }
+                                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_C43F4C1721BE4A20A6A1BDBAD2A5DD8C"
+                                                            {
+                                                            "Name" = "8:MaxSize"
+                                                            "Condition" = "8:"
+                                                            "Transitive" = "11:FALSE"
+                                                            "ValueTypes" = "3:3"
+                                                            "Value" = "3:5242880"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                "Values"
+                                                {
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                        }
+                                    }
                                 }
                                 "Values"
                                 {
@@ -1274,7 +1532,7 @@
             "Attributes" = "3:1"
                 "Dialogs"
                 {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_5BC54E30600546DE9BF13A107F0C373E"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_59522915D4064CB19B666BD62D0130F9"
                     {
                     "Sequence" = "3:300"
                     "DisplayName" = "8:Confirm Installation"
@@ -1325,7 +1583,7 @@
                             "ContextData" = "8:1;True=1;False=0"
                             "Attributes" = "3:0"
                             "Setting" = "3:0"
-                            "Value" = "3:1"
+                            "Value" = "3:0"
                             "DefaultValue" = "3:1"
                             "UsePlugInResources" = "11:TRUE"
                             }

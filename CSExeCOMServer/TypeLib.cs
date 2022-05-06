@@ -10,38 +10,31 @@ namespace CSExeCOMServerTest
     {
         public static void Register(string tlbPath)
         {
-            Trace.WriteLine($"Registering type library:");
-            Trace.Indent();
-            Trace.WriteLine(tlbPath);
-            Trace.Unindent();
+            Trace.TraceInformation($"Registering type library: {tlbPath}");
             ComTypes.ITypeLib typeLib;
             int hr = OleAut32.LoadTypeLibEx(tlbPath, OleAut32.REGKIND.REGKIND_NONE, out typeLib);
             if (hr < 0)
             {
-                Trace.WriteLine($"Registering type library failed: 0x{hr:x}");
+                Trace.TraceError($"Registering type library failed: 0x{hr:x}");
                 return;
             }
             hr = OleAut32.RegisterTypeLibForUser(typeLib, tlbPath, string.Empty);
             if (hr < 0)
             {
-                Trace.WriteLine($"Registering type library failed: 0x{hr:x}");
+                Trace.TraceError($"Registering type library failed: 0x{hr:x}");
                 return;
             }
-            Trace.WriteLine($"Registering type library succeeded.");
+            Trace.TraceInformation($"Registering type library succeeded : {tlbPath}");
         }
 
         public static void Unregister(string tlbPath)
         {
-            Trace.WriteLine($"Unregistering type library:");
-            Trace.Indent();
-            Trace.WriteLine(tlbPath);
-            Trace.Unindent();
-
+            Trace.TraceInformation($"Unregistering type library: {tlbPath}");
             ComTypes.ITypeLib typeLib;
             int hr = OleAut32.LoadTypeLibEx(tlbPath, OleAut32.REGKIND.REGKIND_NONE, out typeLib);
             if (hr < 0)
             {
-                Trace.WriteLine($"Unregistering type library failed: 0x{hr:x}");
+                Trace.TraceError($"Unregistering type library failed: 0x{hr:x}");
                 return;
             }
 
@@ -55,7 +48,7 @@ namespace CSExeCOMServerTest
                     hr = OleAut32.UnRegisterTypeLib(ref attr.guid, attr.wMajorVerNum, attr.wMinorVerNum, attr.lcid, attr.syskind);
                     if (hr < 0)
                     {
-                        Trace.WriteLine($"Unregistering type library failed: 0x{hr:x}");
+                        Trace.TraceError($"Unregistering type library failed: 0x{hr:x}");
                     }
                 }
             }

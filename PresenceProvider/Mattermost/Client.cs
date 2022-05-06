@@ -41,7 +41,7 @@ namespace OutlookPresenceProvider.Mattermost
         {
             get => _store;
         }
-
+        
         // mre is used to block and release threads manually.
         // It is created in the unsignaled state.
         private ManualResetEvent mre = new ManualResetEvent(false);
@@ -54,7 +54,7 @@ namespace OutlookPresenceProvider.Mattermost
             _serverUrl = GetValueFromConfig(Constants.MattermostServerURL);
             if (_secret == string.Empty || _serverUrl == string.Empty)
             {
-                Trace.WriteLine("Invalid server url or secret.");
+                Trace.TraceError("Invalid server url or secret.");
                 throw new Exception("Invalid server url or secret.");
             }
             _pluginUrl = new Uri($"{_serverUrl}/plugins/{Constants.MattermostPluginId}/api/v1/");
@@ -88,7 +88,8 @@ namespace OutlookPresenceProvider.Mattermost
                 }
             } catch (Exception ex)
             {
-                Trace.WriteLine(ex.StackTrace);
+                Trace.TraceError(ex.Message);
+                Trace.TraceError(ex.StackTrace);
             }
         }
 
@@ -102,11 +103,11 @@ namespace OutlookPresenceProvider.Mattermost
 
                 // Wait for the websocket client "_wsClient" to get initialized by the other thread running parallely
                 while (_wsClient == null) ;
-                Trace.WriteLine("Websocket client connected.");
+                Trace.TraceInformation("Websocket client connected.");
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("ERROR: " + ex.ToString());
+                Trace.TraceError("ERROR: " + ex.ToString());
             }
         }
 
@@ -124,12 +125,12 @@ namespace OutlookPresenceProvider.Mattermost
             client.ReconnectTimeout = TimeSpan.FromSeconds(wsTimeout);
             client.ReconnectionHappened.Subscribe(info =>
             {
-                Trace.WriteLine("Reconnection happened, type: " + info.Type);
+                Trace.TraceInformation("Reconnection happened, type: " + info.Type);
             });
 
             client.DisconnectionHappened.Subscribe(info =>
             {
-                Trace.WriteLine("Disconnection happened, type: " + info.Type);
+                Trace.TraceInformation("Disconnection happened, type: " + info.Type);
                 if (info.Type == DisconnectionType.Error || info.Type == DisconnectionType.ByServer)
                 {
                     throw new Exception("Error in connecting to websocket server.");
@@ -140,7 +141,7 @@ namespace OutlookPresenceProvider.Mattermost
             _wsClient = client;
             mre.WaitOne();
             
-            Trace.WriteLine("Websocket client closed.");
+            Trace.TraceInformation("Websocket client closed.");
         }
 
         private string GetValueFromConfig(string key)
@@ -162,7 +163,7 @@ namespace OutlookPresenceProvider.Mattermost
                 return configNode[key].GetValue<string>();
             } catch (Exception ex)
             {
-                Trace.WriteLine(ex.Message);
+                Trace.TraceError(ex.Message);
                 return string.Empty;
             }
         }

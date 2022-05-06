@@ -15,7 +15,9 @@
 * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 \***************************************************************************/
 
+using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace CSExeCOMServerTest
 {
@@ -24,16 +26,27 @@ namespace CSExeCOMServerTest
         // The main entry point for the application.
         static void Main(string[] args)
         {
-            // Comment below lines if the Unified Collaborations type library is already registered in the system.
-            string typeLibName = "UCCollaborationLib.tlb";
-            string currentDir = Directory.GetCurrentDirectory();
-            string typeLibPath = $"{currentDir}\\{typeLibName}";
-            TypeLib.Register(typeLibPath);
-           
-            CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
-            // Run the out-of-process COM server
-            CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
-            OutlookPresenceProvider.PresenceProvider.Stopped();
+            try
+            {
+                EventLogTraceListener listener = new EventLogTraceListener(OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+                Trace.Listeners.Add(listener);
+                
+                // Comment below lines if the Unified Collaborations type library is already registered in the system.
+                string typeLibName = "UCCollaborationLib.tlb";
+                string currentDir = Directory.GetCurrentDirectory();
+                string typeLibPath = $"{currentDir}\\{typeLibName}";
+                TypeLib.Register(typeLibPath);
+
+                CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
+                // Run the out-of-process COM server
+                CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
+
+                OutlookPresenceProvider.PresenceProvider.Stopped();
+            } catch (Exception ex)
+            {
+                Trace.TraceError(ex.Message);
+                Trace.TraceError(ex.StackTrace);
+            }
         }
 
         static void OnCOMReady()

@@ -107,7 +107,8 @@ namespace OutlookPresenceProvider
                 }
             } catch (Exception ex)
             {
-                Trace.WriteLine(ex.StackTrace);
+                Trace.TraceError(ex.Message);
+                Trace.TraceError(ex.StackTrace);
                 return null;
             }
         }
@@ -175,7 +176,8 @@ namespace OutlookPresenceProvider
                     handler(this, _eventData);
                 } catch (Exception ex)
                 {
-                    Trace.WriteLine(ex.StackTrace);
+                    Trace.TraceError(ex.Message);
+                    Trace.TraceError(ex.StackTrace);
                 }
             }
         }
