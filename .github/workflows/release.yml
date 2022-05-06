@@ -34,6 +34,16 @@ jobs:
       - name: Build the solution
         run: devenv.com .\CSExeCOMServer.sln /Build Release
 
+      - name: Sign the build with a code signing certificate
+        run: |
+          $bytes = [Convert]::FromBase64String("${{ secrets.CODE_SIGNING_CERT }}")
+          [IO.File]::WriteAllBytes("cert.pfx", $bytes)
+          $SignToolPath = $env:WindowsSdkVerBinPath + "x64\signtool.exe"
+          if ($SignToolPath | Test-Path) {
+            & $SignToolPath sign /f .\cert.pfx /fd SHA256 /d "Mattermost Presence Provider" .\MattermostPresenceProvider\Setup.msi
+            & $SignToolPath sign /f .\cert.pfx /fd SHA256 /d "Mattermost Presence Provider" .\MattermostPresenceProvider\setup.exe
+          }
+
       - name: Remove files and create a zip of the build
         run: |
           if (Test-Path .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj) { Remove-Item .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj }
