@@ -8,7 +8,7 @@ namespace OutlookPresenceProvider.Mattermost
         public const string MattermostSecret = "MattermostSecret";
         public const string MattermostWebsocketTimeout = "MattermostWebsocketReconnectionTimeoutInSeconds";
         public const double MattermostDefaultWebsocketTimeout = 30;
-        public const string PluginId = "com.mattermost.outlook-presence";
+        public const string MattermostPluginId = "com.mattermost.outlook-presence";
         public const string MattermostRequestParamSecret = "secret";
         public const string MattermostRequestParamPage = "page";
         public const string MattermostEmail = "email";
