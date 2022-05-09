@@ -15,20 +15,14 @@ namespace CSExeCOMServerTest
     [RunInstaller(true)]
     public class Installer : System.Configuration.Install.Installer
     {
-        public Installer(): base()
+        private string _appName = "";
+
+        public Installer(){}
+        public Installer(string appName)
         {
+            _appName = appName;
             // Attach the 'Committed' event.
             this.Committed += new InstallEventHandler(MyInstaller_Committed);
-            // Attach the 'Committing' event.
-            this.Committing += new InstallEventHandler(MyInstaller_Committing);
-        }
-
-        // Event handler for 'Committing' event.
-        private void MyInstaller_Committing(object sender, InstallEventArgs e)
-        {
-            //Console.WriteLine("");
-            //Console.WriteLine("Committing Event occurred.");
-            //Console.WriteLine("");
         }
 
         // Event handler for 'Committed' event.
@@ -36,13 +30,15 @@ namespace CSExeCOMServerTest
         {
             try
             {
+                Trace.TraceInformation(Assembly.GetExecutingAssembly().Location);
                 Directory.SetCurrentDirectory(Path.GetDirectoryName
                     (Assembly.GetExecutingAssembly().Location));
-                Process.Start(Path.GetDirectoryName($"{Assembly.GetExecutingAssembly().Location}\\{OutlookPresenceProvider.PresenceProvider.COMAppExeName}.exe"));
+                Process.Start(Path.GetDirectoryName($"{Assembly.GetExecutingAssembly().Location}\\{_appName}.exe"));
             }
-            catch
+            catch (Exception ex)
             {
-                // Do nothing... 
+                Trace.TraceError(ex.Message);
+                Trace.TraceError(ex.StackTrace);
             }
         }
 
@@ -56,6 +52,18 @@ namespace CSExeCOMServerTest
         public override void Commit(IDictionary savedState)
         {
             base.Commit(savedState);
+            try
+            {
+                Trace.TraceInformation(Assembly.GetExecutingAssembly().Location);
+                Directory.SetCurrentDirectory(Path.GetDirectoryName
+                    (Assembly.GetExecutingAssembly().Location));
+                Process.Start(Path.GetDirectoryName($"{Assembly.GetExecutingAssembly().Location}\\{_appName}.exe"));
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.Message);
+                Trace.TraceError(ex.StackTrace);
+            }
         }
 
         // Override the 'Rollback' method.

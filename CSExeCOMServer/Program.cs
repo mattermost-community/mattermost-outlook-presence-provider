@@ -37,7 +37,7 @@ namespace CSExeCOMServerTest
                 string typeLibPath = $"{currentDir}\\{typeLibName}";
                 TypeLib.Register(typeLibPath);
 
-                // Installer install = new Installer();
+                Installer install = new Installer(OutlookPresenceProvider.PresenceProvider.COMAppExeName);
                 // Enable the app to be run on Windows startup
                 Startup.EnableStartup(currentDir, OutlookPresenceProvider.PresenceProvider.COMAppExeName);
 
