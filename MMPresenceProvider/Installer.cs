@@ -15,32 +15,7 @@ namespace MMPresenceProvider
     [RunInstaller(true)]
     public class Installer : System.Configuration.Install.Installer
     {
-        private string _appName = "";
-
         public Installer(){}
-        public Installer(string appName)
-        {
-            _appName = appName;
-            // Attach the 'Committed' event.
-            this.Committed += new InstallEventHandler(MyInstaller_Committed);
-        }
-
-        // Event handler for 'Committed' event.
-        private void MyInstaller_Committed(object sender, InstallEventArgs e)
-        {
-            try
-            {
-                Trace.TraceInformation(Assembly.GetExecutingAssembly().Location);
-                Directory.SetCurrentDirectory(Path.GetDirectoryName
-                    (Assembly.GetExecutingAssembly().Location));
-                Process.Start(Path.GetDirectoryName($"{Assembly.GetExecutingAssembly().Location}\\{_appName}.exe"));
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError(ex.Message);
-                Trace.TraceError(ex.StackTrace);
-            }
-        }
 
         // Override the 'Install' method.
         public override void Install(IDictionary savedState)
@@ -54,10 +29,9 @@ namespace MMPresenceProvider
             base.Commit(savedState);
             try
             {
-                Trace.TraceInformation(Assembly.GetExecutingAssembly().Location);
                 Directory.SetCurrentDirectory(Path.GetDirectoryName
                     (Assembly.GetExecutingAssembly().Location));
-                Process.Start(Path.GetDirectoryName($"{Assembly.GetExecutingAssembly().Location}\\{_appName}.exe"));
+                Process.Start(Path.GetDirectoryName($"{Assembly.GetExecutingAssembly().Location}\\.exe"));
             }
             catch (Exception ex)
             {

@@ -28,7 +28,7 @@ namespace MMPresenceProvider
         {
             try
             {
-                EventLogTraceListener listener = new EventLogTraceListener("TestEventSource");
+                EventLogTraceListener listener = new EventLogTraceListener(MMPresenceProviderImpl.PresenceProvider.COMAppExeName);
                 Trace.Listeners.Add(listener);
 
                 // Comment below lines if the Unified Collaborations type library is already registered in the system.
@@ -36,8 +36,7 @@ namespace MMPresenceProvider
                 string typeLibName = "UCCollaborationLib.tlb";
                 string typeLibPath = $"{currentDir}\\{typeLibName}";
                 TypeLib.Register(typeLibPath);
-
-                //Installer install = new Installer(MMPresenceProviderImpl.PresenceProvider.COMAppExeName);
+                
                 // Enable the app to be run on Windows startup
                 Startup.EnableStartup(currentDir, MMPresenceProviderImpl.PresenceProvider.COMAppExeName);
 
