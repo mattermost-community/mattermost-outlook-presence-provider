@@ -44,7 +44,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Debug\</OutputPath>
+    <OutputPath>..\Release\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -118,7 +118,7 @@
       <Project>{3B446536-BEB3-4B6F-91EE-072AA560D532}</Project>
       <Name>OutOfProcessCOMBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PresenceProvider\OutLookPresenceProvider.csproj">
+    <ProjectReference Include="..\MMPresenceProviderImpl\OutLookPresenceProvider.csproj">
       <Project>{0466DCF9-B003-4D58-AAE9-21CEFC4D0796}</Project>
       <Name>OutLookPresenceProvider</Name>
     </ProjectReference>

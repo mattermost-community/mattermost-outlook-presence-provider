@@ -28,7 +28,7 @@ namespace CSExeCOMServerTest
         {
             try
             {
-                EventLogTraceListener listener = new EventLogTraceListener(OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+                EventLogTraceListener listener = new EventLogTraceListener("TestEventSource");
                 Trace.Listeners.Add(listener);
 
                 // Comment below lines if the Unified Collaborations type library is already registered in the system.
@@ -37,7 +37,7 @@ namespace CSExeCOMServerTest
                 string typeLibPath = $"{currentDir}\\{typeLibName}";
                 TypeLib.Register(typeLibPath);
 
-                Installer install = new Installer(OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+                //Installer install = new Installer(OutlookPresenceProvider.PresenceProvider.COMAppExeName);
                 // Enable the app to be run on Windows startup
                 Startup.EnableStartup(currentDir, OutlookPresenceProvider.PresenceProvider.COMAppExeName);
 
