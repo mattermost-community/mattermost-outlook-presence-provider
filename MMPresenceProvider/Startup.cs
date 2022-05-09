@@ -1,7 +1,7 @@
 ﻿using System;
 using IWshRuntimeLibrary;
 
-namespace CSExeCOMServerTest
+namespace MMPresenceProvider
 {
     public class Startup
     {

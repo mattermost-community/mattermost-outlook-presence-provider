@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSExeCOMServerTest", "CSExeCOMServer\CSExeCOMServerTest.csproj", "{7B4FB722-905A-4851-8399-1E0F3361CCD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMPresenceProvider", "MMPresenceProvider\MMPresenceProvider.csproj", "{7B4FB722-905A-4851-8399-1E0F3361CCD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutOfProcessCOMBase", "OutOfProcessCOMBase\OutOfProcessCOMBase.csproj", "{8F75485B-9963-4E83-B29C-207EF62832BE}"
 EndProject

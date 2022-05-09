@@ -16,10 +16,10 @@
 \***************************************************************************/
 
 using System;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
 
-namespace CSExeCOMServerTest
+namespace MMPresenceProvider
 {
     class Program
     {

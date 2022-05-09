@@ -8,7 +8,7 @@
     <ProjectGuid>{7B4FB722-905A-4851-8399-1E0F3361CCD8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSExeCOMServerTest</RootNamespace>
+    <RootNamespace>MMPresenceProvider</RootNamespace>
     <AssemblyName>MattermostPresenceProvider</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

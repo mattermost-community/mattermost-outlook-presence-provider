@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using ComTypes = System.Runtime.InteropServices.ComTypes;
 
-namespace CSExeCOMServerTest
+namespace MMPresenceProvider
 {
     // Reference: https://github.com/dotnet/samples/blob/main/core/extensions/OutOfProcCOM/COMRegistration/TypeLib.cs
     internal static class TypeLib

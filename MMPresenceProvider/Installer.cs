@@ -6,7 +6,7 @@ using System.Configuration.Install;
 using System.Reflection;
 using System.IO;
 
-namespace CSExeCOMServerTest
+namespace MMPresenceProvider
 {
     // Taken from:http://msdn2.microsoft.com/en-us/library/
     // system.configuration.configurationmanager.aspx
