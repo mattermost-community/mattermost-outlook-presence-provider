@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
     public class Utils
     {

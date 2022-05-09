@@ -9,7 +9,7 @@ using System.Net.WebSockets;
 using System.Web;
 using System.IO;
 
-namespace OutlookPresenceProvider.Mattermost
+namespace MMPresenceProviderImpl.Mattermost
 {
     public class Client
     {

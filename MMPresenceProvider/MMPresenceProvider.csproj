@@ -118,9 +118,9 @@
       <Project>{3B446536-BEB3-4B6F-91EE-072AA560D532}</Project>
       <Name>OutOfProcessCOMBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MMPresenceProviderImpl\OutLookPresenceProvider.csproj">
-      <Project>{0466DCF9-B003-4D58-AAE9-21CEFC4D0796}</Project>
-      <Name>OutLookPresenceProvider</Name>
+    <ProjectReference Include="..\MMPresenceProviderImpl\MMPresenceProviderImpl.csproj">
+      <Project>{034E0472-A9D5-4E8C-890F-A8E7C26911BE}</Project>
+      <Name>MMPresenceProviderImpl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

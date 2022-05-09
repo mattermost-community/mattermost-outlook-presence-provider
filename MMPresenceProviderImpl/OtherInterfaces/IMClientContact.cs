@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UCCollaborationLib;
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
     [ClassInterface(ClassInterfaceType.None)]
     [ComSourceInterfaces(typeof(_IContactEvents))]

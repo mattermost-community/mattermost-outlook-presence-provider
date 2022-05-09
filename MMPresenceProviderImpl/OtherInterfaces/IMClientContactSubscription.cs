@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Websocket.Client;
 using System.Text.Json.Nodes;
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
     [ClassInterface(ClassInterfaceType.None)]
     [ComVisible(true)]

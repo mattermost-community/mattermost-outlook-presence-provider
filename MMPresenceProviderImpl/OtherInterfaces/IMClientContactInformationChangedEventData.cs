@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using UCCollaborationLib;
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
     [ClassInterface(ClassInterfaceType.None)]
     [ComVisible(true)]

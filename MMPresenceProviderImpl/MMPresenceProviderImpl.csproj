@@ -8,8 +8,8 @@
     <ProjectGuid>{034E0472-A9D5-4E8C-890F-A8E7C26911BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OutlookPresenceProvider</RootNamespace>
-    <AssemblyName>OutlookPresenceProvider</AssemblyName>
+    <RootNamespace>MMPresenceProviderImpl</RootNamespace>
+    <AssemblyName>MMPresenceProviderImpl</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

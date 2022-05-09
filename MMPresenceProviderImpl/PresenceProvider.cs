@@ -8,7 +8,7 @@ using UCCollaborationLib;
 #endregion
 
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
 
     [ClassInterface(ClassInterfaceType.None)]

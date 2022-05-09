@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using UCCollaborationLib;
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
     [ComVisible(true)]
     public class IMClientAsyncOperation : AsynchronousOperation

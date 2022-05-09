@@ -1,6 +1,6 @@
 ﻿using UCCollaborationLib;
 
-namespace OutlookPresenceProvider.Mattermost
+namespace MMPresenceProviderImpl.Mattermost
 {
     public class Constants
     {

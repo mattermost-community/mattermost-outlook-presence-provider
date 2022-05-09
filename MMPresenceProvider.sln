@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMPresenceProvider", "MMPre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutOfProcessCOMBase", "OutOfProcessCOMBase\OutOfProcessCOMBase.csproj", "{8F75485B-9963-4E83-B29C-207EF62832BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutLookPresenceProvider", "MMPresenceProviderImpl\OutLookPresenceProvider.csproj", "{034E0472-A9D5-4E8C-890F-A8E7C26911BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMPresenceProviderImpl", "MMPresenceProviderImpl\MMPresenceProviderImpl.csproj", "{034E0472-A9D5-4E8C-890F-A8E7C26911BE}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MMPresenceProviderSetup", "MMPresenceProviderSetup\MMPresenceProviderSetup.vdproj", "{9FF31714-17E2-42E1-8703-E67A6F92DEDA}"
 EndProject

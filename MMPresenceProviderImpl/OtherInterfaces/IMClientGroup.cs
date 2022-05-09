@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UCCollaborationLib;
 using System.Runtime.InteropServices;
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
     [ComVisible(true)]
     public class IMClientGroup: Group

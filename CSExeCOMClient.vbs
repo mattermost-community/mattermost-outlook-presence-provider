@@ -1,6 +1,6 @@
-SET obj = CreateObject("OutlookPresenceProvider.PresenceProvider")
+SET obj = CreateObject("MMPresenceProviderImpl.PresenceProvider")
 
-MsgBox "A OutlookPresenceProvider.PresenceProvider object is created"
+MsgBox "A MMPresenceProviderImpl.PresenceProvider object is created"
 
 Dim retValue
 

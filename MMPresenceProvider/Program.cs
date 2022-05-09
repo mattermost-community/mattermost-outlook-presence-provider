@@ -37,15 +37,15 @@ namespace MMPresenceProvider
                 string typeLibPath = $"{currentDir}\\{typeLibName}";
                 TypeLib.Register(typeLibPath);
 
-                //Installer install = new Installer(OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+                //Installer install = new Installer(MMPresenceProviderImpl.PresenceProvider.COMAppExeName);
                 // Enable the app to be run on Windows startup
-                Startup.EnableStartup(currentDir, OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+                Startup.EnableStartup(currentDir, MMPresenceProviderImpl.PresenceProvider.COMAppExeName);
 
                 CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
                 // Run the out-of-process COM server
-                CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(OutlookPresenceProvider.PresenceProvider), true);
+                CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(MMPresenceProviderImpl.PresenceProvider), true);
 
-                OutlookPresenceProvider.PresenceProvider.Stopped();
+                MMPresenceProviderImpl.PresenceProvider.Stopped();
             } catch (Exception ex)
             {
                 Trace.TraceError(ex.Message);
@@ -55,7 +55,7 @@ namespace MMPresenceProvider
 
         static void OnCOMReady()
         {
-            OutlookPresenceProvider.PresenceProvider.Started();
+            MMPresenceProviderImpl.PresenceProvider.Started();
         }
     }
 }

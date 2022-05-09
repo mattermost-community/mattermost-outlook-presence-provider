@@ -3,7 +3,7 @@ using System.Linq;
 using UCCollaborationLib;
 using System.Runtime.InteropServices;
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
     [ComVisible(true)]
     public class IMClientContactSettingDictionary : ContactSettingDictionary

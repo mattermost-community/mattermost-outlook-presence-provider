@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using UCCollaborationLib;
 
-namespace OutlookPresenceProvider.Mattermost
+namespace MMPresenceProviderImpl.Mattermost
 {
     public class Store
     {

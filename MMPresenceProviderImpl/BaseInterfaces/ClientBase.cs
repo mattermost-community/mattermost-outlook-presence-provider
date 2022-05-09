@@ -3,7 +3,7 @@ using UCCollaborationLib;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace OutlookPresenceProvider
+namespace MMPresenceProviderImpl
 {
     // Note: LyncClient inherits from both ILyncClient and _ILyncClientEvents_Event
     // You must implement LyncClient because the event handlers in _ILyncClientEvents expect you to pass a LyncClient interface.
