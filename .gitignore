@@ -12,9 +12,9 @@ x64/
 [Bb]in/
 [Oo]bj/
 # Ignore all files in the BuildSetup folder
-MattermostPresenceProvider/*
+MMPresenceProviderSetup/*
 # except .vdproj file as it contains the configuration for the setup
-!MattermostPresenceProvider/*.vdproj
+!MMPresenceProviderSetup/*.vdproj
 
 # NuGet Packages
 *.nupkg
