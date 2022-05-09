@@ -40,14 +40,14 @@ jobs:
           [IO.File]::WriteAllBytes("cert.pfx", $bytes)
           $SignToolPath = $env:WindowsSdkVerBinPath + "x64\signtool.exe"
           if ($SignToolPath | Test-Path) {
-            & $SignToolPath sign /f .\cert.pfx /fd SHA256 /d "Mattermost Presence Provider" .\MattermostPresenceProvider\Setup.msi
-            & $SignToolPath sign /f .\cert.pfx /fd SHA256 /d "Mattermost Presence Provider" .\MattermostPresenceProvider\setup.exe
+            & $SignToolPath sign /f .\cert.pfx /fd SHA256 /d "Mattermost Presence Provider" .\MMPresenceProviderSetup\Setup.msi
+            & $SignToolPath sign /f .\cert.pfx /fd SHA256 /d "Mattermost Presence Provider" .\MMPresenceProviderSetup\setup.exe
           }
 
       - name: Remove files and create a zip of the build
         run: |
-          if (Test-Path .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj) { Remove-Item .\MattermostPresenceProvider\MattermostPresenceProvider.vdproj }
-          Compress-Archive -Path .\MattermostPresenceProvider\ -DestinationPath MattermostPresenceProvider-${{ github.ref_name }}.zip
+          if (Test-Path .\MMPresenceProviderSetup\MMPresenceProviderSetup.vdproj) { Remove-Item .\MMPresenceProviderSetup\MMPresenceProviderSetup.vdproj }
+          Compress-Archive -Path .\MMPresenceProviderSetup\ -DestinationPath MattermostPresenceProvider-${{ github.ref_name }}.zip
 
       - name: Create Release
         id: create_release

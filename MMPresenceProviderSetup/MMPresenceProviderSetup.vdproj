@@ -248,7 +248,7 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:MattermostPresenceProvider"
+        "ProductName" = "8:MMPresenceProviderSetup"
         "ProductCode" = "8:{7B7EBE84-CE05-4DE4-B13D-8E90F9385B58}"
         "PackageCode" = "8:{0A5058EC-5B5F-4150-A0DC-DD38CB0127CB}"
         "UpgradeCode" = "8:{C0DA9196-00F7-4A03-918C-4573955ED35A}"
@@ -261,7 +261,7 @@
         "Manufacturer" = "8:Mattermost"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:MattermostPresenceProvider"
+        "Title" = "8:MMPresenceProviderSetup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Mattermost"
         "Keywords" = "8:"
