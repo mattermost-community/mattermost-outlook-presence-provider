@@ -32,7 +32,7 @@ jobs:
           }
         
       - name: Build the solution
-        run: devenv.com .\CSExeCOMServer.sln /Build Release
+        run: devenv.com .\MMPresenceProvider.sln /Build Release
 
       - name: Sign the build with a code signing certificate
         run: |
