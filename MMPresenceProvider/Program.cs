@@ -40,6 +40,10 @@ namespace MMPresenceProvider
                 // Enable the app to be run on Windows startup
                 Startup.EnableStartup(currentDir, MMPresenceProviderImpl.PresenceProvider.COMAppExeName);
 
+                Installer install = new Installer(OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+                // Enable the app to be run on Windows startup
+                Startup.EnableStartup(currentDir, OutlookPresenceProvider.PresenceProvider.COMAppExeName);
+
                 CSExeCOMServer.ExeCOMServer.Instance.OnCOMReady += new CSExeCOMServer.ExeCOMServer.OnCOMHosted(OnCOMReady);
                 // Run the out-of-process COM server
                 CSExeCOMServer.ExeCOMServer.Instance.Run(typeof(MMPresenceProviderImpl.PresenceProvider), true);
