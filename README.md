@@ -13,11 +13,13 @@ It is a Windows application which can be installed through a wizard setup.
 
 ## Installation
 
-You can download the latest setup from the [releases page](https://github.com/Brightscout/mattermost-outlook-presence-provider/releases). Extract the zip file after the download. Install the application by running the file `setup.msi` and following the instructions in the wizard. After the installation is complete, you have to run the app by going to the install location or by searching for its name in the Windows Start menu. The executable file that you have to run is `MattermostPresenceProvider.exe`. You need to do the below configurations before running the app:
+You can download the latest setup from the [releases page](https://github.com/Brightscout/mattermost-outlook-presence-provider/releases). Extract the zip file after the download. Install the application by running the file `setup.msi` and following the instructions in the wizard. After the installation is complete, you can find a folder and a shortcut named `Mattermost Presence Provider` in the Windows Start menu that you can use to run the app. You can also run the app by going to the install location. The executable file that you have to run is `MattermostPresenceProvider.exe`. You need to do some configurations before running the app which you can find [here](#configuration).
+
+**Note**: This application assumes that Skype for Business or Microsoft Teams is not installed in the user's system. If they are installed in the system, then this application may not work as expected.
 
 ### Configuration
 
-There's a `config.json` file present in the extracted zip folder which contains the configurations for the application. You can either configure it before installation or after installation. If you are configuring it after installation, then you'll have to modify the `config.json` file which is present in the install directory. The default install directory is "C:\Program Files\Mattermost\MattermostPresenceProvider\" but it can be changed during the installation. The changes done in the `config.json` file present in the extracted zip folder will not affect the installed app. The following config settings need to be configured:
+There's a `config.json` file present in the extracted zip folder which contains the configurations for the application. You can either configure it before installation or after installation. If you are configuring it after installation, then you'll have to modify the `config.json` file which is present in the install directory. The default install directory is "C:\Program Files\Mattermost\Mattermost Presence Provider\" but it can be changed during the installation. The changes done in the `config.json` file present in the extracted zip folder will not affect the installed app. The following config settings need to be configured:
 
 - **MattermostServerURL**: The URL of the Mattermost server from which status updates need to be fetched
 - **MattermostSecret**: The webhook secret generated on the plugin settings page of the Mattermost plugin "Outlook Presence Provider".
@@ -26,11 +28,12 @@ There's a `config.json` file present in the extracted zip folder which contains 
 
 ### Running the application
 
-After the configuration, you can successfully execute the app by running the exe file. Go to the installed location of the app and run the `MattermostPresenceProvider.exe`. After running it, check if its running by opening the Task Manager and looking for "MattermostPresenceProvider" or you can also install additional applications to get more details about the processes running in your system like Microsoft's [ProcessExplorer](https://docs.microsoft.com/en-us/sysinternals/downloads/process-explorer).
-If you see the app running, run Outlook and see the users' presence information in the dots on their profile pictures or in the popovers which appear after hovering over them.
+After the configuration, you can successfully execute the app by running the exe file. Go to the installed location of the app and run the `MattermostPresenceProvider.exe` (Or you can run by using the shortcut in the Windows Start menu). After running it, check if its running by opening the Task Manager and looking for "MattermostPresenceProvider" or you can also install additional applications to get more details about the processes running in your system like Microsoft's [ProcessExplorer](https://docs.microsoft.com/en-us/sysinternals/downloads/process-explorer).
+If you see the app running, run Outlook and see the users' presence information in the small icons on their profile pictures or in the popovers which appear after hovering over them.
 ![ss](https://user-images.githubusercontent.com/77336594/165121046-354cab06-4ad5-4e51-9895-f28b347f12c7.png)
 
-**Note**: This application assumes that Skype for Business or Microsoft Teams is not installed in the user's system. If they are installed in the system, then this application may not work as expected.
+By default, this application is enabled for automatic startup when Windows starts. This means, once you run the app manually, after that it will always be automatically started when Windows starts.
+**Note**: You have to run the app by yourself for the first time.
 
 ## Development
 
@@ -58,12 +61,12 @@ More useful links:
 
 ### Structure
 
-The basic project structure was taken from a sample app provided in the Microsoft Community [here](https://social.msdn.microsoft.com/Forums/windows/en-US/9bb0535e-f330-42c2-abc3-f6517e4a7e4e/sample-outlook-presence-provider-app?forum=outlookdev). This project contains four separate projects embedded in one [solution file](./CSExeCOMServer.sln).
+The basic project structure was taken from a sample app provided in the Microsoft Community [here](https://social.msdn.microsoft.com/Forums/windows/en-US/9bb0535e-f330-42c2-abc3-f6517e4a7e4e/sample-outlook-presence-provider-app?forum=outlookdev). This project contains four separate projects embedded in one [solution file](./MMPresenceProvider.sln).
 
 - **OutOfProcessCOMBase**: This project contains the Native code to run a COM server which was officially provided by Microsoft as a sample with the name "CSExeCOMServer" but later it was removed from the official Microsoft Github and was replaced by a [new sample](https://github.com/dotnet/samples/tree/main/core/extensions). We did not change anything in this project. This project compiles to a dll file which is used by the other projects.
-- **PresenceProvider**: This is the primary project in which we have created classes that implement the interfaces exposed by the `UCCollaborationLib` namespace. This project contains all the logic to fetch and subscribe to users' status updates from Mattermost.
-- **CSExeCOMServer**: This project creates a Windows application (exe file) to run and it contains the other two projects as dependencies. Building this project automatically builds the other two as well. We can say that this is the startup project for out application. It contains the logic to register the [Unified Collaborations API type library](./DLL/UCCollaborationLib.tlb) that is usually registered by Skype for Business/Microsoft Teams.
-- **MattermostPresenceProvider**: This is just a setup project which creates a `setup.msi` file by building the **CSExceCOMServer** project.
+- **MMPresenceProviderImpl**: This is the primary project in which we have created classes that implement the interfaces exposed by the `UCCollaborationLib` namespace. This project contains all the logic to fetch and subscribe to users' status updates from Mattermost.
+- **MMPresenceProvider**: This project creates a Windows application (exe file) to run and it contains the other two projects as dependencies. Building this project automatically builds the other two as well. We can say that this is the startup project for our application. It contains the logic to register the [Unified Collaborations API type library](./DLL/UCCollaborationLib.tlb) that is usually registered by Skype for Business/Microsoft Teams.
+- **MMPresenceProviderSetup**: This is just a setup project which creates a `setup.msi` file by building the **MMPresenceProvider** project.
 
 Building the solution builds all these four projects. You can see how to build the solution in the CI [yml file](./.github/workflows/release.yml).
 
@@ -81,7 +84,7 @@ This project uses Github Actions for its CI/CD needs. You can look at the yml fi
 - Setup Visual Studio with the [VS Installer Projects](https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2017InstallerProjects) extension. The action that is being used in the CI installs this extension by default.
 - Restore Nuget packages. You can either do it using [Visual Studio](https://docs.microsoft.com/en-us/nuget/consume-packages/package-restore#restore-packages-manually-using-visual-studio) or using [CLI](https://docs.microsoft.com/en-us/nuget/consume-packages/package-restore#restore-using-msbuild).
 - Then, we have to enable out of process builds in Visual studio as it does not support building of projects outside Visual Studio processes. You can take a look at it [here](./.github/workflows/release.yml#L22).
-- Then, we can build the solution using the `devenv.com` executable provided by Visual Studio using the `Release` configuration. Remember, the setup project `MattermostPresenceProvider` will not be part of the build if you use the `Debug` configuration instead of `Release`.
+- Then, we can build the solution using the `devenv.com` executable provided by Visual Studio using the `Release` configuration. Remember, the setup project `MMPresenceProviderSetup` will not be part of the build if you use the `Debug` configuration instead of `Release`.
 - Then, the CI script is removing the unwanted files from the build directory and creating a zip of the build with the version number as a suffix followed by creating a Github release.
 
 ---
