@@ -2,14 +2,12 @@
 using System.Diagnostics;
 using System.Collections;
 using System.ComponentModel;
-using System.Configuration.Install;
 using System.Reflection;
 using System.IO;
 
 namespace MMPresenceProvider
 {
-    // Taken from:http://msdn2.microsoft.com/en-us/library/
-    // system.configuration.configurationmanager.aspx
+    // Taken from:https://www.codeproject.com/Articles/19560/Launching-Your-Application-After-Install-using-Vis
     // Set 'RunInstaller' attribute to true.
 
     [RunInstaller(true)]
@@ -29,9 +27,9 @@ namespace MMPresenceProvider
             base.Commit(savedState);
             try
             {
-                Directory.SetCurrentDirectory(Path.GetDirectoryName
-                    (Assembly.GetExecutingAssembly().Location));
-                Process.Start(Path.GetDirectoryName($"{Assembly.GetExecutingAssembly().Location}\\.exe"));
+                string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(assemblyLocation));
+                Process.Start(Path.GetDirectoryName($"{assemblyLocation}\\.exe"));
             }
             catch (Exception ex)
             {
