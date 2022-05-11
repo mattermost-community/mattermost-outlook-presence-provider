@@ -8,8 +8,7 @@ using System.IO;
 
 namespace CSExeCOMServerTest
 {
-    // Taken from:http://msdn2.microsoft.com/en-us/library/
-    // system.configuration.configurationmanager.aspx
+    // Taken from:https://www.codeproject.com/Articles/19560/Launching-Your-Application-After-Install-using-Vis
     // Set 'RunInstaller' attribute to true.
 
     [RunInstaller(true)]
@@ -30,10 +29,9 @@ namespace CSExeCOMServerTest
         {
             try
             {
-                Trace.TraceInformation(Assembly.GetExecutingAssembly().Location);
-                Directory.SetCurrentDirectory(Path.GetDirectoryName
-                    (Assembly.GetExecutingAssembly().Location));
-                Process.Start(Path.GetDirectoryName($"{Assembly.GetExecutingAssembly().Location}\\{_appName}.exe"));
+                string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(assemblyLocation));
+                Process.Start(Path.GetDirectoryName($"{assemblyLocation}\\{_appName}.exe"));
             }
             catch (Exception ex)
             {
