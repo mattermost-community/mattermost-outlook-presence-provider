@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutOfProcessCOMBase", "OutO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMPresenceProviderImpl", "MMPresenceProviderImpl\MMPresenceProviderImpl.csproj", "{034E0472-A9D5-4E8C-890F-A8E7C26911BE}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MMPresenceProviderSetup", "MMPresenceProviderSetup\MMPresenceProviderSetup.vdproj", "{9FF31714-17E2-42E1-8703-E67A6F92DEDA}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MMPresenceProviderSetup", "MMPresenceProviderSetup\MMPresenceProviderSetup.vdproj", "{01E8A337-D261-45E8-A5E2-DA2B9F15C372}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,13 +57,13 @@ Global
 		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Release|x64.Build.0 = Release|Any CPU
 		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Release|x86.ActiveCfg = Release|Any CPU
 		{034E0472-A9D5-4E8C-890F-A8E7C26911BE}.Release|x86.Build.0 = Release|Any CPU
-		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Debug|Any CPU.ActiveCfg = Debug
-		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Debug|x64.ActiveCfg = Debug
-		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Debug|x86.ActiveCfg = Debug
-		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Release|Any CPU.ActiveCfg = Release
-		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Release|Any CPU.Build.0 = Release
-		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Release|x64.ActiveCfg = Release
-		{9FF31714-17E2-42E1-8703-E67A6F92DEDA}.Release|x86.ActiveCfg = Release
+		{01E8A337-D261-45E8-A5E2-DA2B9F15C372}.Debug|Any CPU.ActiveCfg = Debug
+		{01E8A337-D261-45E8-A5E2-DA2B9F15C372}.Debug|x64.ActiveCfg = Debug
+		{01E8A337-D261-45E8-A5E2-DA2B9F15C372}.Debug|x86.ActiveCfg = Debug
+		{01E8A337-D261-45E8-A5E2-DA2B9F15C372}.Release|Any CPU.ActiveCfg = Release
+		{01E8A337-D261-45E8-A5E2-DA2B9F15C372}.Release|Any CPU.Build.0 = Release
+		{01E8A337-D261-45E8-A5E2-DA2B9F15C372}.Release|x64.ActiveCfg = Release
+		{01E8A337-D261-45E8-A5E2-DA2B9F15C372}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
