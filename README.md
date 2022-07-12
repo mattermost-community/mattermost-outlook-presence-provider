@@ -8,8 +8,11 @@
 
 ## Overview
 
-This app acts as an intermediary between Mattermost and Microsoft Outlook by getting users' status updates from Mattermost and using those statuses to display users' presence information in Outlook. It is created by following the official Microsoft documentation which can be found [here](https://docs.microsoft.com/en-us/office/client-developer/shared/integrating-im-applications-with-office).
-It is a Windows application which can be installed through a wizard setup.
+This app acts as an intermediary between Mattermost and Microsoft Outlook by getting users' status updates from Mattermost and using those statuses to display users' presence information in Outlook. It is created by following the official Microsoft documentation which can be found [here](https://docs.microsoft.com/en-us/office/client-developer/shared/integrating-im-applications-with-office). It is a Windows application which can be installed through a wizard setup.
+
+## Prerequisite
+
+This plugin communicates with Mattermost through the [Mattermost Outlook Presence Plugin](https://github.com/Brightscout/mattermost-plugin-outlook-presence). Please ensure this plugin is installed and enabled.
 
 ## Installation
 
