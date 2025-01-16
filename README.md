@@ -14,11 +14,11 @@ This app acts as an intermediary between Mattermost and Microsoft Outlook by get
 
 ## Prerequisite
 
-This plugin communicates with Mattermost through the [Mattermost Outlook Presence Plugin](https://github.com/Brightscout/mattermost-plugin-outlook-presence). Please ensure this plugin is installed and enabled.
+This plugin communicates with Mattermost through the [Mattermost Outlook Presence Plugin](https://github.com/mattermost-community/mattermost-plugin-outlook-presence). Please ensure this plugin is installed and enabled.
 
 ## Installation
 
-You can download the latest setup from the [releases page](https://github.com/Brightscout/mattermost-outlook-presence-provider/releases). Extract the zip file after the download. Install the application by running the file `setup.msi` and following the instructions in the wizard. After the installation is complete, you can find a folder and a shortcut named `Mattermost Presence Provider` in the Windows Start menu that you can use to run the app. You can also run the app by going to the install location. The executable file that you have to run is `MattermostPresenceProvider.exe`. You need to do some configurations before running the app which you can find [here](#configuration).
+You can download the latest setup from the [releases page](https://github.com/mattermost-community/mattermost-outlook-presence-provider/releases). Extract the zip file after the download. Install the application by running the file `setup.msi` and following the instructions in the wizard. After the installation is complete, you can find a folder and a shortcut named `Mattermost Presence Provider` in the Windows Start menu that you can use to run the app. You can also run the app by going to the install location. The executable file that you have to run is `MattermostPresenceProvider.exe`. You need to do some configurations before running the app which you can find [here](#configuration).
 
 **Note**: This application assumes that Skype for Business or Microsoft Teams is not installed in the user's system. If they are installed in the system, then this application may not work as expected.
 
