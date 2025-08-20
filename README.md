@@ -1,3 +1,5 @@
+## **⚠️ This repository is archived and no longer maintained.**
+
 # Mattermost Outlook Presence Provider
 
 ## Table of Contents
